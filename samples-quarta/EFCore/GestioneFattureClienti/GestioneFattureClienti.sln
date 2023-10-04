@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestioneFattureClienti", "GestioneFattureClienti\GestioneFattureClienti.csproj", "{1BE0ADE9-ED6E-4650-B502-F46F1812EC52}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1BE0ADE9-ED6E-4650-B502-F46F1812EC52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BE0ADE9-ED6E-4650-B502-F46F1812EC52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BE0ADE9-ED6E-4650-B502-F46F1812EC52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BE0ADE9-ED6E-4650-B502-F46F1812EC52}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1DA293D3-F6E9-4EBB-B6A1-7E9F6C99187D}
+	EndGlobalSection
+EndGlobal
