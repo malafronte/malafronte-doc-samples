@@ -188,19 +188,19 @@ namespace LINQGym
                 .OrderBy(s => s.Age)
                 .ToList()
                 .ForEach(s => Console.WriteLine(s.StudentName + " age = " + s.Age));
-            Console.WriteLine("\nOrdiniamo in base all'età - LINQ query");
-            studentResultArray = (from s in studentArray1
-                                  orderby s.Age
-                                  select s).ToArray();
-            Console.WriteLine("stampa su array");
-            Array.ForEach(studentResultArray, s => Console.WriteLine(s.StudentName + " age = " + s.Age));
+            //Console.WriteLine("\nOrdiniamo in base all'età - LINQ query");
+            //studentResultArray = (from s in studentArray1
+            //                      orderby s.Age
+            //                      select s).ToArray();
+            //Console.WriteLine("stampa su array");
+            //Array.ForEach(studentResultArray, s => Console.WriteLine(s.StudentName + " age = " + s.Age));
 
-            studentResultList = (from s in studentList1
-                                 orderby s.Age
-                                 select s).ToList();
-            Console.WriteLine("\nstampa su list");
-            studentResultList.
-                ForEach(s => Console.WriteLine(s.StudentName + " age = " + s.Age));
+            //studentResultList = (from s in studentList1
+            //                     orderby s.Age
+            //                     select s).ToList();
+            //Console.WriteLine("\nstampa su list");
+            //studentResultList.
+            //    ForEach(s => Console.WriteLine(s.StudentName + " age = " + s.Age));
 
             //ordinamenti multipli
             Console.WriteLine("\nOrdinamenti multipli - LINQ method");
@@ -287,7 +287,7 @@ namespace LINQGym
             }
             //intersezione tra due collection - Join
             //creiamo un elenco di assenze di studenti
-            List<Assenza> assenzeList1 = new List<Assenza>
+            List<Assenza> assenzeList1 = new ()
             {
                 new (){ID = 1, Giorno = DateTime.Today, StudentID = 1 },
                 new (){ID = 2, Giorno = DateTime.Today.AddDays(-1) ,StudentID = 1 },
