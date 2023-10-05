@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿//file: Model.cs
+using Microsoft.EntityFrameworkCore;
 
 namespace EFGetStarted;
 public class BloggingContext : DbContext
@@ -38,4 +39,3 @@ public class Post
     public int BlogId { get; set; }
     public Blog Blog { get; set; } = null!;
 }
-

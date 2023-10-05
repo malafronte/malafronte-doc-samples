@@ -1,5 +1,4 @@
-﻿//file Artista.cs
-namespace LinqAlMuseo;
+﻿namespace LinqAlMuseo;
 
 public class Artista
 {
@@ -14,4 +13,3 @@ public class Artista
     }
 
 }
-

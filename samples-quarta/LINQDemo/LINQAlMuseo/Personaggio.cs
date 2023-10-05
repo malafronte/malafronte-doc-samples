@@ -1,5 +1,4 @@
-﻿//file Personaggio.cs
-namespace LinqAlMuseo;
+﻿namespace LinqAlMuseo;
 
 public class Personaggio
 {
@@ -10,6 +9,5 @@ public class Personaggio
     {
         return string.Format($"[ID = {Id}, Nome = {Nome}, FkOperaId = {FkOperaId}]"); ;
     }
-
 }
 

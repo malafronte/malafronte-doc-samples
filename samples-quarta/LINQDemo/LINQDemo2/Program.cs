@@ -1,5 +1,19 @@
-﻿namespace LINQDemo
+﻿namespace LINQDemo2
 {
+    delegate bool FindStudent(Student std);
+    class StudentExtension
+    {
+        public static List<Student> Where(Student[] stdArray, FindStudent del)
+        {
+            List<Student> resultList = new();
+            foreach (Student std in stdArray)
+                if (del(std))
+                {
+                    resultList.Add(std);
+                }
+            return resultList;
+        }
+    }
     class Student
     {
         public int StudentID { get; set; }
@@ -11,6 +25,7 @@
             return string.Format($"[StudentID = {StudentID}, StudentName = {StudentName}, Age = {Age}]");
         }
     }
+
     internal class Program
     {
         static void Main(string[] args)
@@ -24,15 +39,15 @@
             new Student() { StudentID = 5, StudentName = "Ron" , Age = 31},
             new Student() { StudentID = 6, StudentName = "Chris",  Age = 17},
             new Student() { StudentID = 7, StudentName = "Rob", Age = 19},
-            };
-            List<Student> students = new();
-            foreach (Student std in studentArray)
-            {
-                if (std.Age > 12 && std.Age < 20)
-                {
-                    students.Add(std);
-                }
-            }
+          };
+
+            //List<Student> students = StudentExtension.Where(studentArray, delegate (Student std)
+            //{
+            //    return std.Age > 12 && std.Age < 20;
+            //});
+            //in alternativa al delegate si può usare una lambda
+            List<Student> students = StudentExtension.Where(studentArray,
+                        std => std.Age > 12 && std.Age < 20);
             //write result
             foreach (var studente in students)
             {
@@ -40,6 +55,7 @@
             }
             Console.ReadLine();
         }
-        
-      }
-  }
+
+    }
+}
+

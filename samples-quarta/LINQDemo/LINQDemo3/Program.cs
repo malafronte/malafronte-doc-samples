@@ -1,4 +1,5 @@
-﻿namespace LINQDemo
+﻿
+namespace LINQDemo3
 {
     class Student
     {
@@ -11,7 +12,8 @@
             return string.Format($"[StudentID = {StudentID}, StudentName = {StudentName}, Age = {Age}]");
         }
     }
-    internal class Program
+
+    class Program
     {
         static void Main(string[] args)
         {
@@ -24,22 +26,27 @@
             new Student() { StudentID = 5, StudentName = "Ron" , Age = 31},
             new Student() { StudentID = 6, StudentName = "Chris",  Age = 17},
             new Student() { StudentID = 7, StudentName = "Rob", Age = 19},
-            };
-            List<Student> students = new();
-            foreach (Student std in studentArray)
-            {
-                if (std.Age > 12 && std.Age < 20)
-                {
-                    students.Add(std);
-                }
-            }
+          };
+
+            // Use LINQ to find teenager students
+            Student[] teenAgerStudents = studentArray.Where(s => s.Age > 12 && s.Age < 20).ToArray();
+
+            // Use LINQ to find first student whose name is Bill 
+            Student? bill = studentArray.Where(s => s.StudentName == "Bill").FirstOrDefault();
+            //if (bill != null)
+            //{
+            //    Console.WriteLine(bill);
+            //}
+            // Use LINQ to find student whose StudentID is 5
+            Student? student5 = studentArray.Where(s => s.StudentID == 5).FirstOrDefault();
+
             //write result
-            foreach (var studente in students)
+            foreach (var studente in teenAgerStudents)
             {
                 Console.WriteLine(studente);
             }
-            Console.ReadLine();
+            Console.WriteLine("bill: " + bill);
+            Console.WriteLine("student5: " + student5);
         }
-        
-      }
-  }
+    }
+}

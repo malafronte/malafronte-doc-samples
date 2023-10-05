@@ -53,8 +53,6 @@
             Console.WriteLine("Invochiamo RaiseWithInput");
             //qui passiamo un valore intero che corrisponderà alla q
             p.RaiseWithInput(6);
-            Console.WriteLine("Press enter to terminate!");
-            Console.ReadLine();
         }
     }
 

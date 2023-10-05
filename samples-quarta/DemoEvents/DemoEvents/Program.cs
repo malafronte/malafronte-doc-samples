@@ -2,7 +2,6 @@
 {
     public class Student
     {
-
         public int Id { get; set; }
         public string? Name { get; set; }
         public int Age { get; set; }
@@ -33,7 +32,6 @@
             int? score = OnStudentTakeExam?.Invoke(s, e);
             Console.WriteLine($"Lo studente {s.Name} ha sostenuto l'esame {e.Name} con un punteggio di {score}");
         }
-
     }
 
     internal class Program
