@@ -97,7 +97,7 @@ static void CreazioneDb()
             new (){ClienteId=3, RagioneSociale= "Cliente 3", PartitaIVA= "1111111113", Citta = "Firenze", Via="Via Raffaello", Civico= "10", CAP="50100"}
         };
 
-        //CreazioneDb delle Fatture - 
+        //CreazioneDb delle Fatture
         List<Fattura> listaFatture = new()
         {
             new (){FatturaId=1, Data= DateTime.Now.Date, Importo = 1200.45m, ClienteId = 1},
