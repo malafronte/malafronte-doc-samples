@@ -79,6 +79,7 @@ static void CreazioneDb()
     {
         //ricreiamo il database a partire dal model (senza dati --> tabelle vuote)
         db.Database.EnsureCreated();
+        //popoliamo il database
         PopulateDb(db);
     }
 
@@ -117,7 +118,6 @@ static void CreazioneDb()
 
 static void LetturaDb()
 {
-
     //recuperiamo i dati dal database
     FattureClientiContext db = new();
     //Nel caso in cui il database fosse stato eliminato ricreiamo un nuovo database vuoto a partire dal Model
@@ -137,15 +137,16 @@ static void LetturaDb()
     Console.WriteLine("Recuperiamo i dati dal database - trovare l'importo complessivo delle fatture fatte da almeno tre giorni ");
     Console.WriteLine($"Importo complessivo: {db.Fatture.Where(f => f.Data < DateTime.Now.AddDays(-2)).Sum(f => (double)f.Importo):C2}");
     Console.WriteLine("Recuperiamo i dati dal database - trovare l'importo medio delle fatture fatte da almeno tre giorni ");
-    var count = db.Fatture.Where(f => f.Data < DateTime.Now.AddDays(-2)).Count();
+    static bool searchPredicate(Fattura f) => f.Data < DateTime.Now.AddDays(-2);
+    var count = db.Fatture.Where(searchPredicate).Count();
     //se non ci sono elementi nella collection i metodi Average, Max e Min sollevano l'eccezione InvalidOperationException
     if (count > 0)
     {
-        Console.WriteLine($"Importo medio: {db.Fatture.Where(f => f.Data < DateTime.Now.AddDays(-2)).Average(f => (double)f.Importo):C2}");
+        Console.WriteLine($"Importo medio: {db.Fatture.Where(searchPredicate).Average(f => (double)f.Importo):C2}");
         Console.WriteLine("Recuperiamo i dati dal database - trovare l'importo massimo delle fatture fatte da almeno tre giorni ");
-        Console.WriteLine($"Importo massimo: {db.Fatture.Where(f => f.Data < DateTime.Now.AddDays(-2)).Max(f => (double)f.Importo):C2}");
+        Console.WriteLine($"Importo massimo: {db.Fatture.Where(searchPredicate).Max(f => (double)f.Importo):C2}");
         Console.WriteLine("Recuperiamo i dati dal database - trovare l'importo minimo delle fatture fatte da almeno tre giorni ");
-        Console.WriteLine($"Importo minimo: {db.Fatture.Where(f => f.Data < DateTime.Now.AddDays(-2)).Min(f => (double)f.Importo):C2}");
+        Console.WriteLine($"Importo minimo: {db.Fatture.Where(searchPredicate).Min(f => (double)f.Importo):C2}");
         Console.WriteLine("Recuperiamo i dati dal database - trovare il numero delle fatture fatte da almeno tre giorni ");
         Console.WriteLine("Numero fatture: " + count);
     }
@@ -174,7 +175,7 @@ static void ModificaFattura()
 {
 
     FattureClientiContext db = new();
-    //la modifica ha senso solo se il database esiste e ha almeno un paio di fatture inserite 
+    //la modifica ha senso solo se il database esiste e ha almeno un paio di fatture inserite
     //Nel caso in cui il database fosse stato eliminato ricreiamo un nuovo database vuoto a partire dal Model
     db.Database.EnsureCreated();
     //Il codice seguente è scritto in modo che se anche non ci fossero dati nelle tabelle non verrebbero sollevate eccezioni
@@ -236,8 +237,6 @@ static void ModificaFattura()
         WriteLineWithColor("Non ci sono abbastanza Fatture nel database per eseguire la funzionalità richiesta", ConsoleColor.Red);
     }
 }
-
-
 static void CancellazioneFattura()
 {
     FattureClientiContext db = new();

@@ -12,7 +12,12 @@ public class Cliente
 
     public override string ToString()
     {
-        return string.Format($"[{nameof(ClienteId)}= {ClienteId}, {nameof(RagioneSociale)} = {RagioneSociale}, " +
-            $"{nameof(PartitaIVA)} = {PartitaIVA}, {nameof(Citta)} = {Citta}, {nameof(Via)} = {Via}, {nameof(Civico)} = {Civico}, {nameof(CAP)} = {CAP}]");
+        return string.Format($"[{nameof(ClienteId)}= {ClienteId}, " +
+            $"{nameof(RagioneSociale)} = {RagioneSociale}, " +
+            $"{nameof(PartitaIVA)} = {PartitaIVA}, " +
+            $"{nameof(Citta)} = {Citta}, " +
+            $"{nameof(Via)} = {Via}, " +
+            $"{nameof(Civico)} = {Civico}, " +
+            $"{nameof(CAP)} = {CAP}]");
     }
 }

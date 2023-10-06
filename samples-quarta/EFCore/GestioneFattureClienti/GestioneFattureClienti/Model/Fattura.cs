@@ -10,6 +10,9 @@ public class Fattura
 
     public override string ToString()
     {
-        return string.Format($"{nameof(FatturaId)} = {FatturaId}, {nameof(Data)} = {Data.ToShortDateString()}, {nameof(Importo)} = {Importo}, {nameof(ClienteId)} = {ClienteId}");
+        return string.Format($"{nameof(FatturaId)} = {FatturaId}, " +
+            $"{nameof(Data)} = {Data.ToShortDateString()}, " +
+            $"{nameof(Importo)} = {Importo}, " +
+            $"{nameof(ClienteId)} = {ClienteId}");
     }
 }

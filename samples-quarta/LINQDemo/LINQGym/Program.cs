@@ -52,24 +52,25 @@ namespace LINQGym
         {
             //condizione: non devono esistere due studenti con lo stesso StudentID
             //in questo caso si dice che StudetID è chiave primaria della collection
-            Student[] studentArray1 = {
-            new () { StudentID = 1, StudentName = "John", Age = 18 , MediaVoti= 6.5},
-            new () { StudentID = 2, StudentName = "Steve",  Age = 21 , MediaVoti= 8},
-            new () { StudentID = 3, StudentName = "Bill",  Age = 25, MediaVoti= 7.4},
-            new () { StudentID = 4, StudentName = "Ram" , Age = 20, MediaVoti = 10},
-            new () { StudentID = 5, StudentName = "Ron" , Age = 31, MediaVoti = 9},
-            new () { StudentID = 6, StudentName = "Chris",  Age = 17, MediaVoti = 8.4},
-            new () { StudentID = 7, StudentName = "Rob",Age = 19  , MediaVoti = 7.7},
-            new () { StudentID = 8, StudentName = "Robert",Age = 22, MediaVoti = 8.1},
-            new () { StudentID = 11, StudentName = "John",  Age = 21 , MediaVoti = 8.5},
-            new () { StudentID = 12, StudentName = "Bill",  Age = 25, MediaVoti = 7},
-            new () { StudentID = 13, StudentName = "Ram" , Age = 20, MediaVoti = 9 },
-            new () { StudentID = 14, StudentName = "Ron" , Age = 31, MediaVoti = 9.5},
-            new () { StudentID = 15, StudentName = "Chris",  Age = 17, MediaVoti = 8},
-            new () { StudentID = 16, StudentName = "Rob2",Age = 19  , MediaVoti = 7},
-            new () { StudentID = 17, StudentName = "Robert2",Age = 22, MediaVoti = 8},
-            new () { StudentID = 18, StudentName = "Alexander2",Age = 18, MediaVoti = 9},
-            };
+            Student[] studentArray1 = 
+                {
+                new () { StudentID = 1, StudentName = "John", Age = 18 , MediaVoti= 6.5},
+                new () { StudentID = 2, StudentName = "Steve",  Age = 21 , MediaVoti= 8},
+                new () { StudentID = 3, StudentName = "Bill",  Age = 25, MediaVoti= 7.4},
+                new () { StudentID = 4, StudentName = "Ram" , Age = 20, MediaVoti = 10},
+                new () { StudentID = 5, StudentName = "Ron" , Age = 31, MediaVoti = 9},
+                new () { StudentID = 6, StudentName = "Chris",  Age = 17, MediaVoti = 8.4},
+                new () { StudentID = 7, StudentName = "Rob",Age = 19  , MediaVoti = 7.7},
+                new () { StudentID = 8, StudentName = "Robert",Age = 22, MediaVoti = 8.1},
+                new () { StudentID = 11, StudentName = "John",  Age = 21 , MediaVoti = 8.5},
+                new () { StudentID = 12, StudentName = "Bill",  Age = 25, MediaVoti = 7},
+                new () { StudentID = 13, StudentName = "Ram" , Age = 20, MediaVoti = 9 },
+                new () { StudentID = 14, StudentName = "Ron" , Age = 31, MediaVoti = 9.5},
+                new () { StudentID = 15, StudentName = "Chris",  Age = 17, MediaVoti = 8},
+                new () { StudentID = 16, StudentName = "Rob2",Age = 19  , MediaVoti = 7},
+                new () { StudentID = 17, StudentName = "Robert2",Age = 22, MediaVoti = 8},
+                new () { StudentID = 18, StudentName = "Alexander2",Age = 18, MediaVoti = 9},
+                };
 
             Student[] studentResultArray;
             List<Student> studentResultList;
@@ -84,9 +85,9 @@ namespace LINQGym
             CondizioneRicerca condizioneDiRicerca3 = VerificaCondizione;
             //quarto modo: usiamo direttamente la lambda - il più comodo
 
-            //creo una lista con gli stessi oggetti presenti nell'array
+            //creiamo una lista con gli stessi oggetti presenti nell'array
             List<Student> studentList1 = studentArray1.ToList();
-            //studio della clausola Where
+            //studiamo la clausola Where
             //trovare tutti gli studenti che hanno età compresa tra 18 e 25 anni, caso dell'array
             studentResultArray = studentArray1.Where(s => s.Age >= 18 && s.Age <= 25).ToArray();
             studentResultList = studentArray1.Where(s => s.Age >= 18 && s.Age <= 25).ToList();
@@ -150,30 +151,37 @@ namespace LINQGym
 
             //Studiamo la clausola OfType
             //nel caso di collection di tipo diverso è possibile trarre vantaggio dal metodo OfType
-            IList mixedList = new ArrayList();
-            mixedList.Add(5);
-            mixedList.Add("numero uno");
-            mixedList.Add(true);
-            mixedList.Add("numero due");
-            mixedList.Add(new Student() { StudentID = 10, Age = 30, StudentName = "Roberto" });
-            List<string> mixedListResult = mixedList.OfType<string>().ToList();
+            IList mixedList = new ArrayList
+            {
+                5,
+                "numero uno",
+                true,
+                "numero due",
+                new Student() { StudentID = 10, Age = 30, StudentName = "Roberto" }
+            };
+            List<string> mixedListResult = mixedList
+                .OfType<string>()
+                .ToList();
             //IList mixedListResult2 =
             //    (from s in mixedList.OfType<Student>()
             //     where s.Age > 20
             //     select s).
             //    ToList();
-            List<Student> mixedListResult2 =
-            mixedList.OfType<Student>().Where(s => s.Age > 20).ToList();
+            List<Student> mixedListResult2 =mixedList
+                .OfType<Student>()
+                .Where(s => s.Age > 20)
+                .ToList();
             Console.WriteLine("\nStampa del risultato con OfType method");
-            mixedListResult.ForEach(s => Console.WriteLine(s));
-            mixedListResult2.ForEach(s => Console.WriteLine(s));
+            mixedListResult.ForEach(Console.WriteLine);
+            mixedListResult2.ForEach(Console.WriteLine);
 
             //Studiamo la clausola OrderBy
 
             //ordiniamo una lista di elementi
             Console.WriteLine("\nOrdiniamo gli elementi di una lista con la clausola OrderBy");
             Console.WriteLine("\nOrdiniamo in base all'età - LINQ method");
-            //per invertire l'ordine esiste anche OrderByDescending
+            //per ordinare in ordine descescente esiste OrderByDescending
+            //https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.orderbydescending
             studentResultArray = studentArray1.OrderBy(s => s.Age).ToArray();
             Console.WriteLine("stampa su array");
             Array.ForEach(studentResultArray, s => Console.WriteLine(s.StudentName + " age = " + s.Age));
@@ -188,7 +196,7 @@ namespace LINQGym
                 .OrderBy(s => s.Age)
                 .ToList()
                 .ForEach(s => Console.WriteLine(s.StudentName + " age = " + s.Age));
-            //Console.WriteLine("\nOrdiniamo in base all'età - LINQ query");
+            //Console.WriteLine("\nOrdiniamo in base all'età - LINQ query - per confronto con LINQ Method (Fluent)");
             //studentResultArray = (from s in studentArray1
             //                      orderby s.Age
             //                      select s).ToArray();
@@ -210,13 +218,14 @@ namespace LINQGym
                 .ToArray();
             Console.WriteLine("stampa su array");
             Array.ForEach(studentResultArray, s => Console.WriteLine(s.StudentName + " age = " + s.Age));
-
+            //esiste anche la clausola ThenByDescending
+            //https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.thenbydescending
             studentResultList = studentList1.OrderBy(s => s.Age).ThenBy(s => s.StudentName).ToList();
             Console.WriteLine("\nstampa su list");
             studentResultList.
                 ForEach(s => Console.WriteLine(s.StudentName + " age = " + s.Age));
 
-            //Console.WriteLine("\nOrdinamenti multipli - LINQ query");
+            //Console.WriteLine("\nOrdinamenti multipli - LINQ query - per confronto con LINQ Method (Fluent)");
             //studentResultArray = (from s in studentArray1
             //                      orderby s.Age, s.StudentName descending
             //                      select s).ToArray();
@@ -234,22 +243,21 @@ namespace LINQGym
             Console.WriteLine("\nClausola select - LINQ method");
             Console.WriteLine("\nUso di tipi anonimi");
             //uso di tipi anonimi
-            Array.ForEach(
-                studentArray1.
-                Select(s => new { Nome = s.StudentName, Eta = s.Age }).
-                ToArray(),
-                 Console.WriteLine);
+            //un tipo anonimo è un tipo che non ha una classe da cui discende, ma è creato direttamente a partire dalle properties
+            Array.ForEach(studentArray1
+                .Select(s => new { Nome = s.StudentName, Eta = s.Age })
+                .ToArray(),Console.WriteLine);
             Console.WriteLine("\nUso di tipi anonimi - stampa solo il nome");
-            studentList1.
-                Select(s => new { Nome = s.StudentName, Eta = s.Age }).
-                ToList().
-                ForEach(p => Console.WriteLine(p.Nome));
+            studentList1
+                .Select(s => new { Nome = s.StudentName, Eta = s.Age })
+                .ToList()
+                .ForEach(p => Console.WriteLine(p.Nome));
 
             Console.WriteLine("\nUso di tipi non anonimi - stampa solo il nome");
-            studentList1.
-                Select(s => new Persona() { Nome = s.StudentName, Eta = s.Age }).
-                ToList().
-                ForEach(p => Console.WriteLine(p.Nome));
+            studentList1
+                .Select(s => new Persona() { Nome = s.StudentName, Eta = s.Age })
+                .ToList()
+                .ForEach(p => Console.WriteLine(p.Nome));
             Console.WriteLine("Primo esempio di raggruppamento - raggruppiamo in base all'età");
             //Group By
             //IEnumerable<IGrouping< int, Student>>?
@@ -267,6 +275,7 @@ namespace LINQGym
                 Console.WriteLine("Valore medio dei voti = {0}", group.Average(s => s.MediaVoti));
                 Console.WriteLine("Voto massimo nel gruppo = {0}", group.Max(s => s.MediaVoti));
                 Console.WriteLine("Voto minimo nel gruppo = {0}", group.Min(s => s.MediaVoti));
+                
                 //C# implementa anche il metodo ToLookup che fa la stessa cosa di GroupBy ma la 
                 //differenza sta nel fatto che con grandi basi di dati ToLookup carica tutto il risultato in memoria
                 //GroupBy carica il risultato associato a una chiave quando serve
@@ -297,10 +306,11 @@ namespace LINQGym
             };
             //vogliamo riportare il nome dello studente e le date delle sue assenze 
             //facciamo una join tra la lista degli studenti e la lista delle assenze degli studenti e poi facciamo la proiezione del risultato su un nuovo oggetto
-            var innerJoinStudentiAssenze = studentList1.Join(assenzeList1,
-                s => s.StudentID,
-                a => a.StudentID,
-                (s, a) => new { ID = s.StudentID, Nome = s.StudentName, GiornoAssenza = a.Giorno });
+            var innerJoinStudentiAssenze = studentList1
+                .Join(assenzeList1,
+                    s => s.StudentID,
+                    a => a.StudentID,
+                    (s, a) => new { ID = s.StudentID, Nome = s.StudentName, GiornoAssenza = a.Giorno });
             foreach (var obj in innerJoinStudentiAssenze)
             {
                 Console.WriteLine($"ID = {obj.ID}, Nome = {obj.Nome}, GiornoAssenza = {obj.GiornoAssenza.ToShortDateString()}");
