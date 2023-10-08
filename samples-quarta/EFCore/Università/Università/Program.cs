@@ -387,21 +387,28 @@ class Program
 
 
         InitTest();
-        WriteLineWithColor("\nEsecuzione di PrintStudents: ", ConsoleColor.Cyan);
+        WriteLineWithColor("\nEsecuzione di Q1:" +
+            "\nStampare l'elenco degli studenti: ", ConsoleColor.Cyan);
         PrintStudents();
-        WriteLineWithColor("\nEsecuzione di PrintCourses: ", ConsoleColor.Cyan);
+        WriteLineWithColor("\nEsecuzione di Q2:" +
+            "\nStampare l'elenco dei corsi", ConsoleColor.Cyan);
         PrintCourses();
-        WriteLineWithColor("\nEsecuzione di ModificaDocenteCorso - Modifica il docente di un corso di cui è noto l’id: ", ConsoleColor.Cyan);
+        WriteLineWithColor("\nEsecuzione di Q3:" +
+            "\nModificare il docente di un corso di cui è noto l’id:", ConsoleColor.Cyan);
         ModificaDocenteCorso(1, 1);
-        WriteLineWithColor("\nDopo la modifica i corsi sono i seguenti: ", ConsoleColor.Cyan);
+        WriteLineWithColor("\nDopo la modifica i corsi sono i seguenti:", ConsoleColor.Cyan);
         PrintCourses();
-        WriteLineWithColor("\nEsecuzione di PrintNumeroCorsiDiStudente con id = 1: ", ConsoleColor.Cyan);
+        WriteLineWithColor("\nEsecuzione di Q4:" +
+            "\nStampare il numero di corsi seguiti dallo studente con id = 1:", ConsoleColor.Cyan);
         PrintNumeroCorsiDiStudente(1);
-        WriteLineWithColor("\nEsecuzione di PrintNumeroCorsiDiStudente con Nome = Giovanni e Cognome = Casiraghi: ", ConsoleColor.Cyan);
+        WriteLineWithColor("\nEsecuzione di Q5:" +
+             "\nStampare il numero di corsi seguiti dallo studente con Nome=\"Giovanni\" e Cognome =\"Casiraghi\"", ConsoleColor.Cyan);
         PrintNumeroCorsiDiStudente("Giovanni", "Casiraghi");
-        WriteLineWithColor("\nEsecuzione di PrintNumeroCorsiFrequentatiPerStudente: ", ConsoleColor.Cyan);
+        WriteLineWithColor("\nEsecuzione di Q6:" +
+            "\nStampare il numero di corsi seguiti da ogni studente", ConsoleColor.Cyan);
         PrintNumeroCorsiFrequentatiPerStudente();
-        WriteLineWithColor("\nEsecuzione di PrintCorsiDiStudente con Nome = Piero e Cognome = Gallo: ", ConsoleColor.Cyan);
+        WriteLineWithColor("\nEsecuzione di Q7:" +
+            "\nStampare i corsi seguiti dallo studente con Nome=\"Piero\" e Cognome =\"Gallo\"", ConsoleColor.Cyan);
         PrintCorsiDiStudente("Piero", "Gallo");
         WriteLineWithColor("Finito!", ConsoleColor.Cyan);
 
