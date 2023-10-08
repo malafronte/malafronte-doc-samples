@@ -65,7 +65,6 @@
         {
             return gen.Next(15, 31);
         }
-
         private static void Tutor_OnStudentReceived(Student s)
         {
             Console.WriteLine($"Benvenuto {s.Name}");

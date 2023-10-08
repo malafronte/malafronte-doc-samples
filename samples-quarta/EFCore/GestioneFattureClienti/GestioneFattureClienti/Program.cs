@@ -85,7 +85,7 @@ static void CreazioneDb()
 
     static void PopulateDb(FattureClientiContext db)
     {
-        //CreazioneDb di Clienti - gli id vengono generati automaticamente come campi auto-incremento quando si effettua l'inserimento, tuttavia
+        //Creazione dei Clienti - gli id vengono generati automaticamente come campi auto-incremento quando si effettua l'inserimento, tuttavia
         //è bene inserire esplicitamente l'id degli oggetti quando si procede all'inserimento massivo gli elementi mediante un foreach perché
         //EF core potrebbe inserire nel database gli oggetti in un ordine diverso rispetto a quello del foreach
         // https://stackoverflow.com/a/54692592
@@ -97,7 +97,7 @@ static void CreazioneDb()
             new (){ClienteId=3, RagioneSociale= "Cliente 3", PartitaIVA= "1111111113", Citta = "Firenze", Via="Via Raffaello", Civico= "10", CAP="50100"}
         };
 
-        //CreazioneDb delle Fatture
+        //Creazione delle Fatture
         List<Fattura> listaFatture = new()
         {
             new (){FatturaId=1, Data= DateTime.Now.Date, Importo = 1200.45m, ClienteId = 1},
@@ -106,7 +106,6 @@ static void CreazioneDb()
             new (){FatturaId=4, Data= DateTime.Now.Date, Importo = 5200.45m, ClienteId = 2},
             new (){FatturaId=5, Data= new DateTime(2019,08,20).Date, Importo = 7200.45m, ClienteId = 2}
         };
-
         Console.WriteLine("Inseriamo i clienti nel database");
         listaClienti.ForEach(c => db.Add(c));
         db.SaveChanges();
