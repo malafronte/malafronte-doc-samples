@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Romanzi.Data;
 using Romanzi.Model;
@@ -97,7 +98,7 @@ static void Q2(string nome, string cognome)
     db.Autori
          .Where(a => a.Nome.Equals(nome)
             && a.Cognome.Equals(cognome))//filtriamo per nome e cognome
-         //.Include(a => a.Romanzi)//chiediamo al provider del database di caricare i romanzi tramite la navigation property
+         .Include(a => a.Romanzi)//chiediamo al provider del database di caricare i romanzi tramite la navigation property
          .ToList()//restituiamo al client il risultato
          .ForEach(a =>
          { //processiamo il risultato
