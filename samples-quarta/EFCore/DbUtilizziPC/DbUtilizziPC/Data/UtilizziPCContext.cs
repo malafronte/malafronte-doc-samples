@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace DbUtilizziPC.Data;
-
 public class UtilizziPCContext:DbContext
 {
     public DbSet<Classe> Classi { get; set; } = null!;
@@ -10,7 +9,6 @@ public class UtilizziPCContext:DbContext
     public DbSet<Computer> Computers { get; set; } = null!;
     public DbSet<Utilizza> Utilizzi { get; set; } = null!;
     public string DbPath { get; }
-
     public UtilizziPCContext()
     {
         var cartellaApp = AppContext.BaseDirectory;
@@ -20,7 +18,6 @@ public class UtilizziPCContext:DbContext
     {
         optionsBuilder.UseSqlite($"Data Source = {DbPath}");
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Studente>()
@@ -31,6 +28,5 @@ public class UtilizziPCContext:DbContext
             //right => right.HasOne(u => u.Studente).WithMany(s => s.Utilizzi).HasForeignKey(u => u.StudenteId),
             //k =>k.HasKey( u => new {u.ComputerId, u.StudenteId, u.DataOraInizioUtilizzo })
             );
-
     }
 }

@@ -13,7 +13,6 @@ public class Studente
     public List<Utilizza> Utilizzi { get; } = null!;
     //Skip Navigation Property
     public List<Computer> Computers { get; } = null!;
-
     public override string ToString()
     {
         return $"{{{nameof(Id)} = {Id}, {nameof(Nome)} = {Nome}, {nameof(Cognome)} = {Cognome}, {nameof(Classe)} = {Classe}}}";

@@ -13,7 +13,6 @@ public class Corso
     //NAVIGATION PROPERTY
     [ForeignKey("CodDocente")]
     public Docente? Docente { get; set; }
-
     //NAVIGATION PROPERTY PER MOLTI A MOLTI STUDENTI - CORSI
     //https://learn.microsoft.com/en-us/ef/core/modeling/relationships/navigations
     public ICollection<Frequenta> Frequenze { get; set; } = null!;

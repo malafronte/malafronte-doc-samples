@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Università.Model;
 
 namespace Università.Data;
-
 public class UniversitàContext : DbContext
 {
     //creazione delle tabelle
@@ -13,17 +12,14 @@ public class UniversitàContext : DbContext
     public DbSet<Corso> Corsi { get; set; } = null!;
     public DbSet<Docente> Docenti { get; set; } = null!;
     public string DbPath { get; }
-
     public UniversitàContext()
     {
         var dir = AppContext.BaseDirectory;
         var path = Path.Combine(dir, "../../../universita.db");
         DbPath = path;
     }
-
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     => options.UseSqlite($"Data Source={DbPath}");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //per gestire la conversione da Enumerativo a string:
@@ -59,7 +55,13 @@ public class UniversitàContext : DbContext
             right => right
             .HasOne(fr => fr.Corso)
             .WithMany(c => c.Frequenze)
-            .HasForeignKey(fr => fr.CodCorso));
+            .HasForeignKey(fr => fr.CodCorso),
+            //primary key - in realtà, avendo associato le chiavi esterne, EF Core sarebbe in grado di creare 
+            //la primary key a partire dalla combinazione delle due foreigh key. In questo caso particolare
+            //questa terza fluent API è ridondante, ma è riportata per mostrare come si potrebbe configurare manualmente
+            //la chiave primaria
+            k => k.HasKey(fr => new {fr.Matricola, fr.CodCorso }));
+          
     }
 
 }

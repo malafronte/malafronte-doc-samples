@@ -89,7 +89,7 @@ namespace Università.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Frequenze", x => new { x.CodCorso, x.Matricola });
+                    table.PrimaryKey("PK_Frequenze", x => new { x.Matricola, x.CodCorso });
                     table.ForeignKey(
                         name: "FK_Frequenze_Corsi_CodCorso",
                         column: x => x.CodCorso,
@@ -110,9 +110,9 @@ namespace Università.Migrations
                 column: "CodDocente");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Frequenze_Matricola",
+                name: "IX_Frequenze_CodCorso",
                 table: "Frequenze",
-                column: "Matricola");
+                column: "CodCorso");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Studenti_CorsoLaureaId",

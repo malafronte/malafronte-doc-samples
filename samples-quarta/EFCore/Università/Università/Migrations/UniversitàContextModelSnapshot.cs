@@ -81,15 +81,15 @@ namespace Università.Migrations
 
             modelBuilder.Entity("Università.Model.Frequenta", b =>
                 {
-                    b.Property<int>("CodCorso")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("Matricola")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("CodCorso", "Matricola");
+                    b.Property<int>("CodCorso")
+                        .HasColumnType("INTEGER");
 
-                    b.HasIndex("Matricola");
+                    b.HasKey("Matricola", "CodCorso");
+
+                    b.HasIndex("CodCorso");
 
                     b.ToTable("Frequenze");
                 });

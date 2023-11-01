@@ -1,5 +1,4 @@
 ﻿namespace Università.Model;
-
 public enum Facoltà
 {
     Medicina,

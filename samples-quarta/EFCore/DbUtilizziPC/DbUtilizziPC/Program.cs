@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Storage;
 using System.Text;
 
 namespace DbUtilizziPC;
-
 internal class Program
 {
     enum ModalitàOperativa
@@ -318,7 +317,6 @@ internal class Program
         {
             Console.WriteLine("Il nome fornito non corrisponde a nessuna classe");
         }
-        
     }
 
     //Q2: Riportare il numero di alunni per ogni classe
@@ -460,7 +458,7 @@ internal class Program
 
         Console.WriteLine("Versione con Join");
         //con una prima query sul Database calcoliamo il numero di utilizzi per classe
-        //Il risultato è un oggetto Queriable sul database
+        //Il risultato è un oggetto che implementa IQueryable sul database
         var numeroUtilizziPerClasse = db.Studenti
             .Join(db.Utilizzi.Where(u => u.DataOraInizioUtilizzo >= DateTime.Now.AddDays(-30)),
                 s => s.Id,

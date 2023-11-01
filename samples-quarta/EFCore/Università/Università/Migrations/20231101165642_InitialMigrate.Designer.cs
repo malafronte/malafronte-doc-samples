@@ -11,7 +11,7 @@ using Università.Data;
 namespace Università.Migrations
 {
     [DbContext(typeof(UniversitàContext))]
-    [Migration("20231008204946_InitialMigrate")]
+    [Migration("20231101165642_InitialMigrate")]
     partial class InitialMigrate
     {
         /// <inheritdoc />
@@ -84,15 +84,15 @@ namespace Università.Migrations
 
             modelBuilder.Entity("Università.Model.Frequenta", b =>
                 {
-                    b.Property<int>("CodCorso")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("Matricola")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("CodCorso", "Matricola");
+                    b.Property<int>("CodCorso")
+                        .HasColumnType("INTEGER");
 
-                    b.HasIndex("Matricola");
+                    b.HasKey("Matricola", "CodCorso");
+
+                    b.HasIndex("CodCorso");
 
                     b.ToTable("Frequenze");
                 });

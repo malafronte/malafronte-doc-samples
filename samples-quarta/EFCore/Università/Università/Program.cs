@@ -8,69 +8,6 @@ namespace Università;
 class Program
 {
     /// <summary>
-    /// Popola il database
-    /// </summary>
-    public static void PopulateDB()
-    {
-        //1) inserisco istanze nelle tabelle che non hanno chiavi esterne -->CorsoDiLaurea, Docente
-        //creo una lista di CorsoDiLaurea e di Docente
-        List<Docente> docenti = new()
-        {
-            new (){CodDocente=1, Cognome="Malafronte", Nome="Gennaro",Dipartimento=Dipartimento.IngegneriaInformatica },
-            new (){CodDocente=2, Cognome="Rossi", Nome="Mario", Dipartimento=Dipartimento.Matematica},
-            new (){CodDocente=3, Cognome="Verdi", Nome="Giuseppe", Dipartimento=Dipartimento.Fisica},
-            new (){CodDocente=4, Cognome= "Smith", Nome="Albert", Dipartimento=Dipartimento.Economia}
-        };
-        List<CorsoLaurea> corsiDiLaurea = new() {
-            new (){CorsoLaureaId = 1,TipoLaurea=TipoLaurea.Magistrale, Facoltà=Facoltà.Ingegneria},
-            new (){CorsoLaureaId = 2,TipoLaurea=TipoLaurea.Triennale, Facoltà=Facoltà.MatematicaFisicaScienze},
-            new (){CorsoLaureaId = 3,TipoLaurea=TipoLaurea.Magistrale, Facoltà=Facoltà.Economia},
-
-        };
-        using (var db = new UniversitàContext())
-        {
-            docenti.ForEach(d => db.Add(d));
-            corsiDiLaurea.ForEach(cl => db.Add(cl));
-            db.SaveChanges();
-        }
-        //2) inserisco altre istanze: Inserisco istanze di Corso e di Studente
-        List<Corso> corsi = new()
-        {
-            new (){CodiceCorso=1,Nome="Fondamenti di Informatica 1", CodDocente=1},
-            new (){CodiceCorso=2,Nome="Analisi Matematica 1", CodDocente=2},
-            new (){CodiceCorso=3,Nome="Fisica 1", CodDocente=3},
-            new (){CodiceCorso=4, Nome="Microeconomia 1", CodDocente=4}
-        };
-        List<Studente> studenti = new()
-        {
-            new (){Matricola=1, Nome="Giovanni", Cognome="Casiraghi", CorsoLaureaId=1, AnnoNascita=2000},
-            new (){Matricola=2, Nome="Alberto", Cognome="Angela", CorsoLaureaId=2, AnnoNascita=1999},
-            new (){Matricola=3, Nome="Piero", Cognome="Gallo", CorsoLaureaId=3, AnnoNascita=2000}
-        };
-        using (var db = new UniversitàContext())
-        {
-            corsi.ForEach(c => db.Add(c));
-            studenti.ForEach(s => db.Add(s));
-            db.SaveChanges();
-        }
-        //4) inserisco le frequenze - è la tabella molti a molti
-        List<Frequenta> frequenze = new()
-        {
-            new (){Matricola=1, CodCorso=1},// Giovanni Casiraghi frequenze il corso di Fondamenti di Informatica 1
-            new (){Matricola=1, CodCorso=2},// Giovanni Casiraghi frequenze il corso di Analisi Matematica 1
-            new (){Matricola=2, CodCorso=2},
-            new (){Matricola=2, CodCorso=3},
-            new (){Matricola=3, CodCorso=4}
-        };
-        using (var db = new UniversitàContext())
-        {
-            frequenze.ForEach(f => db.Add(f));
-            db.SaveChanges();
-        }
-
-    }
-
-    /// <summary>
     /// Stampa a Console l'elenco degli studenti
     /// </summary>
     public static void PrintStudents()
