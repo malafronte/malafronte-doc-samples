@@ -222,7 +222,16 @@ var opereConPersonaggi = opere
     .Join(personaggi,
         o => o.Id,
         p => p.FkOperaId,
-        (o, p) => o);
+        (o, p) => o)
+    //quando si effettua la Join tra due collection A e B, si ottiene il "Prodotto Cartesiano" AxB tra la prima collection A e
+    //la seconda collection B, seguito dalla condizione di selezione della Join, ossia l'uguaglianza dei keySelctor della Join.
+    //Nel caso in esame, la join produce le ennuple (o, p) tali che o.Id == p.FkOperaId, tuttavia prendendo solo le opere per
+    //ogni coppia (opera, personaggio), ossia facendo la proiezione (o,p) => o, si possono ottenere opere ripetute nel risultato finale.
+    //Ad esempio, un'opera con due personaggi comparirà due volte nel risultato finale e nella stampa.
+    //
+    //Per evitare inutili duplicazioni si può usare la clausola Distinct che restituisce una collection senza elementi ripetuti.
+    //👇👇👇
+    .Distinct();
 Console.WriteLine("Opere con personaggi");
 foreach (var opera in opereConPersonaggi)
 {

@@ -358,8 +358,8 @@ class Program
             //4) inserisco le frequenze - è la tabella molti a molti
             List<Frequenta> frequenze = new()
             {
-                new (){Matricola=1, CodCorso=1},// Giovanni Casiraghi frequenze il corso di Fondamenti di Informatica 1
-                new (){Matricola=1, CodCorso=2},// Giovanni Casiraghi frequenze il corso di Analisi Matematica 1
+                new (){Matricola=1, CodCorso=1},// Giovanni Casiraghi frequenta il corso di Fondamenti di Informatica 1
+                new (){Matricola=1, CodCorso=2},// Giovanni Casiraghi frequenta il corso di Analisi Matematica 1
                 new (){Matricola=2, CodCorso=2},
                 new (){Matricola=2, CodCorso=3},
                 new (){Matricola=3, CodCorso=4}
