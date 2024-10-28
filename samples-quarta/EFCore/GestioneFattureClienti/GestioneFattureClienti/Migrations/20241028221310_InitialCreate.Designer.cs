@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestioneFattureClienti.Migrations
 {
     [DbContext(typeof(FattureClientiContext))]
-    [Migration("20231006170558_InitialMigrate")]
-    partial class InitialMigrate
+    [Migration("20241028221310_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.11");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
 
             modelBuilder.Entity("GestioneFattureClienti.Model.Cliente", b =>
                 {

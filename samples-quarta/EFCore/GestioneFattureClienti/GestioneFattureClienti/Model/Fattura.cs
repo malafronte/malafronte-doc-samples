@@ -1,4 +1,4 @@
-﻿namespace GestioneFattureClienti.Model;
+namespace GestioneFattureClienti.Model;
 
 public class Fattura
 {

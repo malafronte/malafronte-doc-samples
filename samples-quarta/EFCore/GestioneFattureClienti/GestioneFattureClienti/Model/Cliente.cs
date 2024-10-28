@@ -1,4 +1,4 @@
-﻿namespace GestioneFattureClienti.Model;
+namespace GestioneFattureClienti.Model;
 public class Cliente
 {
     public int ClienteId { get; set; }
@@ -8,11 +8,11 @@ public class Cliente
     public string? Via { get; set; }
     public string? Civico { get; set; }
     public string? CAP { get; set; }
-    public List<Fattura> Fatture { get; } = new List<Fattura>();
+    public List<Fattura> Fatture { get; } = [];
 
     public override string ToString()
     {
-        return $"{{{nameof(ClienteId)}= {ClienteId}, " +
+        return $"{{{nameof(ClienteId)} = {ClienteId}, " +
             $"{nameof(RagioneSociale)} = {RagioneSociale}, " +
             $"{nameof(PartitaIVA)} = {PartitaIVA}, " +
             $"{nameof(Citta)} = {Citta}, " +

@@ -1,4 +1,4 @@
-﻿using GestioneFattureClienti.Model;
+using GestioneFattureClienti.Model;
 using Microsoft.EntityFrameworkCore;
 namespace GestioneFattureClienti.Data;
 public class FattureClientiContext : DbContext
