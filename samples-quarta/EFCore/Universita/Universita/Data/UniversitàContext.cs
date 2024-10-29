@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Università.Model;
+using Universita.Model;
 
-namespace Università.Data;
-public class UniversitàContext : DbContext
+namespace Universita.Data;
+public class UniversitaContext : DbContext
 {
     //creazione delle tabelle
     public DbSet<Studente> Studenti { get; set; } = null!;
@@ -12,7 +12,7 @@ public class UniversitàContext : DbContext
     public DbSet<Corso> Corsi { get; set; } = null!;
     public DbSet<Docente> Docenti { get; set; } = null!;
     public string DbPath { get; }
-    public UniversitàContext()
+    public UniversitaContext()
     {
         var dir = AppContext.BaseDirectory;
         var path = Path.Combine(dir, "../../../universita.db");
@@ -60,8 +60,8 @@ public class UniversitàContext : DbContext
             //la primary key a partire dalla combinazione delle due foreigh key. In questo caso particolare
             //questa terza fluent API è ridondante, ma è riportata per mostrare come si potrebbe configurare manualmente
             //la chiave primaria
-            k => k.HasKey(fr => new {fr.Matricola, fr.CodCorso }));
-          
+            k => k.HasKey(fr => new { fr.Matricola, fr.CodCorso }));
+
     }
 
 }

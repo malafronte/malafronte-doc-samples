@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Threading.Channels;
 
 namespace LINQGym
 {
@@ -51,7 +50,7 @@ namespace LINQGym
         static void Main(string[] args)
         {
             //condizione: non devono esistere due studenti con lo stesso StudentID
-            //in questo caso si dice che StudetID è chiave primaria della collection
+            //in questo caso si dice che StudentID è chiave primaria della collection
             Student[] studentArray1 = 
                 {
                 new () { StudentID = 1, StudentName = "John", Age = 18 , MediaVoti= 6.5},
@@ -86,12 +85,12 @@ namespace LINQGym
             //quarto modo: usiamo direttamente la lambda - il più comodo
 
             //creiamo una lista con gli stessi oggetti presenti nell'array
-            List<Student> studentList1 = studentArray1.ToList();
+            List<Student> studentList1 = [.. studentArray1];//equivalente a invocare studentArray1.ToList();
             //studiamo la clausola Where
             //trovare tutti gli studenti che hanno età compresa tra 18 e 25 anni, caso dell'array
             studentResultArray = studentArray1.Where(s => s.Age >= 18 && s.Age <= 25).ToArray();
             studentResultList = studentArray1.Where(s => s.Age >= 18 && s.Age <= 25).ToList();
-            //verifichiamo che il risultato sia corretto con una stamapa
+            //verifichiamo che il risultato sia corretto con una stampa
             foreach (Student student in studentResultList)
             {
                 Console.WriteLine(student);
@@ -180,13 +179,13 @@ namespace LINQGym
             //ordiniamo una lista di elementi
             Console.WriteLine("\nOrdiniamo gli elementi di una lista con la clausola OrderBy");
             Console.WriteLine("\nOrdiniamo in base all'età - LINQ method");
-            //per ordinare in ordine descescente esiste OrderByDescending
+            //per ordinare in ordine decrescente esiste OrderByDescending
             //https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.orderbydescending
-            studentResultArray = studentArray1.OrderBy(s => s.Age).ToArray();
+            studentResultArray = [.. studentArray1.OrderBy(s => s.Age)];
             Console.WriteLine("stampa su array");
             Array.ForEach(studentResultArray, s => Console.WriteLine(s.StudentName + " age = " + s.Age));
 
-            studentResultList = studentList1.OrderBy(s => s.Age).ToList();
+            studentResultList = [.. studentList1.OrderBy(s => s.Age)];
             Console.WriteLine("\nstampa su list");
             studentResultList.
                 ForEach(s => Console.WriteLine(s.StudentName + " age = " + s.Age));
@@ -196,26 +195,12 @@ namespace LINQGym
                 .OrderBy(s => s.Age)
                 .ToList()
                 .ForEach(s => Console.WriteLine(s.StudentName + " age = " + s.Age));
-            //Console.WriteLine("\nOrdiniamo in base all'età - LINQ query - per confronto con LINQ Method (Fluent)");
-            //studentResultArray = (from s in studentArray1
-            //                      orderby s.Age
-            //                      select s).ToArray();
-            //Console.WriteLine("stampa su array");
-            //Array.ForEach(studentResultArray, s => Console.WriteLine(s.StudentName + " age = " + s.Age));
-
-            //studentResultList = (from s in studentList1
-            //                     orderby s.Age
-            //                     select s).ToList();
-            //Console.WriteLine("\nstampa su list");
-            //studentResultList.
-            //    ForEach(s => Console.WriteLine(s.StudentName + " age = " + s.Age));
 
             //ordinamenti multipli
             Console.WriteLine("\nOrdinamenti multipli - LINQ method");
-            studentResultArray = studentArray1
+            studentResultArray = [.. studentArray1
                 .OrderBy(s => s.Age)
-                .ThenBy(s => s.StudentName)
-                .ToArray();
+                .ThenBy(s => s.StudentName)];
             Console.WriteLine("stampa su array");
             Array.ForEach(studentResultArray, s => Console.WriteLine(s.StudentName + " age = " + s.Age));
             //esiste anche la clausola ThenByDescending
@@ -224,20 +209,6 @@ namespace LINQGym
             Console.WriteLine("\nstampa su list");
             studentResultList.
                 ForEach(s => Console.WriteLine(s.StudentName + " age = " + s.Age));
-
-            //Console.WriteLine("\nOrdinamenti multipli - LINQ query - per confronto con LINQ Method (Fluent)");
-            //studentResultArray = (from s in studentArray1
-            //                      orderby s.Age, s.StudentName descending
-            //                      select s).ToArray();
-            //Console.WriteLine("stampa su array");
-            //Array.ForEach(studentResultArray, s => Console.WriteLine(s.StudentName + " age = " + s.Age));
-
-            //studentResultList = (from s in studentList1
-            //                     orderby s.Age, s.StudentName descending
-            //                     select s).ToList();
-            //Console.WriteLine("\nstampa su list");
-            //studentResultList.
-            //    ForEach(s => Console.WriteLine(s.StudentName + " age = " + s.Age));
 
             //Studiamo la clausola select - proiettiamo gli elementi della sequenza in una nuova forma
             Console.WriteLine("\nClausola select - LINQ method");
@@ -296,14 +267,14 @@ namespace LINQGym
             }
             //intersezione tra due collection - Join
             //creiamo un elenco di assenze di studenti
-            List<Assenza> assenzeList1 = new ()
-            {
+            List<Assenza> assenzeList1 =
+            [
                 new (){ID = 1, Giorno = DateTime.Today, StudentID = 1 },
                 new (){ID = 2, Giorno = DateTime.Today.AddDays(-1) ,StudentID = 1 },
                 new (){ID = 3, Giorno = DateTime.Today.AddDays(-3), StudentID = 1 },
                 new (){ID = 4, Giorno = new DateTime(2020,11,30), StudentID = 2 },
                 new (){ID = 5, Giorno = new DateTime(2020,11,8), StudentID = 3 }
-            };
+            ];
             //vogliamo riportare il nome dello studente e le date delle sue assenze 
             //facciamo una join tra la lista degli studenti e la lista delle assenze degli studenti e poi facciamo la proiezione del risultato su un nuovo oggetto
             var innerJoinStudentiAssenze = studentList1

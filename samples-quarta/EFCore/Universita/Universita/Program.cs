@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
-using Università.Data;
-using Università.Model;
+using Universita.Data;
+using Universita.Model;
 
-namespace Università;
+namespace Universita;
 
 class Program
 {
@@ -12,9 +12,9 @@ class Program
     /// </summary>
     public static void PrintStudents()
     {
-        using var db = new UniversitàContext();
+        using var db = new UniversitaContext();
         //leggo gli studenti
-        List<Studente> studenti = db.Studenti.ToList();
+        List<Studente> studenti = [.. db.Studenti];
         //stampo gli studenti
         studenti.ForEach(s => Console.WriteLine($"Matricola = {s.Matricola}, Nome = {s.Nome}, Cognome = {s.Cognome}"));
     }
@@ -25,8 +25,8 @@ class Program
     public static void PrintCourses()
     {
         //leggo gli studenti
-        using var db = new UniversitàContext();
-        List<Corso> corsi = db.Corsi.ToList();
+        using var db = new UniversitaContext();
+        List<Corso> corsi = [.. db.Corsi];
         corsi.ForEach(s => Console.WriteLine($"CodCorso = {s.CodiceCorso}, Nome = {s.Nome}, CodDocente = {s.CodDocente}"));
 
     }
@@ -39,7 +39,7 @@ class Program
     public static void PrintCorsiDiStudente(string nomeStudente, string cognomeStudente)
     {
         //trovare i corsi seguiti da uno studente - doppio join
-        using var db = new UniversitàContext();
+        using var db = new UniversitaContext();
         //attenzione - potrebbero esserci casi di omonimia!
         var corsiFrequentatiDaStudente = db.Studenti
             .Where(s => s.Nome.ToUpper().Equals(nomeStudente.ToUpper())
@@ -75,7 +75,7 @@ class Program
     /// <param name="codStudente">Codice dello studente di cui si vuole contare i corsi</param>
     public static void PrintNumeroCorsiDiStudente(int codStudente)
     {
-        using var db = new UniversitàContext();
+        using var db = new UniversitaContext();
         //uso della tabella di collegamento molti a molti - Frequenta in questo caso
         Console.WriteLine("Uso della tabella di collegamento molti a molti - Frequenta");
         var numeroCorsiFrequentatiDaStudente = db.Frequenze.Where(f => f.Matricola == codStudente).Count();
@@ -90,8 +90,8 @@ class Program
             .ToList()
             .ForEach(s => Console.WriteLine($"Numero corsi frequentati dallo studente matricola {s.Matricola} {s.Nome} {s.Cognome} -> numero corsi: {s.NumeroCorsi}"));
 
-        //Uso di Entry per recuperare dati di una collection collegata a un oggettio già caricato in memoria
-        Console.WriteLine("Uso di Entry per recuperare dati di una collection collegata a un oggettio già caricato in memoria");
+        //Uso di Entry per recuperare dati di una collection collegata a un oggetto già caricato in memoria
+        Console.WriteLine("Uso di Entry per recuperare dati di una collection collegata a un oggetto già caricato in memoria");
         var studente = db.Studenti.Where(s => s.Matricola == codStudente).FirstOrDefault();
         if (studente != null)
         { //come effettuare una query su una collection property: https://www.entityframeworktutorial.net/EntityFramework4.3/explicit-loading-with-dbcontext.aspx
@@ -109,7 +109,7 @@ class Program
     /// <param name="cognomeStudente"></param>
     public static void PrintNumeroCorsiDiStudente(string nomeStudente, string cognomeStudente)
     {
-        using var db = new UniversitàContext();
+        using var db = new UniversitaContext();
         //https://docs.microsoft.com/en-us/ef/core/miscellaneous/collations-and-case-sensitivity
         //https://medium.com/@bridgesquared/efcore-sqlite-case-insensitive-order-21371b256e5
         //https://github.com/dotnet/efcore/issues/8033
@@ -150,7 +150,7 @@ class Program
     /// <param name="nuovoCodDocente">nuovo codice del docente</param>
     public static void ModificaDocenteCorso(int codCorso, int nuovoCodDocente)
     {
-        using var db = new UniversitàContext();
+        using var db = new UniversitaContext();
         //accedo al corso
         var corso = db.Corsi.Find(codCorso);
         //accedo al docente per verificare che esiste quel docente
@@ -178,7 +178,7 @@ class Program
     public static void PrintNumeroCorsiFrequentatiPerStudente()
     {
         //raggruppo su Frequenta per Matricola e poi faccio la join con Studente per avere i dati di ciascuno studente
-        using var db = new UniversitàContext();
+        using var db = new UniversitaContext();
 
         //MOLTO IMPORTANTE: https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-3.x/breaking-changes
         //https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-3.x/breaking-changes#linq-queries-are-no-longer-evaluated-on-the-client
@@ -221,14 +221,14 @@ class Program
 
     static void InitTest()
     {
-        UniversitàContext db = new();
+        UniversitaContext db = new();
         //verifichiamo se il database esista già
         //https://medium.com/@Usurer/ef-core-check-if-db-exists-feafe6e36f4e
         //https://stackoverflow.com/questions/33911316/entity-framework-core-how-to-check-if-database-exists
         if (db.Database.GetService<IRelationalDatabaseCreator>().Exists())
         {
             WriteLineWithColor("Il database esiste già, vuoi ricrearlo da capo? Tutti i valori precedentemente inseriti verranno persi. [Si, No]", ConsoleColor.Red);
-            bool dbErase = Console.ReadLine()?.ToLower().StartsWith("si") ?? false;
+            bool dbErase = Console.ReadLine()?.StartsWith("si", StringComparison.CurrentCultureIgnoreCase) ?? false;
             if (dbErase)
             {
                 //cancelliamo il database se esiste
@@ -253,55 +253,55 @@ class Program
         {
             //1) inserisco istanze nelle tabelle che non hanno chiavi esterne -->CorsoDiLaurea, Docente
             //creo una lista di CorsoDiLaurea e di Docente
-            List<Docente> docenti = new()
-            {
+            List<Docente> docenti =
+            [
                 new (){CodDocente=1, Cognome="Malafronte", Nome="Gennaro",Dipartimento=Dipartimento.IngegneriaInformatica },
                 new (){CodDocente=2, Cognome="Rossi", Nome="Mario", Dipartimento=Dipartimento.Matematica},
                 new (){CodDocente=3, Cognome="Verdi", Nome="Giuseppe", Dipartimento=Dipartimento.Fisica},
                 new (){CodDocente=4, Cognome= "Smith", Nome="Albert", Dipartimento=Dipartimento.Economia}
-            };
-            List<CorsoLaurea> corsiDiLaurea = new() 
-            {
+            ];
+            List<CorsoLaurea> corsiDiLaurea =
+            [
                 new (){CorsoLaureaId = 1,TipoLaurea=TipoLaurea.Magistrale, Facoltà=Facoltà.Ingegneria},
                 new (){CorsoLaureaId = 2,TipoLaurea=TipoLaurea.Triennale, Facoltà=Facoltà.MatematicaFisicaScienze},
                 new (){CorsoLaureaId = 3,TipoLaurea=TipoLaurea.Magistrale, Facoltà=Facoltà.Economia},
-            };
-            using (var db = new UniversitàContext())
+            ];
+            using (var db = new UniversitaContext())
             {
                 docenti.ForEach(d => db.Add(d));
                 corsiDiLaurea.ForEach(cl => db.Add(cl));
                 db.SaveChanges();
             }
             //2) inserisco altre istanze: Inserisco istanze di Corso e di Studente
-            List<Corso> corsi = new()
-            {
+            List<Corso> corsi =
+            [
                 new (){CodiceCorso=1,Nome="Fondamenti di Informatica 1", CodDocente=1},
                 new (){CodiceCorso=2,Nome="Analisi Matematica 1", CodDocente=2},
                 new (){CodiceCorso=3,Nome="Fisica 1", CodDocente=3},
                 new (){CodiceCorso=4, Nome="Microeconomia 1", CodDocente=4}
-            };
-            List<Studente> studenti = new()
-            {
+            ];
+            List<Studente> studenti =
+            [
                 new (){Matricola=1, Nome="Giovanni", Cognome="Casiraghi", CorsoLaureaId=1, AnnoNascita=2000},
                 new (){Matricola=2, Nome="Alberto", Cognome="Angela", CorsoLaureaId=2, AnnoNascita=1999},
                 new (){Matricola=3, Nome="Piero", Cognome="Gallo", CorsoLaureaId=3, AnnoNascita=2000}
-            };
-            using (var db = new UniversitàContext())
+            ];
+            using (var db = new UniversitaContext())
             {
                 corsi.ForEach(c => db.Add(c));
                 studenti.ForEach(s => db.Add(s));
                 db.SaveChanges();
             }
             //4) inserisco le frequenze - è la tabella molti a molti
-            List<Frequenta> frequenze = new()
-            {
+            List<Frequenta> frequenze =
+            [
                 new (){Matricola=1, CodCorso=1},// Giovanni Casiraghi frequenta il corso di Fondamenti di Informatica 1
                 new (){Matricola=1, CodCorso=2},// Giovanni Casiraghi frequenta il corso di Analisi Matematica 1
                 new (){Matricola=2, CodCorso=2},
                 new (){Matricola=2, CodCorso=3},
                 new (){Matricola=3, CodCorso=4}
-            };
-            using (var db = new UniversitàContext())
+            ];
+            using (var db = new UniversitaContext())
             {
                 frequenze.ForEach(f => db.Add(f));
                 db.SaveChanges();
@@ -331,7 +331,7 @@ class Program
             "\nStampare l'elenco dei corsi", ConsoleColor.Cyan);
         PrintCourses();
         WriteLineWithColor("\nEsecuzione di Q3:" +
-            "\nModificare il docente di un corso di cui è noto l’id:", ConsoleColor.Cyan);
+            "\nModificare il docente di un corso di cui è noto l'id:", ConsoleColor.Cyan);
         ModificaDocenteCorso(1, 1);
         WriteLineWithColor("\nDopo la modifica i corsi sono i seguenti:", ConsoleColor.Cyan);
         PrintCourses();
@@ -351,4 +351,5 @@ class Program
 
     }
 }
+
 

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Università.Model;
+namespace Universita.Model;
 public class Corso
 {
     //qui l'annotation è resa necessaria perché non si segue la convenzione sul nome della chiave
@@ -17,7 +17,7 @@ public class Corso
     //https://learn.microsoft.com/en-us/ef/core/modeling/relationships/navigations
     public ICollection<Frequenta> Frequenze { get; set; } = null!;
     //skip navigation - https://learn.microsoft.com/en-us/ef/core/modeling/relationships/many-to-many
-    public ICollection<Studente> Studenti { get; set; } =null!;
+    public ICollection<Studente> Studenti { get; set; } = null!;
 
 }
 

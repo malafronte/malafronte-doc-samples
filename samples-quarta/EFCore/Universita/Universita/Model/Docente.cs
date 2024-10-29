@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Università.Model;
+namespace Universita.Model;
 public class Docente
 {
     //qui l'annotation è resa necessaria perché non si segue la convenzione sul nome della chiave

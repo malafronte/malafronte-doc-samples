@@ -5,7 +5,7 @@
     {
         public static List<Student> Where(Student[] stdArray, FindStudent del)
         {
-            List<Student> resultList = new();
+            List<Student> resultList = [];
             foreach (Student std in stdArray)
                 if (del(std))
                 {
@@ -31,7 +31,7 @@
         static void Main(string[] args)
         {
             Student[] studentArray =
-            {
+            [
                 new () { StudentID = 1, StudentName = "John", Age = 18},
                 new () { StudentID = 2, StudentName = "Steve",  Age = 21},
                 new () { StudentID = 3, StudentName = "Bill",  Age = 25},
@@ -39,7 +39,7 @@
                 new () { StudentID = 5, StudentName = "Ron" , Age = 31},
                 new () { StudentID = 6, StudentName = "Chris",  Age = 17},
                 new () { StudentID = 7, StudentName = "Rob", Age = 19},
-          };
+          ];
 
             //List<Student> students = StudentExtension.Where(studentArray, delegate (Student std)
             //{

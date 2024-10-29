@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Università.Migrations
+namespace Universita.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigrate : Migration

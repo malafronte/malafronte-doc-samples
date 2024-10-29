@@ -12,7 +12,7 @@ Q1("Americana");
 
 WriteLineWithColor("\nEsecuzione di Q2: " +
     "\ncreare un metodo che prende in input il nome e il cognome di un autore e stampa tutti i romanzi di quell’autore" +
-    "\nCaso di Enrest Hemingway\n",ConsoleColor.Cyan);
+    "\nCaso di Ernest Hemingway\n",ConsoleColor.Cyan);
 Q2("Ernest", "Hemingway");
 
 WriteLineWithColor("\nEsecuzione di Q3: " +
@@ -207,7 +207,7 @@ static void InitTest()
     if (db.Database.GetService<IRelationalDatabaseCreator>().Exists())
     {
         WriteLineWithColor("Il database esiste già, vuoi ricrearlo da capo? Tutti i valori precedentemente inseriti verranno persi. [Si, No]", ConsoleColor.Red);
-        bool dbErase = Console.ReadLine()?.ToLower().StartsWith("si") ?? false;
+        bool dbErase = Console.ReadLine()?.StartsWith("si", StringComparison.CurrentCultureIgnoreCase) ?? false;
         if (dbErase)
         {
             //cancelliamo il database se esiste
@@ -231,20 +231,20 @@ static void InitTest()
     static void PopulateDb(RomanziContext db)
     {
         //Almeno 5 autori di nazionalità compresa tra "Americana", "Belga", "Inglese".
-        List<Autore> autori = new()
-        {
+        List<Autore> autori =
+        [
             new (){AutoreId=1, Nome="Ernest",Cognome="Hemingway", Nazionalità="Americana"},//AutoreId=1
             new (){AutoreId=2,Nome="Philip",Cognome="Roth", Nazionalità="Americana"},//AutoreId=2
             new (){AutoreId=3,Nome="Thomas",Cognome="Owen", Nazionalità="Belga"},//AutoreId=3
             new (){AutoreId=4,Nome="William",Cognome="Shakespeare", Nazionalità="Inglese"},//AutoreId=4
             new (){AutoreId=5,Nome="Charles",Cognome="Dickens", Nazionalità="Inglese"},//AutoreId=5
-        };
+        ];
 
         autori.ForEach(a => db.Add(a));
         db.SaveChanges();
         //Almeno 10 romanzi degli autori precedentemente inseriti
-        List<Romanzo> romanzi = new()
-        {
+        List<Romanzo> romanzi =
+        [
             new (){RomanzoId=1, Titolo="For Whom the Bell Tolls", AnnoPubblicazione=1940, AutoreId=1},//RomanzoId=1
             new (){RomanzoId=2,Titolo="The Old Man and the Sea", AnnoPubblicazione=1952, AutoreId=1},
             new (){RomanzoId=3,Titolo="A Farewell to Arms",AnnoPubblicazione=1929, AutoreId=1},
@@ -255,18 +255,18 @@ static void InitTest()
             new (){RomanzoId=8,Titolo="Giulio Cesare", AnnoPubblicazione=1599, AutoreId=4},
             new (){RomanzoId=9,Titolo="Otello", AnnoPubblicazione=1604, AutoreId=4},
             new (){RomanzoId=10,Titolo="David Copperfield", AnnoPubblicazione=1849, AutoreId=5},
-        };
+        ];
         romanzi.ForEach(r => db.Add(r));
         db.SaveChanges();
         //Almeno 5 personaggi presenti nei romanzi precedentemente inseriti
-        List<Personaggio> personaggi = new()
-        {
+        List<Personaggio> personaggi =
+        [
             new (){PersonaggioId=1, Nome="Desdemona", Ruolo="Protagonista", Sesso="Femmina", RomanzoId=9},//PersonaggioId=1
             new (){PersonaggioId=2,Nome="Jago", Ruolo="Protagonista", Sesso="Maschio", RomanzoId=9},
             new (){PersonaggioId=3,Nome="Robert", Ruolo="Protagonista", Sesso="Maschio", RomanzoId=1},
             new (){PersonaggioId=4,Nome="Cesare", Ruolo="Protagonista", Sesso="Maschio", RomanzoId=8},
             new (){PersonaggioId=5,Nome="David", Ruolo="Protagonista", Sesso="Maschio", RomanzoId=10}
-        };
+        ];
         personaggi.ForEach(p => db.Add(p));
         db.SaveChanges();
     }

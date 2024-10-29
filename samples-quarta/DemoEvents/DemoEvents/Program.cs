@@ -46,7 +46,7 @@
             tutor.OnStudentTakeExam += Tutor_OnStudentTakeExam;
 
             //creazione di studenti ed esami
-            Student marioRossi = new Student() { Id = 1, Name = "Mario Rossi", Age = 21 };
+            Student marioRossi = new() { Id = 1, Name = "Mario Rossi", Age = 21 };
             Exam fisica1 = new() { Id = 1, Name = "Fisica 1" };
             Exam analisi1 = new() { Id = 2, Name = "Analisi 1" };
 

@@ -25,7 +25,7 @@
                 new () { StudentID = 6, StudentName = "Chris",  Age = 17},
                 new () { StudentID = 7, StudentName = "Rob", Age = 19},
             };
-            List<Student> students = new();
+            List<Student> students = [];
             foreach (Student std in studentArray)
             {
                 if (std.Age > 12 && std.Age < 20)

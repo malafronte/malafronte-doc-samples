@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbUtilizziPC.Migrations
 {
     [DbContext(typeof(UtilizziPCContext))]
-    [Migration("20231025170043_MigrazioneIniziale")]
-    partial class MigrazioneIniziale
+    [Migration("20241029184006_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.13");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
 
             modelBuilder.Entity("DbUtilizziPC.Model.Classe", b =>
                 {

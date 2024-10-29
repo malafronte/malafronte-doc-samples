@@ -57,7 +57,7 @@ do
 
 static void CreazioneDb()
 {
-	FattureClientiContext db = new();
+	using FattureClientiContext db = new();
 	//verifichiamo se il database esista già
 	//https://medium.com/@Usurer/ef-core-check-if-db-exists-feafe6e36f4e
 	//https://stackoverflow.com/questions/33911316/entity-framework-core-how-to-check-if-database-exists
@@ -118,7 +118,7 @@ static void CreazioneDb()
 static void LetturaDb()
 {
 	//recuperiamo i dati dal database
-	FattureClientiContext db = new();
+	using FattureClientiContext db = new();
 	//Nel caso in cui il database fosse stato eliminato ricreiamo un nuovo database vuoto a partire dal Model
 	db.Database.EnsureCreated();
 	//Il codice seguente è scritto in modo che se anche non ci fossero dati nelle tabelle non verrebbero sollevate eccezioni
@@ -138,7 +138,7 @@ static void LetturaDb()
 	Console.WriteLine($"Importo complessivo: {db.Fatture.Where(f => f.Data < DateTime.Now.AddDays(-2)).Sum(f => (double)f.Importo):C2}");
 	
 	Console.WriteLine("Recuperiamo i dati dal database - trovare l'importo medio delle fatture fatte da almeno tre giorni ");
-	//troviamo prima di tutto quante sono queste fatture
+	//troviamo prima di tutto quante sono le fatture
 	static bool searchPredicate(Fattura f) => f.Data < DateTime.Now.AddDays(-2);
 	var count = db.Fatture.Where(searchPredicate).Count();
 	
@@ -155,7 +155,10 @@ static void LetturaDb()
 	}
 	Console.WriteLine("Recuperiamo i dati dal database - uso di WHERE e JOIN");
 	Console.WriteLine("trovare il nome e l'indirizzo dei clienti che hanno speso più di 5000 EUR");
-	var clientiConSpesa5000Plus = db.Fatture.Where(f => f.Importo > 5000).Join(db.Clienti,
+	var clientiConSpesa5000Plus = 
+	db.Fatture
+	.Where(f => f.Importo > 5000)
+	.Join(db.Clienti,
 		f => f.ClienteId,
 		c => c.ClienteId,
 		(f, c) => new { NumeroFattura = f.FatturaId, DataFattura = f.Data, NomeCliente = c.RagioneSociale, Indirizzo = c.Via + " N." + c.Civico + " " + c.CAP + " " + c.Citta });
@@ -163,8 +166,10 @@ static void LetturaDb()
 
 	//altro modo - uso delle navigation properties
 	Console.WriteLine("Recuperiamo i dati dal database - Uso di Navigation Property per ottenere i dati dei clienti a partire dalle fatture");
-	var clientiConSpesa5000Plus2 = db.Fatture.Where(f => f.Importo > 5000).
-		Select(f => new
+	var clientiConSpesa5000Plus2 = 
+	db.Fatture
+	.Where(f => f.Importo > 5000)
+	.Select(f => new
 		{
 			NumeroFattura = f.FatturaId,
 			DataFattura = f.Data,
@@ -176,8 +181,7 @@ static void LetturaDb()
 
 static void ModificaFattura()
 {
-
-	FattureClientiContext db = new();
+	using FattureClientiContext db = new();
 	//la modifica ha senso solo se il database esiste e ha almeno un paio di fatture inserite
 	//Nel caso in cui il database fosse stato eliminato ricreiamo un nuovo database vuoto a partire dal Model
 	db.Database.EnsureCreated();
@@ -242,7 +246,7 @@ static void ModificaFattura()
 }
 static void CancellazioneFattura()
 {
-	FattureClientiContext db = new();
+	using FattureClientiContext db = new();
 	//Nel caso in cui il database fosse stato eliminato ricreiamo un nuovo database vuoto a partire dal Model
 	db.Database.EnsureCreated();
 	//Il codice seguente è scritto in modo che se anche non ci fossero dati nelle tabelle non verrebbero sollevate eccezioni
@@ -252,7 +256,7 @@ static void CancellazioneFattura()
 	Console.WriteLine("Stampa delle fatture");
 	listaFatture.ForEach(Console.WriteLine);
 	Console.WriteLine("\nEliminiamo la terza fattura");
-	//accediamo alla terza fattura - possiamo accedere o mediante chiave, oppure in base ad un elenco da cui prendiamo la terza
+	//accediamo alla terza fattura - possiamo accedere mediante chiave, oppure in base ad un elenco da cui prendiamo la terza fattura
 	//decidiamo di eliminare la fattura con FatturaId=3
 	Fattura? fatturaDaEliminare = db.Fatture.Find(3);
 	if (fatturaDaEliminare != null)//se abbiamo trovato la fattura con id =3
@@ -273,7 +277,7 @@ static void CancellazioneFattura()
 
 static void CancellazioneDb()
 {
-	FattureClientiContext db = new();
+	using FattureClientiContext db = new();
 	WriteLineWithColor("Attenzione tutto il database andrà eliminato! Questa operazione non può essere revocata.\nSei sicuro di voler procedere? [Si, No]", ConsoleColor.Red);
 	bool dbErase = Console.ReadLine()?.StartsWith("si", StringComparison.CurrentCultureIgnoreCase) ?? false;
 	if (dbErase)

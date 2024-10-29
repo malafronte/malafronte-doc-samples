@@ -11,14 +11,14 @@ using Romanzi.Data;
 namespace Romanzi.Migrations
 {
     [DbContext(typeof(RomanziContext))]
-    [Migration("20231008141645_InitialCreate")]
+    [Migration("20241029183242_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.11");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
 
             modelBuilder.Entity("Romanzi.Model.Autore", b =>
                 {

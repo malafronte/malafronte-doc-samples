@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Università.Model;
+namespace Universita.Model;
 
 public class Studente
 {

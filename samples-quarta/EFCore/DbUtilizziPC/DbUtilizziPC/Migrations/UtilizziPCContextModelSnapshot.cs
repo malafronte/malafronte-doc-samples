@@ -15,7 +15,7 @@ namespace DbUtilizziPC.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.13");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
 
             modelBuilder.Entity("DbUtilizziPC.Model.Classe", b =>
                 {

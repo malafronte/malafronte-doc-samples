@@ -2,22 +2,25 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Università.Data;
+using Universita.Data;
 
 #nullable disable
 
-namespace Università.Migrations
+namespace Universita.Migrations
 {
-    [DbContext(typeof(UniversitàContext))]
-    partial class UniversitàContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(UniversitaContext))]
+    [Migration("20241029185330_InitialMigrate")]
+    partial class InitialMigrate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.11");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
 
-            modelBuilder.Entity("Università.Model.Corso", b =>
+            modelBuilder.Entity("Universita.Model.Corso", b =>
                 {
                     b.Property<int>("CodiceCorso")
                         .ValueGeneratedOnAdd()
@@ -37,7 +40,7 @@ namespace Università.Migrations
                     b.ToTable("Corsi");
                 });
 
-            modelBuilder.Entity("Università.Model.CorsoLaurea", b =>
+            modelBuilder.Entity("Universita.Model.CorsoLaurea", b =>
                 {
                     b.Property<int>("CorsoLaureaId")
                         .ValueGeneratedOnAdd()
@@ -56,7 +59,7 @@ namespace Università.Migrations
                     b.ToTable("CorsiLaurea");
                 });
 
-            modelBuilder.Entity("Università.Model.Docente", b =>
+            modelBuilder.Entity("Universita.Model.Docente", b =>
                 {
                     b.Property<int>("CodDocente")
                         .ValueGeneratedOnAdd()
@@ -79,7 +82,7 @@ namespace Università.Migrations
                     b.ToTable("Docenti");
                 });
 
-            modelBuilder.Entity("Università.Model.Frequenta", b =>
+            modelBuilder.Entity("Universita.Model.Frequenta", b =>
                 {
                     b.Property<int>("Matricola")
                         .HasColumnType("INTEGER");
@@ -94,7 +97,7 @@ namespace Università.Migrations
                     b.ToTable("Frequenze");
                 });
 
-            modelBuilder.Entity("Università.Model.Studente", b =>
+            modelBuilder.Entity("Universita.Model.Studente", b =>
                 {
                     b.Property<int>("Matricola")
                         .ValueGeneratedOnAdd()
@@ -121,24 +124,24 @@ namespace Università.Migrations
                     b.ToTable("Studenti");
                 });
 
-            modelBuilder.Entity("Università.Model.Corso", b =>
+            modelBuilder.Entity("Universita.Model.Corso", b =>
                 {
-                    b.HasOne("Università.Model.Docente", "Docente")
+                    b.HasOne("Universita.Model.Docente", "Docente")
                         .WithMany("Corsi")
                         .HasForeignKey("CodDocente");
 
                     b.Navigation("Docente");
                 });
 
-            modelBuilder.Entity("Università.Model.Frequenta", b =>
+            modelBuilder.Entity("Universita.Model.Frequenta", b =>
                 {
-                    b.HasOne("Università.Model.Corso", "Corso")
+                    b.HasOne("Universita.Model.Corso", "Corso")
                         .WithMany("Frequenze")
                         .HasForeignKey("CodCorso")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Università.Model.Studente", "Studente")
+                    b.HasOne("Universita.Model.Studente", "Studente")
                         .WithMany("Frequenze")
                         .HasForeignKey("Matricola")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -149,9 +152,9 @@ namespace Università.Migrations
                     b.Navigation("Studente");
                 });
 
-            modelBuilder.Entity("Università.Model.Studente", b =>
+            modelBuilder.Entity("Universita.Model.Studente", b =>
                 {
-                    b.HasOne("Università.Model.CorsoLaurea", "CorsoLaurea")
+                    b.HasOne("Universita.Model.CorsoLaurea", "CorsoLaurea")
                         .WithMany("Studenti")
                         .HasForeignKey("CorsoLaureaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -160,22 +163,22 @@ namespace Università.Migrations
                     b.Navigation("CorsoLaurea");
                 });
 
-            modelBuilder.Entity("Università.Model.Corso", b =>
+            modelBuilder.Entity("Universita.Model.Corso", b =>
                 {
                     b.Navigation("Frequenze");
                 });
 
-            modelBuilder.Entity("Università.Model.CorsoLaurea", b =>
+            modelBuilder.Entity("Universita.Model.CorsoLaurea", b =>
                 {
                     b.Navigation("Studenti");
                 });
 
-            modelBuilder.Entity("Università.Model.Docente", b =>
+            modelBuilder.Entity("Universita.Model.Docente", b =>
                 {
                     b.Navigation("Corsi");
                 });
 
-            modelBuilder.Entity("Università.Model.Studente", b =>
+            modelBuilder.Entity("Universita.Model.Studente", b =>
                 {
                     b.Navigation("Frequenze");
                 });

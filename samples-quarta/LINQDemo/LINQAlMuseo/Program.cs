@@ -6,32 +6,32 @@ using System.Text;
 
 //creazione delle collection
 //si parte da quelle che non puntano a nulla, ossia quelle che non hanno chiavi esterne
-IList<Artista> artisti = new List<Artista>()
-    {
+IList<Artista> artisti =
+    [
         new (){Id=1, Cognome="Picasso", Nome="Pablo", Nazionalita="Spagna"},
         new (){Id=2, Cognome="Dalì", Nome="Salvador", Nazionalita="Spagna"},
         new (){Id=3, Cognome="De Chirico", Nome="Giorgio", Nazionalita="Italia"},
         new (){Id=4, Cognome="Guttuso", Nome="Renato", Nazionalita="Italia"}
-    };
+    ];
 //poi le collection che hanno Fk
-IList<Opera> opere = new List<Opera>() 
-    {
+IList<Opera> opere =
+    [
         new (){Id=1, Titolo="Guernica", Quotazione=50000000.00m , FkArtista=1},//opera di Picasso
         new (){Id=2, Titolo="I tre musici", Quotazione=15000000.00m, FkArtista=1},//opera di Picasso
         new (){Id=3, Titolo="Les demoiselles d’Avignon", Quotazione=12000000.00m,  FkArtista=1},//opera di Picasso
         new (){Id=4, Titolo="La persistenza della memoria", Quotazione=16000000.00m,  FkArtista=2},//opera di Dalì
         new (){Id=5, Titolo="Metamorfosi di Narciso", Quotazione=8000000.00m, FkArtista=2},//opera di Dalì
         new (){Id=6, Titolo="Le Muse inquietanti", Quotazione=22000000.00m,  FkArtista=3},//opera di De Chirico
-    };
-IList<Personaggio> personaggi = new List<Personaggio>() 
-    {
+    ];
+IList<Personaggio> personaggi =
+    [
         new (){Id=1, Nome="Uomo morente", FkOperaId=1},//un personaggio di Guernica 
         new (){Id=2, Nome="Un musicante", FkOperaId=2},
         new (){Id=3, Nome="una ragazza di Avignone", FkOperaId=3},
         new (){Id=4, Nome="una seconda ragazza di Avignone", FkOperaId=3},
         new (){Id=5, Nome="Narciso", FkOperaId=5},
         new (){Id=6, Nome="Una musa metafisica", FkOperaId=6},
-    };
+    ];
 
 //impostiamo la console in modo che stampi correttamente il carattere dell'euro e che utilizzi le impostazioni di cultura italiana
 Console.OutputEncoding = Encoding.UTF8;
@@ -162,7 +162,7 @@ foreach (var group in opereDiArtistaGroupBy)
 }
 
 //6) Raggruppare le opere in base alla nazionalità e in base al cognome dell’artista (Raggruppamento in base a più proprietà)
-Console.WriteLine("\n**** 6) Raggruppare le opere in base alla nazionalità e in base al cognome dell’artista (Raggruppamento in base a più proprietà)\n");
+Console.WriteLine("\n**** 6) Raggruppare le opere in base alla nazionalità e in base al cognome dell'artista (Raggruppamento in base a più proprietà)\n");
 var opereDiArtistaGroupByMultiplo = artisti
     .Join(opere,
         a => a.Id,
