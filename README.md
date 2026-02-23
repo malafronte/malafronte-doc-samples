@@ -94,8 +94,9 @@ Script utili per scaricare sottocartelle specifiche da repository GitHub, simile
 **Caratteristiche delle versioni ottimizzate:**
 
 - 📥 Scarica solo la cartella richiesta (non l'intero repository)
-- 🎯 Funziona con qualsiasi repository GitHub pubblico
+- 🎯 Funziona con qualsiasi repository GitHub
 - 🛡️ Gestione automatica degli errori
 - 🧹 Pulizia automatica dei file temporanei
+- 🔐 Supporto ai repository privati tramite token GitHub
 
 Per maggiori dettagli sull'utilizzo, consulta il [README dedicato](tools-and-scripts/github-download-directory/README.md).
