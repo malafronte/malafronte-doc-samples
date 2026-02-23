@@ -17,6 +17,10 @@ Sito di documentazione per i corsi di informatica del Prof. Gennaro Malafronte a
 
 ### [Samples Terza](#samples-terza)
 
+### [Tools and Scripts](#tools-and-scripts)
+
+- [GitHub Download Directory](#github-download-directory)
+
 ---
 
 ## Samples Quarta
@@ -72,5 +76,26 @@ Esempi di utilizzo di LINQ (Language Integrated Query) in C#.
 
 ## Samples Terza
 
-*Sezione attualmente vuota - in preparazione*
+Sezione attualmente vuota - in preparazione
 
+---
+
+## Tools and Scripts
+
+### GitHub Download Directory
+
+Script utili per scaricare sottocartelle specifiche da repository GitHub, simile a [download-directory.github.io](https://download-directory.github.io) ma eseguibili localmente.
+
+- **[download-github-folder.py](tools-and-scripts/github-download-directory/download-github-folder.py)** - Script Python base per scaricare cartelle da GitHub su repository pubblici (non supporta repository privati)
+- **[download-github-folder.sh](tools-and-scripts/github-download-directory/download-github-folder.sh)** - Script Bash base per scaricare cartelle da GitHub su repository pubblici (non supporta repository privati)
+- **[download-github-folder-optimized.py](tools-and-scripts/github-download-directory/download-github-folder-optimized.py)** ⭐ - Versione Python ottimizzata con `git sparse-checkout` (consigliata) - supporta repository privati con token
+- **[download-github-folder-optimized.sh](tools-and-scripts/github-download-directory/download-github-folder-optimized.sh)** ⭐ - Versione Bash ottimizzata con `git sparse-checkout` (consigliata) - supporta repository privati con token
+
+**Caratteristiche delle versioni ottimizzate:**
+
+- 📥 Scarica solo la cartella richiesta (non l'intero repository)
+- 🎯 Funziona con qualsiasi repository GitHub pubblico
+- 🛡️ Gestione automatica degli errori
+- 🧹 Pulizia automatica dei file temporanei
+
+Per maggiori dettagli sull'utilizzo, consulta il [README dedicato](tools-and-scripts/github-download-directory/README.md).
