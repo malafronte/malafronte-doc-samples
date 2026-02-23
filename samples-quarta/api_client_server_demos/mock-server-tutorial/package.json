@@ -1,0 +1,19 @@
+{
+  "name": "mock-server-tutorial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "generate": "node generate_data.js",
+    "start": "json-server --watch db.json --port 3000",
+    "start:alt": "json-server --watch db.json --port 3001"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@faker-js/faker": "^10.3.0",
+    "json-server": "0.17.4"
+  }
+}

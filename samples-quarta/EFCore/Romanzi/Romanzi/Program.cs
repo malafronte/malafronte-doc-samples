@@ -122,7 +122,7 @@ static void Q3(string nazionalità)
     //primo modo - uso di join
     var numeroRomanzi = db.Autori
           .Where(a => a.Nazionalità != null
-            && a.Nazionalità.Equals(nazionalità))//filtriamo per nome e cognome
+            && a.Nazionalità.Equals(nazionalità))//filtriamo per nazionalità
           .Join(db.Romanzi,//Join con romanzi
               a => a.AutoreId,
               r => r.AutoreId,

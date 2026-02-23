@@ -197,7 +197,7 @@ static void ModificaFattura()
 		//stampiamo la lista delle fatture per vedere il risultato
 		//se il database non esiste listaFatture sarà null.
 
-		List<Fattura> listaFatture = db.Fatture.ToList();
+		List<Fattura> listaFatture = [.. db.Fatture];
 		Console.WriteLine("Stampa delle fatture");
 		listaFatture.ForEach(f => Console.WriteLine(f));
 
@@ -234,7 +234,7 @@ static void ModificaFattura()
 			ultimaFattura.Importo *= 1.5m;
 			db.SaveChanges();
 			//stampiamo la lista delle fatture per vedere il risultato
-			listaFatture = db.Fatture.ToList();
+			listaFatture = [.. db.Fatture];
 			Console.WriteLine("Stampa delle fatture");
 			listaFatture.ForEach(f => Console.WriteLine(f));
 		}

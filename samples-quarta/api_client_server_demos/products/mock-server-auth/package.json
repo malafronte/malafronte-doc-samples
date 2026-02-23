@@ -1,0 +1,22 @@
+{
+  "name": "mock-server-products",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:faker": "node server.js db-faker.json",
+    "generate": "node generate-data.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@faker-js/faker": "^10.3.0",
+    "json-server": "^0.17.4"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.3"
+  }
+}

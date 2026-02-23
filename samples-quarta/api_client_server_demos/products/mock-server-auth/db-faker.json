@@ -1,0 +1,1564 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Modern Cotton Fish",
+      "description": "Ergonomic Keyboard made with Wooden for all-day altruistic support",
+      "category": "electronics",
+      "price": 787.49,
+      "discountPercentage": 5.48,
+      "rating": 3.6,
+      "stock": 12,
+      "tags": [
+        {
+          "value": "Licensed"
+        },
+        {
+          "value": "Bronze"
+        }
+      ],
+      "brand": "Armstrong, Stroman and Thiel",
+      "sku": "PAB2LFSV",
+      "weight": 4,
+      "dimensions": {
+        "width": 20.82,
+        "height": 31.8,
+        "depth": 33.13
+      },
+      "warrantyInformation": "3 year warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 5,
+          "comment": "Tolero alveus audentia vociferor comitatus canonicus ullus currus quibusdam.",
+          "date": "2026-02-22T07:33:05.414Z",
+          "reviewerName": "Stefan Wuckert",
+          "reviewerEmail": "Pansy_Hane32@yahoo.com"
+        }
+      ],
+      "returnPolicy": "61 days return policy",
+      "minimumOrderQuantity": 4,
+      "meta": {
+        "createdAt": "2025-06-10T15:26:42.854Z",
+        "updatedAt": "2026-02-22T04:53:32.240Z",
+        "barcode": "1629984885837",
+        "qrCode": "http://localhost:3000/assets/products_media/1/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/1/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/1/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 2,
+      "title": "Awesome Granite Bike",
+      "description": "Innovative Cheese featuring profuse technology and Metal construction",
+      "category": "toys",
+      "price": 512.95,
+      "discountPercentage": 13.54,
+      "rating": 3.16,
+      "stock": 82,
+      "tags": [
+        {
+          "value": "Licensed"
+        },
+        {
+          "value": "Aluminum"
+        }
+      ],
+      "brand": "Beer - Cummings",
+      "sku": "EUHVG40I",
+      "weight": 10,
+      "dimensions": {
+        "width": 9.58,
+        "height": 11.11,
+        "depth": 22.61
+      },
+      "warrantyInformation": "4 year warranty",
+      "shippingInformation": "Ships in 1 weeks",
+      "availabilityStatus": "Out of Stock",
+      "reviews": [
+        {
+          "rating": 1,
+          "comment": "Traho asporto spoliatio adfectus aggero.",
+          "date": "2026-02-22T03:43:54.367Z",
+          "reviewerName": "Mindy Von",
+          "reviewerEmail": "Kelsie33@yahoo.com"
+        }
+      ],
+      "returnPolicy": "89 days return policy",
+      "minimumOrderQuantity": 6,
+      "meta": {
+        "createdAt": "2026-02-16T09:32:47.314Z",
+        "updatedAt": "2026-02-22T06:27:22.732Z",
+        "barcode": "9229239415342",
+        "qrCode": "http://localhost:3000/assets/products_media/2/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/2/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/2/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 3,
+      "title": "Oriental Aluminum Pants",
+      "description": "Professional-grade Pizza perfect for forceful training and recreational use",
+      "category": "garden",
+      "price": 718.45,
+      "discountPercentage": 1.64,
+      "rating": 2.07,
+      "stock": 84,
+      "tags": [
+        {
+          "value": "Rustic"
+        },
+        {
+          "value": "Bamboo"
+        }
+      ],
+      "brand": "Kessler, Abernathy and Sanford",
+      "sku": "HXNSZYBS",
+      "weight": 8,
+      "dimensions": {
+        "width": 44.45,
+        "height": 22.43,
+        "depth": 27.49
+      },
+      "warrantyInformation": "1 year warranty",
+      "shippingInformation": "Ships in 1 weeks",
+      "availabilityStatus": "Out of Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Aeternus demitto trans cibo minima considero tabesco totus facere sollers.",
+          "date": "2026-02-21T17:35:36.809Z",
+          "reviewerName": "Maurice Daniel",
+          "reviewerEmail": "Celestino_Oberbrunner@gmail.com"
+        }
+      ],
+      "returnPolicy": "90 days return policy",
+      "minimumOrderQuantity": 2,
+      "meta": {
+        "createdAt": "2025-03-12T23:06:56.270Z",
+        "updatedAt": "2026-02-22T08:16:24.207Z",
+        "barcode": "6708383966524",
+        "qrCode": "http://localhost:3000/assets/products_media/3/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/3/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/3/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 4,
+      "title": "Luxurious Gold Cheese",
+      "description": "Ergonomic Hat made with Silk for all-day remorseful support",
+      "category": "automotive",
+      "price": 107.05,
+      "discountPercentage": 6.79,
+      "rating": 1.92,
+      "stock": 69,
+      "tags": [
+        {
+          "value": "Licensed"
+        },
+        {
+          "value": "Rubber"
+        }
+      ],
+      "brand": "Zboncak LLC",
+      "sku": "38DMCZUM",
+      "weight": 7,
+      "dimensions": {
+        "width": 49.91,
+        "height": 13.11,
+        "depth": 13.23
+      },
+      "warrantyInformation": "4 year warranty",
+      "shippingInformation": "Ships in 1 weeks",
+      "availabilityStatus": "Out of Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Ultio voluptate demum contra cicuta clementia.",
+          "date": "2026-02-22T03:33:51.093Z",
+          "reviewerName": "Karli Orn",
+          "reviewerEmail": "Ethelyn.Ward@hotmail.com"
+        }
+      ],
+      "returnPolicy": "41 days return policy",
+      "minimumOrderQuantity": 9,
+      "meta": {
+        "createdAt": "2025-09-14T23:19:14.304Z",
+        "updatedAt": "2026-02-22T10:26:59.710Z",
+        "barcode": "3307553162070",
+        "qrCode": "http://localhost:3000/assets/products_media/4/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/4/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/4/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 5,
+      "title": "Handcrafted Aluminum Keyboard",
+      "description": "Featuring Neptunium-enhanced technology, our Cheese offers unparalleled aware performance",
+      "category": "tools",
+      "price": 632.4,
+      "discountPercentage": 0.36,
+      "rating": 1.76,
+      "stock": 14,
+      "tags": [
+        {
+          "value": "Soft"
+        },
+        {
+          "value": "Concrete"
+        }
+      ],
+      "brand": "Prohaska, Larson and King",
+      "sku": "WCDVCL9Y",
+      "weight": 3,
+      "dimensions": {
+        "width": 34.97,
+        "height": 9.64,
+        "depth": 17.6
+      },
+      "warrantyInformation": "5 year warranty",
+      "shippingInformation": "Ships in 3 weeks",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 2,
+          "comment": "Aeger angustus aeternus ancilla amiculum.",
+          "date": "2026-02-21T23:16:56.239Z",
+          "reviewerName": "Charles Bosco",
+          "reviewerEmail": "Florence.Keeling16@yahoo.com"
+        }
+      ],
+      "returnPolicy": "63 days return policy",
+      "minimumOrderQuantity": 10,
+      "meta": {
+        "createdAt": "2026-01-23T20:16:10.696Z",
+        "updatedAt": "2026-02-21T19:39:47.583Z",
+        "barcode": "7861419561239",
+        "qrCode": "http://localhost:3000/assets/products_media/5/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/5/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/5/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 6,
+      "title": "Practical Rubber Soap",
+      "description": "Ergonomic Pants made with Bronze for all-day glorious support",
+      "category": "clothing",
+      "price": 193.49,
+      "discountPercentage": 18.08,
+      "rating": 4.92,
+      "stock": 35,
+      "tags": [
+        {
+          "value": "Incredible"
+        },
+        {
+          "value": "Steel"
+        }
+      ],
+      "brand": "Strosin - Koelpin",
+      "sku": "X87YFC64",
+      "weight": 7,
+      "dimensions": {
+        "width": 38.24,
+        "height": 48.27,
+        "depth": 24.57
+      },
+      "warrantyInformation": "1 year warranty",
+      "shippingInformation": "Ships in 1 weeks",
+      "availabilityStatus": "Out of Stock",
+      "reviews": [
+        {
+          "rating": 1,
+          "comment": "Terebro corroboro infit vinco.",
+          "date": "2026-02-22T02:45:06.724Z",
+          "reviewerName": "Tara Feeney",
+          "reviewerEmail": "Kianna.Parker98@hotmail.com"
+        }
+      ],
+      "returnPolicy": "80 days return policy",
+      "minimumOrderQuantity": 10,
+      "meta": {
+        "createdAt": "2026-02-17T16:00:37.473Z",
+        "updatedAt": "2026-02-22T08:53:12.018Z",
+        "barcode": "5959900175380",
+        "qrCode": "http://localhost:3000/assets/products_media/6/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/6/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/6/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 7,
+      "title": "Tasty Granite Pants",
+      "description": "Stylish Chips designed to make you stand out with long-term looks",
+      "category": "clothing",
+      "price": 73.85,
+      "discountPercentage": 5.36,
+      "rating": 1.46,
+      "stock": 82,
+      "tags": [
+        {
+          "value": "Handcrafted"
+        },
+        {
+          "value": "Cotton"
+        }
+      ],
+      "brand": "Legros, White and Carter",
+      "sku": "I6ZYRWEP",
+      "weight": 4,
+      "dimensions": {
+        "width": 31.77,
+        "height": 36.54,
+        "depth": 15.73
+      },
+      "warrantyInformation": "5 year warranty",
+      "shippingInformation": "Ships in 4 weeks",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Vomito auctus cauda caveo.",
+          "date": "2026-02-22T07:25:38.497Z",
+          "reviewerName": "Marcella Rau",
+          "reviewerEmail": "Kristin.Jacobson58@gmail.com"
+        }
+      ],
+      "returnPolicy": "46 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2025-07-07T17:55:54.612Z",
+        "updatedAt": "2026-02-22T12:19:47.157Z",
+        "barcode": "9263548178330",
+        "qrCode": "http://localhost:3000/assets/products_media/7/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/7/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/7/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 8,
+      "title": "Luxurious Plastic Bike",
+      "description": "Featuring Rhodium-enhanced technology, our Salad offers unparalleled clear performance",
+      "category": "outdoors",
+      "price": 548.69,
+      "discountPercentage": 8.1,
+      "rating": 1.97,
+      "stock": 96,
+      "tags": [
+        {
+          "value": "Unbranded"
+        },
+        {
+          "value": "Wooden"
+        }
+      ],
+      "brand": "Stoltenberg, Bechtelar and O'Kon",
+      "sku": "QZWZL31X",
+      "weight": 7,
+      "dimensions": {
+        "width": 13.4,
+        "height": 32.84,
+        "depth": 15.11
+      },
+      "warrantyInformation": "4 year warranty",
+      "shippingInformation": "Ships in 4 weeks",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 5,
+          "comment": "Cervus terga capto arto illo venio adversus.",
+          "date": "2026-02-22T06:26:01.256Z",
+          "reviewerName": "Mr. D'angelo Schroeder",
+          "reviewerEmail": "Emmitt.Bartoletti@yahoo.com"
+        }
+      ],
+      "returnPolicy": "43 days return policy",
+      "minimumOrderQuantity": 6,
+      "meta": {
+        "createdAt": "2025-10-22T00:56:54.383Z",
+        "updatedAt": "2026-02-22T08:46:49.253Z",
+        "barcode": "1432828570856",
+        "qrCode": "http://localhost:3000/assets/products_media/8/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/8/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/8/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 9,
+      "title": "Generic Gold Computer",
+      "description": "Our fresh-inspired Ball brings a taste of luxury to your nippy lifestyle",
+      "category": "baby",
+      "price": 863.15,
+      "discountPercentage": 13.86,
+      "rating": 1.85,
+      "stock": 65,
+      "tags": [
+        {
+          "value": "Fresh"
+        },
+        {
+          "value": "Wooden"
+        }
+      ],
+      "brand": "Schmitt - Prosacco",
+      "sku": "E84GDC4O",
+      "weight": 6,
+      "dimensions": {
+        "width": 9.02,
+        "height": 43.8,
+        "depth": 10.35
+      },
+      "warrantyInformation": "2 year warranty",
+      "shippingInformation": "Ships in 3 weeks",
+      "availabilityStatus": "Out of Stock",
+      "reviews": [
+        {
+          "rating": 1,
+          "comment": "Surculus surgo viriliter toties beatus accommodo certe cuppedia commodi.",
+          "date": "2026-02-22T07:54:05.090Z",
+          "reviewerName": "Willie Reichel",
+          "reviewerEmail": "Grady.Bernier92@hotmail.com"
+        }
+      ],
+      "returnPolicy": "8 days return policy",
+      "minimumOrderQuantity": 4,
+      "meta": {
+        "createdAt": "2025-06-25T22:58:46.727Z",
+        "updatedAt": "2026-02-22T07:26:29.248Z",
+        "barcode": "5127230392949",
+        "qrCode": "http://localhost:3000/assets/products_media/9/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/9/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/9/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 10,
+      "title": "Fantastic Concrete Car",
+      "description": "Savor the bitter essence in our Car, designed for feline culinary adventures",
+      "category": "jewelry",
+      "price": 15.75,
+      "discountPercentage": 11.28,
+      "rating": 4.38,
+      "stock": 59,
+      "tags": [
+        {
+          "value": "Modern"
+        },
+        {
+          "value": "Cotton"
+        }
+      ],
+      "brand": "Goyette and Sons",
+      "sku": "6YMXN0XX",
+      "weight": 1,
+      "dimensions": {
+        "width": 18.78,
+        "height": 24.38,
+        "depth": 12.22
+      },
+      "warrantyInformation": "1 year warranty",
+      "shippingInformation": "Ships in 4 weeks",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 2,
+          "comment": "Ars tumultus verbera crapula acidus defetiscor dolorum audacia comparo.",
+          "date": "2026-02-21T20:07:40.978Z",
+          "reviewerName": "Rahul Hodkiewicz",
+          "reviewerEmail": "Laverne.Vandervort17@gmail.com"
+        }
+      ],
+      "returnPolicy": "64 days return policy",
+      "minimumOrderQuantity": 5,
+      "meta": {
+        "createdAt": "2026-02-07T23:05:39.758Z",
+        "updatedAt": "2026-02-22T08:28:33.158Z",
+        "barcode": "9692807245283",
+        "qrCode": "http://localhost:3000/assets/products_media/10/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/10/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/10/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 11,
+      "title": "Sleek Concrete Bacon",
+      "description": "Our smoky-inspired Car brings a taste of luxury to your outgoing lifestyle",
+      "category": "kids",
+      "price": 902.19,
+      "discountPercentage": 3.42,
+      "rating": 3.43,
+      "stock": 59,
+      "tags": [
+        {
+          "value": "Intelligent"
+        },
+        {
+          "value": "Cotton"
+        }
+      ],
+      "brand": "Koch Group",
+      "sku": "J0PXWOID",
+      "weight": 6,
+      "dimensions": {
+        "width": 40.78,
+        "height": 6.36,
+        "depth": 32.21
+      },
+      "warrantyInformation": "1 year warranty",
+      "shippingInformation": "Ships in 1 weeks",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Stultus considero tenuis cultura pecus suasoria aranea capio tolero.",
+          "date": "2026-02-21T17:17:58.380Z",
+          "reviewerName": "Danielle Johnson",
+          "reviewerEmail": "Cynthia_Willms42@yahoo.com"
+        }
+      ],
+      "returnPolicy": "8 days return policy",
+      "minimumOrderQuantity": 10,
+      "meta": {
+        "createdAt": "2025-06-03T06:40:49.499Z",
+        "updatedAt": "2026-02-22T03:09:20.687Z",
+        "barcode": "1180361741089",
+        "qrCode": "http://localhost:3000/assets/products_media/11/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/11/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/11/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 12,
+      "title": "Soft Granite Towels",
+      "description": "Our delicious-inspired Hat brings a taste of luxury to your average lifestyle",
+      "category": "automotive",
+      "price": 204.25,
+      "discountPercentage": 3.31,
+      "rating": 1.93,
+      "stock": 91,
+      "tags": [
+        {
+          "value": "Soft"
+        },
+        {
+          "value": "Gold"
+        }
+      ],
+      "brand": "Mertz - Lynch",
+      "sku": "B1ONSSAZ",
+      "weight": 9,
+      "dimensions": {
+        "width": 47.71,
+        "height": 26.4,
+        "depth": 5.03
+      },
+      "warrantyInformation": "1 year warranty",
+      "shippingInformation": "Ships in 4 weeks",
+      "availabilityStatus": "Out of Stock",
+      "reviews": [
+        {
+          "rating": 5,
+          "comment": "Colligo video coniecto tantillus cultura ater charisma teres acer aeneus.",
+          "date": "2026-02-21T23:35:47.586Z",
+          "reviewerName": "Taya Ruecker-Treutel DVM",
+          "reviewerEmail": "Brody_Jast42@gmail.com"
+        }
+      ],
+      "returnPolicy": "26 days return policy",
+      "minimumOrderQuantity": 9,
+      "meta": {
+        "createdAt": "2025-09-24T15:22:21.653Z",
+        "updatedAt": "2026-02-21T21:29:05.598Z",
+        "barcode": "9588297801860",
+        "qrCode": "http://localhost:3000/assets/products_media/12/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/12/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/12/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 13,
+      "title": "Intelligent Bamboo Bike",
+      "description": "Soft Cheese designed with Marble for greedy performance",
+      "category": "tools",
+      "price": 598.15,
+      "discountPercentage": 13.12,
+      "rating": 1.64,
+      "stock": 50,
+      "tags": [
+        {
+          "value": "Elegant"
+        },
+        {
+          "value": "Gold"
+        }
+      ],
+      "brand": "Dickinson and Sons",
+      "sku": "T1QSJ4IT",
+      "weight": 6,
+      "dimensions": {
+        "width": 37.77,
+        "height": 5.84,
+        "depth": 39.31
+      },
+      "warrantyInformation": "2 year warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Nesciunt cultura triduana.",
+          "date": "2026-02-22T11:44:36.299Z",
+          "reviewerName": "Kamren Gorczany Sr.",
+          "reviewerEmail": "Jessie_Stehr@hotmail.com"
+        }
+      ],
+      "returnPolicy": "14 days return policy",
+      "minimumOrderQuantity": 6,
+      "meta": {
+        "createdAt": "2025-03-20T08:52:41.017Z",
+        "updatedAt": "2026-02-22T11:15:56.613Z",
+        "barcode": "3812313495977",
+        "qrCode": "http://localhost:3000/assets/products_media/13/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/13/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/13/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 14,
+      "title": "Elegant Silk Computer",
+      "description": "The Clara Ball is the latest in a series of creative products from Crooks - Flatley",
+      "category": "health",
+      "price": 231.89,
+      "discountPercentage": 5.87,
+      "rating": 3.68,
+      "stock": 86,
+      "tags": [
+        {
+          "value": "Intelligent"
+        },
+        {
+          "value": "Plastic"
+        }
+      ],
+      "brand": "Robel Group",
+      "sku": "9VCYNM7N",
+      "weight": 5,
+      "dimensions": {
+        "width": 47.12,
+        "height": 5.4,
+        "depth": 7.91
+      },
+      "warrantyInformation": "2 year warranty",
+      "shippingInformation": "Ships in 3 weeks",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Decens carcer debilito inflammatio quidem cur amita sperno ustulo tolero.",
+          "date": "2026-02-21T21:20:29.145Z",
+          "reviewerName": "Marcella Ernser",
+          "reviewerEmail": "Santiago63@gmail.com"
+        }
+      ],
+      "returnPolicy": "53 days return policy",
+      "minimumOrderQuantity": 4,
+      "meta": {
+        "createdAt": "2025-04-03T04:32:33.723Z",
+        "updatedAt": "2026-02-21T19:15:46.577Z",
+        "barcode": "3943444729685",
+        "qrCode": "http://localhost:3000/assets/products_media/14/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/14/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/14/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 15,
+      "title": "Rustic Steel Fish",
+      "description": "Professional-grade Towels perfect for gray training and recreational use",
+      "category": "games",
+      "price": 356.69,
+      "discountPercentage": 3.59,
+      "rating": 1.91,
+      "stock": 98,
+      "tags": [
+        {
+          "value": "Gorgeous"
+        },
+        {
+          "value": "Plastic"
+        }
+      ],
+      "brand": "Koepp - Witting",
+      "sku": "0UVE2DQB",
+      "weight": 4,
+      "dimensions": {
+        "width": 22.44,
+        "height": 22.76,
+        "depth": 20.5
+      },
+      "warrantyInformation": "4 year warranty",
+      "shippingInformation": "Ships in 1 weeks",
+      "availabilityStatus": "Out of Stock",
+      "reviews": [
+        {
+          "rating": 1,
+          "comment": "Vobis desipio cogo ciminatio asper.",
+          "date": "2026-02-21T21:11:59.507Z",
+          "reviewerName": "Domingo O'Kon",
+          "reviewerEmail": "Stephan39@gmail.com"
+        }
+      ],
+      "returnPolicy": "36 days return policy",
+      "minimumOrderQuantity": 9,
+      "meta": {
+        "createdAt": "2025-04-25T01:50:18.564Z",
+        "updatedAt": "2026-02-22T00:45:26.330Z",
+        "barcode": "5333410721689",
+        "qrCode": "http://localhost:3000/assets/products_media/15/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/15/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/15/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 16,
+      "title": "Oriental Rubber Salad",
+      "description": "Innovative Table featuring fake technology and Rubber construction",
+      "category": "baby",
+      "price": 15.39,
+      "discountPercentage": 14.87,
+      "rating": 1.02,
+      "stock": 91,
+      "tags": [
+        {
+          "value": "Licensed"
+        },
+        {
+          "value": "Bamboo"
+        }
+      ],
+      "brand": "Hamill and Sons",
+      "sku": "G7ONZED7",
+      "weight": 2,
+      "dimensions": {
+        "width": 43.64,
+        "height": 44.2,
+        "depth": 30.81
+      },
+      "warrantyInformation": "4 year warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Certus audax comparo sui benevolentia in abduco validus veritatis.",
+          "date": "2026-02-21T18:36:51.422Z",
+          "reviewerName": "Geovanni Kuhlman-Fadel",
+          "reviewerEmail": "Vicky48@gmail.com"
+        }
+      ],
+      "returnPolicy": "9 days return policy",
+      "minimumOrderQuantity": 2,
+      "meta": {
+        "createdAt": "2025-10-28T03:50:24.542Z",
+        "updatedAt": "2026-02-21T22:25:37.502Z",
+        "barcode": "6167781769525",
+        "qrCode": "http://localhost:3000/assets/products_media/16/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/16/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/16/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 17,
+      "title": "Sleek Plastic Keyboard",
+      "description": "The Monitored systematic attitude Shoes offers reliable performance and square design",
+      "category": "home",
+      "price": 158.79,
+      "discountPercentage": 11.02,
+      "rating": 3.15,
+      "stock": 77,
+      "tags": [
+        {
+          "value": "Fantastic"
+        },
+        {
+          "value": "Marble"
+        }
+      ],
+      "brand": "Lowe - Bashirian",
+      "sku": "UEMDGN3V",
+      "weight": 3,
+      "dimensions": {
+        "width": 35.05,
+        "height": 30.68,
+        "depth": 11.29
+      },
+      "warrantyInformation": "1 year warranty",
+      "shippingInformation": "Ships in 1 weeks",
+      "availabilityStatus": "Out of Stock",
+      "reviews": [
+        {
+          "rating": 5,
+          "comment": "Fugiat blanditiis volaticus ago sol deprimo fugiat viduo volutabrum via.",
+          "date": "2026-02-21T22:46:41.876Z",
+          "reviewerName": "Obie Schimmel",
+          "reviewerEmail": "Bridget29@yahoo.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 9,
+      "meta": {
+        "createdAt": "2025-10-03T06:23:38.624Z",
+        "updatedAt": "2026-02-22T00:55:34.896Z",
+        "barcode": "2132519333027",
+        "qrCode": "http://localhost:3000/assets/products_media/17/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/17/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/17/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 18,
+      "title": "Sleek Gold Shirt",
+      "description": "Upton - Littel's most advanced Table technology increases cultivated capabilities",
+      "category": "health",
+      "price": 439.6,
+      "discountPercentage": 13.43,
+      "rating": 4.64,
+      "stock": 32,
+      "tags": [
+        {
+          "value": "Oriental"
+        },
+        {
+          "value": "Concrete"
+        }
+      ],
+      "brand": "Schaden, Volkman and Friesen",
+      "sku": "MG7LWBXO",
+      "weight": 6,
+      "dimensions": {
+        "width": 6.45,
+        "height": 9.58,
+        "depth": 35.28
+      },
+      "warrantyInformation": "4 year warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Excepturi cruciamentum vilis celebrer amiculum arbustum tristis credo.",
+          "date": "2026-02-22T03:56:49.617Z",
+          "reviewerName": "Megan Abshire-Heathcote",
+          "reviewerEmail": "Davonte_Williamson@hotmail.com"
+        }
+      ],
+      "returnPolicy": "39 days return policy",
+      "minimumOrderQuantity": 9,
+      "meta": {
+        "createdAt": "2025-12-22T23:56:05.924Z",
+        "updatedAt": "2026-02-22T08:56:04.012Z",
+        "barcode": "9179392372247",
+        "qrCode": "http://localhost:3000/assets/products_media/18/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/18/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/18/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 19,
+      "title": "Modern Rubber Shoes",
+      "description": "Experience the mint green brilliance of our Salad, perfect for alert environments",
+      "category": "shoes",
+      "price": 75.69,
+      "discountPercentage": 7.55,
+      "rating": 4.77,
+      "stock": 66,
+      "tags": [
+        {
+          "value": "Handmade"
+        },
+        {
+          "value": "Silk"
+        }
+      ],
+      "brand": "Feest Inc",
+      "sku": "ELG8CIV6",
+      "weight": 9,
+      "dimensions": {
+        "width": 17.14,
+        "height": 44.78,
+        "depth": 9.62
+      },
+      "warrantyInformation": "3 year warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 2,
+          "comment": "Libero ratione coruscus averto volva vallum ancilla.",
+          "date": "2026-02-22T10:54:07.014Z",
+          "reviewerName": "Brooke Dicki",
+          "reviewerEmail": "Estelle.Hudson@yahoo.com"
+        }
+      ],
+      "returnPolicy": "74 days return policy",
+      "minimumOrderQuantity": 8,
+      "meta": {
+        "createdAt": "2025-04-28T22:37:03.129Z",
+        "updatedAt": "2026-02-21T23:49:58.524Z",
+        "barcode": "2189322078245",
+        "qrCode": "http://localhost:3000/assets/products_media/19/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/19/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/19/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 20,
+      "title": "Modern Silk Computer",
+      "description": "The sleek and political Chair comes with grey LED lighting for smart functionality",
+      "category": "tools",
+      "price": 477.79,
+      "discountPercentage": 15.66,
+      "rating": 1.18,
+      "stock": 87,
+      "tags": [
+        {
+          "value": "Electronic"
+        },
+        {
+          "value": "Steel"
+        }
+      ],
+      "brand": "McClure LLC",
+      "sku": "WSLGHGPC",
+      "weight": 10,
+      "dimensions": {
+        "width": 19.65,
+        "height": 12.41,
+        "depth": 33.35
+      },
+      "warrantyInformation": "3 year warranty",
+      "shippingInformation": "Ships in 4 weeks",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 1,
+          "comment": "Advenio speciosus cunctatio versus baiulus bene.",
+          "date": "2026-02-22T13:30:01.763Z",
+          "reviewerName": "Bettye MacGyver",
+          "reviewerEmail": "Conrad_Hintz@hotmail.com"
+        }
+      ],
+      "returnPolicy": "40 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-02-20T02:29:43.912Z",
+        "updatedAt": "2026-02-22T15:38:33.830Z",
+        "barcode": "4269712299744",
+        "qrCode": "http://localhost:3000/assets/products_media/20/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/20/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/20/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 21,
+      "title": "Sleek Gold Chair",
+      "description": "Stylish Towels designed to make you stand out with legal looks",
+      "category": "toys",
+      "price": 659.8,
+      "discountPercentage": 7.93,
+      "rating": 2,
+      "stock": 43,
+      "tags": [
+        {
+          "value": "Licensed"
+        },
+        {
+          "value": "Granite"
+        }
+      ],
+      "brand": "Schiller and Sons",
+      "sku": "XQBQFWOY",
+      "weight": 8,
+      "dimensions": {
+        "width": 18.34,
+        "height": 28.71,
+        "depth": 30.65
+      },
+      "warrantyInformation": "4 year warranty",
+      "shippingInformation": "Ships in 4 weeks",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 2,
+          "comment": "Strenuus cattus tempus.",
+          "date": "2026-02-21T21:57:00.310Z",
+          "reviewerName": "Wallace Prosacco",
+          "reviewerEmail": "Bryce_Balistreri-Reynolds48@yahoo.com"
+        }
+      ],
+      "returnPolicy": "14 days return policy",
+      "minimumOrderQuantity": 6,
+      "meta": {
+        "createdAt": "2025-11-20T13:05:48.401Z",
+        "updatedAt": "2026-02-22T02:07:55.638Z",
+        "barcode": "5148019531006",
+        "qrCode": "http://localhost:3000/assets/products_media/21/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/21/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/21/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 22,
+      "title": "Generic Bamboo Fish",
+      "description": "New Ball model with 98 GB RAM, 87 GB storage, and hoarse features",
+      "category": "movies",
+      "price": 85.65,
+      "discountPercentage": 8.69,
+      "rating": 1.22,
+      "stock": 42,
+      "tags": [
+        {
+          "value": "Electronic"
+        },
+        {
+          "value": "Bronze"
+        }
+      ],
+      "brand": "Doyle - Cruickshank",
+      "sku": "UJKSWGXN",
+      "weight": 2,
+      "dimensions": {
+        "width": 45.3,
+        "height": 31.54,
+        "depth": 18.46
+      },
+      "warrantyInformation": "1 year warranty",
+      "shippingInformation": "Ships in 3 weeks",
+      "availabilityStatus": "Out of Stock",
+      "reviews": [
+        {
+          "rating": 1,
+          "comment": "Suadeo suspendo astrum tristis depromo sodalitas amor hic.",
+          "date": "2026-02-22T07:38:51.631Z",
+          "reviewerName": "Elian Kassulke",
+          "reviewerEmail": "Alisha_Lynch@gmail.com"
+        }
+      ],
+      "returnPolicy": "78 days return policy",
+      "minimumOrderQuantity": 4,
+      "meta": {
+        "createdAt": "2025-09-23T20:52:44.521Z",
+        "updatedAt": "2026-02-22T01:07:01.843Z",
+        "barcode": "3954166166052",
+        "qrCode": "http://localhost:3000/assets/products_media/22/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/22/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/22/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 23,
+      "title": "Elegant Concrete Ball",
+      "description": "The blue Tuna combines Costa Rica aesthetics with Molybdenum-based durability",
+      "category": "jewelry",
+      "price": 645.59,
+      "discountPercentage": 6.64,
+      "rating": 1.15,
+      "stock": 2,
+      "tags": [
+        {
+          "value": "Fantastic"
+        },
+        {
+          "value": "Ceramic"
+        }
+      ],
+      "brand": "Rice - Jast",
+      "sku": "UYLBIOSU",
+      "weight": 8,
+      "dimensions": {
+        "width": 49.24,
+        "height": 27.75,
+        "depth": 25.56
+      },
+      "warrantyInformation": "1 year warranty",
+      "shippingInformation": "Ships in 4 weeks",
+      "availabilityStatus": "Out of Stock",
+      "reviews": [
+        {
+          "rating": 5,
+          "comment": "Censura summisse strues.",
+          "date": "2026-02-21T23:06:58.766Z",
+          "reviewerName": "Cassandra Nolan DVM",
+          "reviewerEmail": "Kayla58@hotmail.com"
+        }
+      ],
+      "returnPolicy": "19 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2025-12-13T05:55:39.631Z",
+        "updatedAt": "2026-02-21T22:53:22.712Z",
+        "barcode": "2317680786184",
+        "qrCode": "http://localhost:3000/assets/products_media/23/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/23/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/23/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 24,
+      "title": "Elegant Plastic Ball",
+      "description": "Our spicy-inspired Pants brings a taste of luxury to your meaty lifestyle",
+      "category": "home",
+      "price": 821.49,
+      "discountPercentage": 2.98,
+      "rating": 2.48,
+      "stock": 79,
+      "tags": [
+        {
+          "value": "Electronic"
+        },
+        {
+          "value": "Granite"
+        }
+      ],
+      "brand": "Blick, Dickens and Kessler",
+      "sku": "CU6XC0FN",
+      "weight": 10,
+      "dimensions": {
+        "width": 44.33,
+        "height": 34.33,
+        "depth": 6.46
+      },
+      "warrantyInformation": "2 year warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 5,
+          "comment": "Concedo ventito acies vespillo necessitatibus arto cum ambulo.",
+          "date": "2026-02-21T21:26:17.241Z",
+          "reviewerName": "Debbie Weissnat",
+          "reviewerEmail": "Hubert7@gmail.com"
+        }
+      ],
+      "returnPolicy": "63 days return policy",
+      "minimumOrderQuantity": 5,
+      "meta": {
+        "createdAt": "2025-08-04T02:05:09.652Z",
+        "updatedAt": "2026-02-21T21:17:02.569Z",
+        "barcode": "1894682140905",
+        "qrCode": "http://localhost:3000/assets/products_media/24/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/24/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/24/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 25,
+      "title": "Frozen Metal Pizza",
+      "description": "Experience the tan brilliance of our Pizza, perfect for glorious environments",
+      "category": "industrial",
+      "price": 302.05,
+      "discountPercentage": 11.93,
+      "rating": 3.02,
+      "stock": 22,
+      "tags": [
+        {
+          "value": "Intelligent"
+        },
+        {
+          "value": "Cotton"
+        }
+      ],
+      "brand": "Bartell - Powlowski",
+      "sku": "MHJB9RGU",
+      "weight": 1,
+      "dimensions": {
+        "width": 39.59,
+        "height": 14.45,
+        "depth": 11.38
+      },
+      "warrantyInformation": "2 year warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 1,
+          "comment": "Eos accendo caelum substantia appello supplanto ait.",
+          "date": "2026-02-22T10:55:21.001Z",
+          "reviewerName": "Damon Emard",
+          "reviewerEmail": "Peter.Skiles90@gmail.com"
+        }
+      ],
+      "returnPolicy": "82 days return policy",
+      "minimumOrderQuantity": 6,
+      "meta": {
+        "createdAt": "2025-06-20T09:54:47.289Z",
+        "updatedAt": "2026-02-22T16:29:33.092Z",
+        "barcode": "1139470466555",
+        "qrCode": "http://localhost:3000/assets/products_media/25/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/25/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/25/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 26,
+      "title": "Generic Bronze Ball",
+      "description": "New plum Tuna with ergonomic design for polite comfort",
+      "category": "shoes",
+      "price": 775.69,
+      "discountPercentage": 19.28,
+      "rating": 1.63,
+      "stock": 92,
+      "tags": [
+        {
+          "value": "Handmade"
+        },
+        {
+          "value": "Metal"
+        }
+      ],
+      "brand": "Zieme - Heller",
+      "sku": "QS5MKCXS",
+      "weight": 10,
+      "dimensions": {
+        "width": 47.93,
+        "height": 36.39,
+        "depth": 42.51
+      },
+      "warrantyInformation": "1 year warranty",
+      "shippingInformation": "Ships in 3 weeks",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Depromo confido tumultus chirographum.",
+          "date": "2026-02-22T00:07:00.498Z",
+          "reviewerName": "Letitia Williamson",
+          "reviewerEmail": "Johnathan.OKon@yahoo.com"
+        }
+      ],
+      "returnPolicy": "90 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-01-22T03:17:35.206Z",
+        "updatedAt": "2026-02-22T09:35:13.492Z",
+        "barcode": "7932927231299",
+        "qrCode": "http://localhost:3000/assets/products_media/26/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/26/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/26/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 27,
+      "title": "Practical Wooden Ball",
+      "description": "The mint green Chair combines Monaco aesthetics with Bromine-based durability",
+      "category": "kids",
+      "price": 744.29,
+      "discountPercentage": 14.5,
+      "rating": 3.2,
+      "stock": 19,
+      "tags": [
+        {
+          "value": "Handcrafted"
+        },
+        {
+          "value": "Rubber"
+        }
+      ],
+      "brand": "Spinka - Lind",
+      "sku": "PVJANCQU",
+      "weight": 8,
+      "dimensions": {
+        "width": 33.51,
+        "height": 47.66,
+        "depth": 42.27
+      },
+      "warrantyInformation": "5 year warranty",
+      "shippingInformation": "Ships in 1 weeks",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Pauci solitudo auctor curatio corroboro.",
+          "date": "2026-02-22T15:01:49.857Z",
+          "reviewerName": "Karen Klocko",
+          "reviewerEmail": "Antoinette.Beier@gmail.com"
+        }
+      ],
+      "returnPolicy": "43 days return policy",
+      "minimumOrderQuantity": 4,
+      "meta": {
+        "createdAt": "2025-11-23T20:38:40.046Z",
+        "updatedAt": "2026-02-21T22:03:04.827Z",
+        "barcode": "1542779618879",
+        "qrCode": "http://localhost:3000/assets/products_media/27/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/27/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/27/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 28,
+      "title": "Luxurious Gold Soap",
+      "description": "Savor the juicy essence in our Shoes, designed for orange culinary adventures",
+      "category": "sports",
+      "price": 246.39,
+      "discountPercentage": 4.35,
+      "rating": 4.69,
+      "stock": 82,
+      "tags": [
+        {
+          "value": "Fantastic"
+        },
+        {
+          "value": "Marble"
+        }
+      ],
+      "brand": "Turner LLC",
+      "sku": "BSAG0ZA2",
+      "weight": 5,
+      "dimensions": {
+        "width": 17.74,
+        "height": 39.56,
+        "depth": 11.6
+      },
+      "warrantyInformation": "5 year warranty",
+      "shippingInformation": "Ships in 4 weeks",
+      "availabilityStatus": "Out of Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Subnecto id vicissitudo delibero sumptus patrocinor dedico theologus bos adsidue.",
+          "date": "2026-02-22T02:23:11.262Z",
+          "reviewerName": "Mrs. Felicita Kshlerin",
+          "reviewerEmail": "Luisa_Batz30@hotmail.com"
+        }
+      ],
+      "returnPolicy": "36 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2025-08-10T04:47:43.457Z",
+        "updatedAt": "2026-02-21T19:40:51.699Z",
+        "barcode": "7487019940991",
+        "qrCode": "http://localhost:3000/assets/products_media/28/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/28/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/28/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 29,
+      "title": "Frozen Wooden Computer",
+      "description": "Our bitter-inspired Salad brings a taste of luxury to your scary lifestyle",
+      "category": "home",
+      "price": 779.16,
+      "discountPercentage": 12.9,
+      "rating": 3.31,
+      "stock": 60,
+      "tags": [
+        {
+          "value": "Tasty"
+        },
+        {
+          "value": "Ceramic"
+        }
+      ],
+      "brand": "Morissette - Parker",
+      "sku": "PX9AJ0ME",
+      "weight": 1,
+      "dimensions": {
+        "width": 22.06,
+        "height": 43.04,
+        "depth": 12.43
+      },
+      "warrantyInformation": "2 year warranty",
+      "shippingInformation": "Ships in 1 weeks",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 2,
+          "comment": "Aeneus perferendis pariatur creator deinde vulariter.",
+          "date": "2026-02-22T14:14:57.808Z",
+          "reviewerName": "Pearline Dietrich",
+          "reviewerEmail": "Kathryn94@hotmail.com"
+        }
+      ],
+      "returnPolicy": "12 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2025-04-17T19:25:09.470Z",
+        "updatedAt": "2026-02-22T06:52:37.151Z",
+        "barcode": "0766347776524",
+        "qrCode": "http://localhost:3000/assets/products_media/29/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/29/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/29/thumbnail/thumbnail.png"
+    },
+    {
+      "id": 30,
+      "title": "Modern Bronze Towels",
+      "description": "Discover the elephant-like agility of our Fish, perfect for windy users",
+      "category": "shoes",
+      "price": 613.05,
+      "discountPercentage": 10.57,
+      "rating": 4.69,
+      "stock": 65,
+      "tags": [
+        {
+          "value": "Luxurious"
+        },
+        {
+          "value": "Concrete"
+        }
+      ],
+      "brand": "Sipes LLC",
+      "sku": "ISS77YWS",
+      "weight": 8,
+      "dimensions": {
+        "width": 18.66,
+        "height": 36.05,
+        "depth": 13.86
+      },
+      "warrantyInformation": "4 year warranty",
+      "shippingInformation": "Ships in 1 weeks",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Calcar cupressus tot.",
+          "date": "2026-02-22T01:37:19.541Z",
+          "reviewerName": "Jay Considine",
+          "reviewerEmail": "Mavis.Dach@gmail.com"
+        }
+      ],
+      "returnPolicy": "77 days return policy",
+      "minimumOrderQuantity": 7,
+      "meta": {
+        "createdAt": "2026-01-30T03:52:30.243Z",
+        "updatedAt": "2026-02-21T23:46:16.344Z",
+        "barcode": "8889856900525",
+        "qrCode": "http://localhost:3000/assets/products_media/30/qrcode/qr-code.png"
+      },
+      "images": [
+        {
+          "url": "http://localhost:3000/assets/products_media/30/images/1.png"
+        }
+      ],
+      "thumbnail": "http://localhost:3000/assets/products_media/30/thumbnail/thumbnail.png"
+    }
+  ]
+}
