@@ -11,6 +11,8 @@ L'obiettivo principale di `ApiClientAuth` è dimostrare come:
 3. Ricevere, estrarre e memorizzare un token JWT dalla risposta del server.
 4. Configurare un'istanza di `HttpClient` per includere automaticamente il token JWT nell'header `Authorization` (schema `Bearer`) per tutte le richieste successive.
 5. Eseguire operazioni CRUD (Create, Read, Update, Delete) su endpoint protetti che richiedono l'autenticazione.
+6. Eseguire query di esempio compatibili con `json-server` stabile `0.17.4` (filtri, ordinamenti multipli, paginazione).
+7. Scaricare l'immagine associata a un prodotto e salvarla localmente.
 
 ## Prerequisiti
 
@@ -26,6 +28,61 @@ L'obiettivo principale di `ApiClientAuth` è dimostrare come:
    ```bash
    dotnet run
    ```
+
+## Esempi Console
+
+Esempio di output durante l'esecuzione dei test pubblici:
+
+```text
+Eseguendo GET /products...
+Successo (OK). Ricevuti 30 prodotti.
+
+Esempio: prezzo medio di tutti i prodotti (GET /products)...
+Prezzo medio complessivo: 482,09 (su 30 prodotti)
+```
+
+Esempio di output per il download immagine prodotto:
+
+```text
+Esempio: download immagine associata al prodotto ID 1...
+Immagine scaricata con successo: ...\bin\Debug\net9.0\downloads\product-1-electronics.png (42858 byte)
+
+Esempio semplificato: download immagine prodotto ID 1 (URL assoluto)...
+Immagine (metodo semplificato) salvata: ...\bin\Debug\net9.0\downloads\product-1-simple.png (42858 byte)
+```
+
+Esempio di uso del menu interattivo:
+
+```text
+--- Menu Esempi Query json-server 0.17.4 ---
+Categoria [electronics]:
+Pagina [1]:
+Dimensione pagina [3]:
+```
+
+## Esempi inclusi nel client
+
+Il `Main` esegue una serie di test automatici che coprono:
+
+- **Prezzo medio di tutti i prodotti**: `GET /products` e media lato client.
+- **Prezzo medio per categoria**: `GET /products?category=<valore>`.
+- **Top 3 per ranking (rating) in ogni categoria**: `GET /products?_sort=category,rating&_order=asc,desc`.
+- **Elenco prodotti per categoria paginato e ordinato per prezzo decrescente**: `GET /products?category=<valore>&_sort=price&_order=desc&_page=<n>&_limit=<size>`.
+- **Menu interattivo da console**: permette di inserire categoria/pagina/pageSize a runtime (utile con dati Faker variabili).
+
+### Download immagine prodotto
+
+Sono presenti due versioni del test di download immagine:
+
+- `TestDownloadProductImage(...)` (versione completa):
+    - recupera il prodotto,
+    - seleziona URL da `thumbnail` (fallback su `images[0].url`),
+    - gestisce URL relativo/assoluto,
+    - salva il file in `bin/Debug/net9.0/downloads`.
+- `TestDownloadProductImageSimple(...)` (versione semplificata):
+    - assume URL già assoluto,
+    - scarica direttamente con `GetByteArrayAsync(...)`,
+    - salva il file in `bin/Debug/net9.0/downloads`.
 
 ## Flusso di Esecuzione (Diagrammi di Sequenza)
 
@@ -91,11 +148,68 @@ sequenceDiagram
     end
 ```
 
+## Troubleshooting
+
+- **Errore di connessione (`Connection refused`, timeout, `No such host`)**
+    - Verifica che `mock-server-auth` sia avviato su `http://localhost:3001`.
+    - Controlla la variabile `_apiBaseUrl` in `Program.cs`.
+    - Verifica da console se la porta è occupata (PowerShell):
+
+        ```powershell
+        Get-NetTCPConnection -LocalPort 3001 -State Listen | Select-Object LocalAddress, LocalPort, OwningProcess
+        ```
+
+    - In alternativa (CMD/PowerShell), mostra PID associato alla porta:
+
+        ```bash
+        netstat -ano | findstr :3001
+        ```
+
+    - Per identificare il processo dal PID:
+
+        ```powershell
+        Get-Process -Id <PID>
+        ```
+
+    - Per terminare il processo che occupa la porta:
+
+        ```powershell
+        Stop-Process -Id <PID> -Force
+        ```
+
+    - Verifica finale che la porta sia libera:
+
+        ```powershell
+        Get-NetTCPConnection -LocalPort 3001 -ErrorAction SilentlyContinue
+        ```
+
+- **`401 Unauthorized` su endpoint protetti**
+    - Verifica credenziali del login (`admin@example.com` / `admin123`).
+    - Assicurati che `TestLogin()` venga eseguito prima di POST/PUT/DELETE.
+
+- **Categoria senza risultati**
+    - Con dati Faker, le categorie possono cambiare ad ogni seed/dataset.
+    - Inserisci una categoria diversa dal menu interattivo e riprova.
+
+- **Download immagine fallito**
+    - Verifica che URL in `thumbnail` o `images[].url` sia raggiungibile dal client.
+    - Controlla che il server esponga correttamente la cartella `assets/products_media`.
+    - Se il path è relativo, usa il metodo completo `TestDownloadProductImage(...)`.
+
+- **File immagine non trovato nella cartella attesa**
+    - I file vengono salvati in `bin/Debug/net9.0/downloads` (cartella di output runtime).
+    - Esegui una nuova build/run se hai cambiato configurazione (Debug/Release).
+
 ## Struttura del Codice
 
 - `Program.cs`: Contiene il punto di ingresso dell'applicazione (`Main`) e tutta la logica per effettuare le richieste HTTP.
   - `ConfigureHttpClient()`: Inizializza l'`HttpClient` e imposta l'header `Accept` per richiedere risposte in JSON.
   - `TestLogin()`: Gestisce l'invio delle credenziali e la configurazione dell'header `Authorization` con il token ricevuto.
-  - `TestGetAllProducts()`, `TestGetProductById()`, `TestCreateProduct()`, `TestUpdateProduct()`, `TestDeleteProduct()`: Metodi che implementano le singole operazioni CRUD.
+    - `TestGetAllProducts()`, `TestGetProductById()`, `TestCreateProduct()`, `TestUpdateProduct()`, `TestDeleteProduct()`: Metodi CRUD principali.
+    - `TestGetAveragePriceAllProducts()`, `TestGetAveragePriceByCategory()`: Esempi di aggregazione lato client.
+    - `TestPrintTopThreeProductsByRankingPerCategory()`: Esempio di ordinamento/raggruppamento per ranking.
+    - `TestListProductsByCategoryPagedAndSorted()`: Esempio di filtro + ordinamento + paginazione secondo notazione `json-server 0.17.4`.
+    - `RunInteractiveQueryExamples()`: Menu interattivo per testare query con input runtime.
+    - `TestDownloadProductImage()`, `TestDownloadProductImageSimple()`: Esempi di download immagini prodotto.
 - `LoginRequest` e `LoginResponse`: Classi (DTO) utilizzate per serializzare/deserializzare i dati durante la fase di login.
 - I modelli dei dati (es. `ProductDto`, `CreateProductDto`) sono condivisi e referenziati dal progetto `ApiClient.Models`.

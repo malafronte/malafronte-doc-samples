@@ -1,17 +1,19 @@
 import bodyParser from "body-parser";
 import jsonServer from "json-server";
 import jwt from "jsonwebtoken";
+import "dotenv/config";
 
 const server = jsonServer.create();
 const dbFile = process.argv[2] || "./db.json";
 const router = jsonServer.router(dbFile);
+const PORT = Number(process.env.PORT) || 3001;
 
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 server.use(jsonServer.defaults({ static: "./public" }));
 
-const SECRET_KEY = "123456789";
-const expiresIn = "1h";
+const SECRET_KEY = process.env.JWT_SECRET || "123456789";
+const expiresIn = process.env.JWT_EXPIRES_IN || "1h";
 
 // Create a token from a payload
 function createToken(payload) {
@@ -126,6 +128,6 @@ router.render = (req, res) => {
   res.json(data);
 };
 
-server.listen(3001, () => {
-  console.log("JSON Server Auth is running on port 3001");
+server.listen(PORT, () => {
+  console.log(`JSON Server Auth is running on port ${PORT}`);
 });

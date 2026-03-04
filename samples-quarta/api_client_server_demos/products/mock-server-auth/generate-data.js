@@ -1,5 +1,9 @@
 import { faker } from "@faker-js/faker";
 import fs from "fs";
+import "dotenv/config";
+
+const PORT = Number(process.env.PORT) || 3001;
+const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
 
 function generateProducts() {
   const products = [];
@@ -55,16 +59,16 @@ function generateProducts() {
         updatedAt: faker.date.recent().toISOString(),
         barcode: faker.string.numeric(13),
         // URL LOCALI per il QR Code
-        qrCode: `http://localhost:3000/assets/products_media/${id}/qrcode/qr-code.png`,
+        qrCode: `${BASE_URL}/assets/products_media/${id}/qrcode/qr-code.png`,
       },
       images: [
         // URL LOCALI per le immagini
         {
-          url: `http://localhost:3000/assets/products_media/${id}/images/1.png`,
+          url: `${BASE_URL}/assets/products_media/${id}/images/1.png`,
         },
       ],
       // URL LOCALE per la thumbnail
-      thumbnail: `http://localhost:3000/assets/products_media/${id}/thumbnail/thumbnail.png`,
+      thumbnail: `${BASE_URL}/assets/products_media/${id}/thumbnail/thumbnail.png`,
     });
   }
 

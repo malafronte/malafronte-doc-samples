@@ -17,6 +17,7 @@
     "json-server": "^0.17.4"
   },
   "dependencies": {
+    "dotenv": "^16.4.7",
     "jsonwebtoken": "^9.0.3"
   }
 }

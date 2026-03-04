@@ -46,6 +46,21 @@ public class Program
             int testProductId = 1;
             await TestGetProductById(testProductId);
 
+            // 2b. Download immagine associata a un prodotto - Non richiede auth
+            await TestDownloadProductImage(testProductId);
+
+            // 2c. Download immagine (versione semplificata, URL assoluto)
+            await TestDownloadProductImageSimple(testProductId);
+
+            // 3. Esempi Query json-server 0.17.4
+            const string sampleCategory = "electronics";
+            await TestGetAveragePriceAllProducts();
+            await TestGetAveragePriceByCategory(sampleCategory);
+            await TestPrintTopThreeProductsByRankingPerCategory();
+            await TestListProductsByCategoryPagedAndSorted(sampleCategory, page: 1, pageSize: 3);
+            await TestListProductsByCategoryPagedAndSorted(sampleCategory, page: 2, pageSize: 3);
+            await RunInteractiveQueryExamples();
+
             // --- Login ---
             bool isLoggedIn = await TestLogin("admin@example.com", "admin123");
             if (!isLoggedIn)
@@ -238,6 +253,316 @@ public class Program
         {
             LogError(ex, $"GET {endpoint}");
         }
+    }
+
+    private static async Task TestDownloadProductImage(int productId)
+    {
+        string productEndpoint = $"/products/{productId}";
+        Console.WriteLine($"\nEsempio: download immagine associata al prodotto ID {productId}...");
+
+        try
+        {
+            HttpResponseMessage productResponse = await _httpClient.GetAsync(productEndpoint);
+            if (!productResponse.IsSuccessStatusCode)
+            {
+                await LogErrorResponse(productResponse, $"GET Product For Image Download ({productId})");
+                return;
+            }
+
+            ProductDto? product = await productResponse.Content.ReadFromJsonAsync<ProductDto>();
+            if (product == null)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Prodotto non deserializzato, impossibile scaricare immagine.");
+                Console.ResetColor();
+                return;
+            }
+
+            string? imageUrl = !string.IsNullOrWhiteSpace(product.Thumbnail)
+                ? product.Thumbnail
+                : product.Images?.FirstOrDefault(i => !string.IsNullOrWhiteSpace(i.Url))?.Url;
+
+            if (string.IsNullOrWhiteSpace(imageUrl))
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"Nessuna immagine disponibile per il prodotto ID {productId}.");
+                Console.ResetColor();
+                return;
+            }
+
+            Uri imageUri = Uri.TryCreate(imageUrl, UriKind.Absolute, out var absoluteUri)
+                ? absoluteUri
+                : new Uri(_httpClient.BaseAddress!, imageUrl);
+
+            HttpResponseMessage imageResponse = await _httpClient.GetAsync(imageUri);
+            if (!imageResponse.IsSuccessStatusCode)
+            {
+                await LogErrorResponse(imageResponse, $"GET Product Image ({imageUri})");
+                return;
+            }
+
+            byte[] imageBytes = await imageResponse.Content.ReadAsByteArrayAsync();
+            if (imageBytes.Length == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Immagine scaricata vuota (0 byte).");
+                Console.ResetColor();
+                return;
+            }
+
+            string extension = Path.GetExtension(imageUri.AbsolutePath);
+            if (string.IsNullOrWhiteSpace(extension))
+            {
+                extension = ".img";
+            }
+
+            string downloadsFolder = Path.Combine(AppContext.BaseDirectory, "downloads");
+            Directory.CreateDirectory(downloadsFolder);
+
+            string safeCategory = string.IsNullOrWhiteSpace(product.Category) ? "unknown" : product.Category;
+            string safeCategoryFilePart = string.Concat(safeCategory.Where(ch => !Path.GetInvalidFileNameChars().Contains(ch)));
+            if (string.IsNullOrWhiteSpace(safeCategoryFilePart))
+            {
+                safeCategoryFilePart = "unknown";
+            }
+
+            string filePath = Path.Combine(downloadsFolder, $"product-{productId}-{safeCategoryFilePart}{extension}");
+            await File.WriteAllBytesAsync(filePath, imageBytes);
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Immagine scaricata con successo: {filePath} ({imageBytes.Length} byte)");
+            Console.ResetColor();
+        }
+        catch (Exception ex)
+        {
+            LogError(ex, $"Download product image ({productId})");
+        }
+    }
+
+    private static async Task TestDownloadProductImageSimple(int productId)
+    {
+        Console.WriteLine($"\nEsempio semplificato: download immagine prodotto ID {productId} (URL assoluto)...");
+
+        try
+        {
+            ProductDto? product = await _httpClient.GetFromJsonAsync<ProductDto>($"/products/{productId}");
+            string? imageUrl = product?.Thumbnail ?? product?.Images?.FirstOrDefault()?.Url;
+
+            if (string.IsNullOrWhiteSpace(imageUrl))
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"Nessun URL immagine disponibile per il prodotto ID {productId}.");
+                Console.ResetColor();
+                return;
+            }
+
+            byte[] bytes = await _httpClient.GetByteArrayAsync(imageUrl);
+            string extension = Path.GetExtension(new Uri(imageUrl).AbsolutePath);
+            if (string.IsNullOrWhiteSpace(extension))
+            {
+                extension = ".img";
+            }
+
+            string downloadsFolder = Path.Combine(AppContext.BaseDirectory, "downloads");
+            Directory.CreateDirectory(downloadsFolder);
+            string filePath = Path.Combine(downloadsFolder, $"product-{productId}-simple{extension}");
+
+            await File.WriteAllBytesAsync(filePath, bytes);
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Immagine (metodo semplificato) salvata: {filePath} ({bytes.Length} byte)");
+            Console.ResetColor();
+        }
+        catch (Exception ex)
+        {
+            LogError(ex, $"Download product image simple ({productId})");
+        }
+    }
+
+    private static async Task TestGetAveragePriceAllProducts()
+    {
+        const string endpoint = "/products";
+        Console.WriteLine($"\nEsempio: prezzo medio di tutti i prodotti (GET {endpoint})...");
+
+        try
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
+            if (!response.IsSuccessStatusCode)
+            {
+                await LogErrorResponse(response, "GET Average Price All Products");
+                return;
+            }
+
+            var products = await response.Content.ReadFromJsonAsync<List<ProductDto>>() ?? [];
+            if (products.Count == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Nessun prodotto disponibile per calcolare il prezzo medio.");
+                Console.ResetColor();
+                return;
+            }
+
+            decimal averagePrice = products.Average(p => p.Price);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Prezzo medio complessivo: {averagePrice:F2} (su {products.Count} prodotti)");
+            Console.ResetColor();
+        }
+        catch (Exception ex)
+        {
+            LogError(ex, "GET /products (Average Price All)");
+        }
+    }
+
+    private static async Task TestGetAveragePriceByCategory(string category)
+    {
+        string endpoint = $"/products?category={Uri.EscapeDataString(category)}";
+        Console.WriteLine($"\nEsempio: prezzo medio prodotti categoria '{category}' (GET {endpoint})...");
+
+        try
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
+            if (!response.IsSuccessStatusCode)
+            {
+                await LogErrorResponse(response, $"GET Average Price By Category ({category})");
+                return;
+            }
+
+            var products = await response.Content.ReadFromJsonAsync<List<ProductDto>>() ?? [];
+            if (products.Count == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"Nessun prodotto trovato per categoria '{category}'.");
+                Console.ResetColor();
+                return;
+            }
+
+            decimal averagePrice = products.Average(p => p.Price);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Prezzo medio categoria '{category}': {averagePrice:F2} (su {products.Count} prodotti)");
+            Console.ResetColor();
+        }
+        catch (Exception ex)
+        {
+            LogError(ex, $"GET /products?category={category} (Average Price By Category)");
+        }
+    }
+
+    private static async Task TestPrintTopThreeProductsByRankingPerCategory()
+    {
+        const string endpoint = "/products?_sort=category,rating&_order=asc,desc";
+        Console.WriteLine($"\nEsempio: primi 3 prodotti per ranking (rating) in ogni categoria (GET {endpoint})...");
+
+        try
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
+            if (!response.IsSuccessStatusCode)
+            {
+                await LogErrorResponse(response, "GET Top 3 Ranking By Category");
+                return;
+            }
+
+            var products = await response.Content.ReadFromJsonAsync<List<ProductDto>>() ?? [];
+            if (products.Count == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Nessun prodotto disponibile per il ranking per categoria.");
+                Console.ResetColor();
+                return;
+            }
+
+            var grouped = products
+                .GroupBy(p => string.IsNullOrWhiteSpace(p.Category) ? "(senza categoria)" : p.Category!)
+                .OrderBy(g => g.Key, StringComparer.OrdinalIgnoreCase);
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            foreach (var categoryGroup in grouped)
+            {
+                Console.WriteLine($"Categoria: {categoryGroup.Key}");
+                foreach (var product in categoryGroup.OrderByDescending(p => p.Rating).Take(3))
+                {
+                    Console.WriteLine($"  - #{product.Id} {product.Title} | Rating: {product.Rating:F2} | Prezzo: {product.Price:F2}");
+                }
+            }
+            Console.ResetColor();
+        }
+        catch (Exception ex)
+        {
+            LogError(ex, "GET /products?_sort=category,rating&_order=asc,desc (Top 3 Ranking By Category)");
+        }
+    }
+
+    private static async Task TestListProductsByCategoryPagedAndSorted(string category, int page, int pageSize)
+    {
+        string endpoint = $"/products?category={Uri.EscapeDataString(category)}&_sort=price&_order=desc&_page={page}&_limit={pageSize}";
+        Console.WriteLine($"\nEsempio: prodotti categoria '{category}' paginati e ordinati per prezzo desc (GET {endpoint})...");
+
+        try
+        {
+            HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
+            if (!response.IsSuccessStatusCode)
+            {
+                await LogErrorResponse(response, $"GET Paged Products By Category ({category})");
+                return;
+            }
+
+            var products = await response.Content.ReadFromJsonAsync<List<ProductDto>>() ?? [];
+            response.Headers.TryGetValues("X-Total-Count", out IEnumerable<string>? totalCountValues);
+            string totalCount = totalCountValues?.FirstOrDefault() ?? "n/d";
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Pagina {page}, size {pageSize}, totale categoria: {totalCount}, elementi ricevuti: {products.Count}");
+            foreach (var product in products)
+            {
+                Console.WriteLine($"  - #{product.Id} {product.Title} | Prezzo: {product.Price:F2} | Categoria: {product.Category}");
+            }
+            Console.ResetColor();
+        }
+        catch (Exception ex)
+        {
+            LogError(ex, $"GET paged products by category ({category})");
+        }
+    }
+
+    private static async Task RunInteractiveQueryExamples()
+    {
+        Console.WriteLine("\n--- Menu Esempi Query json-server 0.17.4 ---");
+
+        bool continueLoop = true;
+        while (continueLoop)
+        {
+            string category = ReadTextInputWithDefault("Categoria", "electronics");
+            int page = ReadIntInputWithDefault("Pagina", 1, minValue: 1);
+            int pageSize = ReadIntInputWithDefault("Dimensione pagina", 3, minValue: 1);
+
+            await TestGetAveragePriceAllProducts();
+            await TestGetAveragePriceByCategory(category);
+            await TestPrintTopThreeProductsByRankingPerCategory();
+            await TestListProductsByCategoryPagedAndSorted(category, page, pageSize);
+
+            Console.Write("Ripetere il menu? (s/N): ");
+            string? answer = Console.ReadLine()?.Trim();
+            continueLoop = string.Equals(answer, "s", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(answer, "si", StringComparison.OrdinalIgnoreCase);
+        }
+    }
+
+    private static string ReadTextInputWithDefault(string label, string defaultValue)
+    {
+        Console.Write($"{label} [{defaultValue}]: ");
+        string? input = Console.ReadLine();
+        return string.IsNullOrWhiteSpace(input) ? defaultValue : input.Trim();
+    }
+
+    private static int ReadIntInputWithDefault(string label, int defaultValue, int minValue)
+    {
+        Console.Write($"{label} [{defaultValue}]: ");
+        string? input = Console.ReadLine();
+        if (int.TryParse(input, out int value) && value >= minValue)
+        {
+            return value;
+        }
+
+        return defaultValue;
     }
 
     private static async Task<ProductDto?> TestCreateProduct()

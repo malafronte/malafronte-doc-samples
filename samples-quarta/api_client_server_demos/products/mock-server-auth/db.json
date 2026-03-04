@@ -57,14 +57,14 @@
         "createdAt": "2024-05-23T08:56:21.618Z",
         "updatedAt": "2024-05-23T08:56:21.618Z",
         "barcode": "9164035109868",
-        "qrCode": "http://localhost:3000/assets/products_media/1/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/1/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/1/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/1/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/1/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/1/thumbnail/thumbnail.png"
     },
     {
       "id": 2,
@@ -123,14 +123,14 @@
         "createdAt": "2024-05-23T08:56:21.618Z",
         "updatedAt": "2024-05-23T08:56:21.618Z",
         "barcode": "2817839095220",
-        "qrCode": "http://localhost:3000/assets/products_media/2/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/2/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/2/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/2/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/2/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/2/thumbnail/thumbnail.png"
     },
     {
       "id": 3,
@@ -189,14 +189,14 @@
         "createdAt": "2024-05-23T08:56:21.618Z",
         "updatedAt": "2024-05-23T08:56:21.618Z",
         "barcode": "0516267971277",
-        "qrCode": "http://localhost:3000/assets/products_media/3/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/3/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/3/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/3/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/3/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/3/thumbnail/thumbnail.png"
     },
     {
       "id": 4,
@@ -255,14 +255,14 @@
         "createdAt": "2024-05-23T08:56:21.619Z",
         "updatedAt": "2024-05-23T08:56:21.619Z",
         "barcode": "9444582199406",
-        "qrCode": "http://localhost:3000/assets/products_media/4/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/4/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/4/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/4/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/4/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/4/thumbnail/thumbnail.png"
     },
     {
       "id": 5,
@@ -321,14 +321,14 @@
         "createdAt": "2024-05-23T08:56:21.619Z",
         "updatedAt": "2024-05-23T08:56:21.619Z",
         "barcode": "3212847902461",
-        "qrCode": "http://localhost:3000/assets/products_media/5/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/5/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/5/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/5/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/5/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/5/thumbnail/thumbnail.png"
     },
     {
       "id": 6,
@@ -387,20 +387,20 @@
         "createdAt": "2024-05-23T08:56:21.619Z",
         "updatedAt": "2024-05-23T08:56:21.619Z",
         "barcode": "2210136215089",
-        "qrCode": "http://localhost:3000/assets/products_media/6/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/6/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/6/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/6/images/1.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/6/images/2.png"
+          "url": "http://localhost:3001/assets/products_media/6/images/2.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/6/images/3.png"
+          "url": "http://localhost:3001/assets/products_media/6/images/3.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/6/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/6/thumbnail/thumbnail.png"
     },
     {
       "id": 7,
@@ -459,20 +459,20 @@
         "createdAt": "2024-05-23T08:56:21.619Z",
         "updatedAt": "2024-05-23T08:56:21.619Z",
         "barcode": "1435582999795",
-        "qrCode": "http://localhost:3000/assets/products_media/7/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/7/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/7/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/7/images/1.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/7/images/2.png"
+          "url": "http://localhost:3001/assets/products_media/7/images/2.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/7/images/3.png"
+          "url": "http://localhost:3001/assets/products_media/7/images/3.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/7/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/7/thumbnail/thumbnail.png"
     },
     {
       "id": 8,
@@ -531,20 +531,20 @@
         "createdAt": "2024-05-23T08:56:21.619Z",
         "updatedAt": "2024-05-23T08:56:21.619Z",
         "barcode": "0887083199279",
-        "qrCode": "http://localhost:3000/assets/products_media/8/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/8/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/8/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/8/images/1.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/8/images/2.png"
+          "url": "http://localhost:3001/assets/products_media/8/images/2.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/8/images/3.png"
+          "url": "http://localhost:3001/assets/products_media/8/images/3.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/8/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/8/thumbnail/thumbnail.png"
     },
     {
       "id": 9,
@@ -603,20 +603,20 @@
         "createdAt": "2024-05-23T08:56:21.619Z",
         "updatedAt": "2024-05-23T08:56:21.619Z",
         "barcode": "1939383392674",
-        "qrCode": "http://localhost:3000/assets/products_media/9/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/9/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/9/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/9/images/1.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/9/images/2.png"
+          "url": "http://localhost:3001/assets/products_media/9/images/2.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/9/images/3.png"
+          "url": "http://localhost:3001/assets/products_media/9/images/3.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/9/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/9/thumbnail/thumbnail.png"
     },
     {
       "id": 10,
@@ -675,20 +675,20 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "8232190382069",
-        "qrCode": "http://localhost:3000/assets/products_media/10/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/10/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/10/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/10/images/1.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/10/images/2.png"
+          "url": "http://localhost:3001/assets/products_media/10/images/2.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/10/images/3.png"
+          "url": "http://localhost:3001/assets/products_media/10/images/3.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/10/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/10/thumbnail/thumbnail.png"
     },
     {
       "id": 11,
@@ -747,20 +747,20 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "7113807059215",
-        "qrCode": "http://localhost:3000/assets/products_media/11/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/11/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/11/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/11/images/1.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/11/images/2.png"
+          "url": "http://localhost:3001/assets/products_media/11/images/2.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/11/images/3.png"
+          "url": "http://localhost:3001/assets/products_media/11/images/3.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/11/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/11/thumbnail/thumbnail.png"
     },
     {
       "id": 12,
@@ -819,20 +819,20 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "0426785817074",
-        "qrCode": "http://localhost:3000/assets/products_media/12/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/12/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/12/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/12/images/1.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/12/images/2.png"
+          "url": "http://localhost:3001/assets/products_media/12/images/2.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/12/images/3.png"
+          "url": "http://localhost:3001/assets/products_media/12/images/3.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/12/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/12/thumbnail/thumbnail.png"
     },
     {
       "id": 13,
@@ -891,20 +891,20 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "2913244159666",
-        "qrCode": "http://localhost:3000/assets/products_media/13/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/13/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/13/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/13/images/1.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/13/images/2.png"
+          "url": "http://localhost:3001/assets/products_media/13/images/2.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/13/images/3.png"
+          "url": "http://localhost:3001/assets/products_media/13/images/3.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/13/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/13/thumbnail/thumbnail.png"
     },
     {
       "id": 14,
@@ -963,20 +963,20 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "0726316339746",
-        "qrCode": "http://localhost:3000/assets/products_media/14/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/14/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/14/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/14/images/1.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/14/images/2.png"
+          "url": "http://localhost:3001/assets/products_media/14/images/2.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/14/images/3.png"
+          "url": "http://localhost:3001/assets/products_media/14/images/3.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/14/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/14/thumbnail/thumbnail.png"
     },
     {
       "id": 15,
@@ -1035,20 +1035,20 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "7839797529453",
-        "qrCode": "http://localhost:3000/assets/products_media/15/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/15/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/15/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/15/images/1.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/15/images/2.png"
+          "url": "http://localhost:3001/assets/products_media/15/images/2.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/15/images/3.png"
+          "url": "http://localhost:3001/assets/products_media/15/images/3.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/15/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/15/thumbnail/thumbnail.png"
     },
     {
       "id": 16,
@@ -1103,14 +1103,14 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "2517819903837",
-        "qrCode": "http://localhost:3000/assets/products_media/16/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/16/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/16/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/16/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/16/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/16/thumbnail/thumbnail.png"
     },
     {
       "id": 17,
@@ -1165,14 +1165,14 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "8335515097879",
-        "qrCode": "http://localhost:3000/assets/products_media/17/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/17/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/17/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/17/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/17/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/17/thumbnail/thumbnail.png"
     },
     {
       "id": 18,
@@ -1230,14 +1230,14 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "5503491330693",
-        "qrCode": "http://localhost:3000/assets/products_media/18/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/18/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/18/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/18/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/18/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/18/thumbnail/thumbnail.png"
     },
     {
       "id": 19,
@@ -1292,17 +1292,17 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "0966223559510",
-        "qrCode": "http://localhost:3000/assets/products_media/19/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/19/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/19/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/19/images/1.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/19/images/2.png"
+          "url": "http://localhost:3001/assets/products_media/19/images/2.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/19/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/19/thumbnail/thumbnail.png"
     },
     {
       "id": 20,
@@ -1357,14 +1357,14 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "6707669443381",
-        "qrCode": "http://localhost:3000/assets/products_media/20/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/20/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/20/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/20/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/20/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/20/thumbnail/thumbnail.png"
     },
     {
       "id": 21,
@@ -1419,14 +1419,14 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "2597004869708",
-        "qrCode": "http://localhost:3000/assets/products_media/21/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/21/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/21/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/21/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/21/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/21/thumbnail/thumbnail.png"
     },
     {
       "id": 22,
@@ -1484,14 +1484,14 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "7957222289508",
-        "qrCode": "http://localhost:3000/assets/products_media/22/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/22/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/22/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/22/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/22/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/22/thumbnail/thumbnail.png"
     },
     {
       "id": 23,
@@ -1546,14 +1546,14 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "7095702028776",
-        "qrCode": "http://localhost:3000/assets/products_media/23/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/23/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/23/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/23/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/23/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/23/thumbnail/thumbnail.png"
     },
     {
       "id": 24,
@@ -1608,14 +1608,14 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "4250692197342",
-        "qrCode": "http://localhost:3000/assets/products_media/24/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/24/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/24/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/24/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/24/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/24/thumbnail/thumbnail.png"
     },
     {
       "id": 25,
@@ -1670,14 +1670,14 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "7583442707568",
-        "qrCode": "http://localhost:3000/assets/products_media/25/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/25/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/25/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/25/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/25/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/25/thumbnail/thumbnail.png"
     },
     {
       "id": 26,
@@ -1732,14 +1732,14 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "8400326844874",
-        "qrCode": "http://localhost:3000/assets/products_media/26/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/26/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/26/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/26/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/26/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/26/thumbnail/thumbnail.png"
     },
     {
       "id": 27,
@@ -1794,14 +1794,14 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "0668665656044",
-        "qrCode": "http://localhost:3000/assets/products_media/27/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/27/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/27/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/27/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/27/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/27/thumbnail/thumbnail.png"
     },
     {
       "id": 28,
@@ -1856,23 +1856,23 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "9603960319256",
-        "qrCode": "http://localhost:3000/assets/products_media/28/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/28/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/28/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/28/images/1.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/28/images/2.png"
+          "url": "http://localhost:3001/assets/products_media/28/images/2.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/28/images/3.png"
+          "url": "http://localhost:3001/assets/products_media/28/images/3.png"
         },
         {
-          "url": "http://localhost:3000/assets/products_media/28/images/4.png"
+          "url": "http://localhost:3001/assets/products_media/28/images/4.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/28/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/28/thumbnail/thumbnail.png"
     },
     {
       "id": 29,
@@ -1927,14 +1927,14 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "8546824122355",
-        "qrCode": "http://localhost:3000/assets/products_media/29/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/29/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/29/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/29/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/29/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/29/thumbnail/thumbnail.png"
     },
     {
       "id": 30,
@@ -1989,14 +1989,14 @@
         "createdAt": "2024-05-23T08:56:21.620Z",
         "updatedAt": "2024-05-23T08:56:21.620Z",
         "barcode": "3325493172934",
-        "qrCode": "http://localhost:3000/assets/products_media/30/qrcode/qr-code.png"
+        "qrCode": "http://localhost:3001/assets/products_media/30/qrcode/qr-code.png"
       },
       "images": [
         {
-          "url": "http://localhost:3000/assets/products_media/30/images/1.png"
+          "url": "http://localhost:3001/assets/products_media/30/images/1.png"
         }
       ],
-      "thumbnail": "http://localhost:3000/assets/products_media/30/thumbnail/thumbnail.png"
+      "thumbnail": "http://localhost:3001/assets/products_media/30/thumbnail/thumbnail.png"
     }
   ]
 }

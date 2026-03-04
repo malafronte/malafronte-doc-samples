@@ -54,9 +54,74 @@ Il server sarà in ascolto all'indirizzo: `http://localhost:3001`
 npm run generate
 ```
 
+### Configurare la porta del server
+
+Il server legge la variabile d'ambiente `PORT` (anche da file `.env`).
+Se `PORT` non è impostata, usa il valore di default `3001`.
+
+### Configurare la chiave JWT
+
+Il server legge anche la variabile d'ambiente `JWT_SECRET` per firmare e validare i token.
+Se `JWT_SECRET` non è impostata, usa il valore di default `123456789`.
+
+Puoi impostare anche `JWT_EXPIRES_IN` per definire la durata del token (default `1h`).
+
+Esempio `.env`:
+
+```dotenv
+PORT=3001
+JWT_SECRET=123456789
+JWT_EXPIRES_IN=1h
+```
+
+Puoi avviare normalmente con:
+
+```bash
+npm start
+```
+
+### Configurare la base URL dei media durante la generazione Faker
+
+Lo script `generate-data.js` usa la variabile d'ambiente `BASE_URL` per comporre gli URL di:
+
+- `meta.qrCode`
+- `images[].url`
+- `thumbnail`
+
+Se `BASE_URL` non è impostata, viene calcolata automaticamente da `PORT`:
+
+- `BASE_URL = http://localhost:${PORT}`
+
+Con la configurazione di default (`PORT=3001`), i media useranno `http://localhost:3001`.
+
+`BASE_URL` resta disponibile come override opzionale (utile se media e API sono serviti da host/proxy diversi).
+
+Puoi configurarla in un file `.env` nella root del progetto (c'è anche il template `.env.example`).
+
+Esempio `.env`:
+
+```dotenv
+BASE_URL=http://localhost:3000
+```
+
+Esempio (PowerShell):
+
+```powershell
+$env:BASE_URL="http://192.168.1.10:3000"
+npm run generate
+```
+
+Esempio (macOS/Linux):
+
+```bash
+BASE_URL="http://192.168.1.10:3000" npm run generate
+```
+
 ## Endpoint Disponibili
 
 Tutti gli endpoint rispondono all'URL base `http://localhost:3001`.
+
+> Nota: se imposti `PORT` con un valore diverso, sostituisci `3001` negli esempi con la tua porta configurata.
 
 ### Autenticazione (`/login`)
 
