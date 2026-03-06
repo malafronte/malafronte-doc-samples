@@ -21,11 +21,8 @@ public class Program
         {
             Console.WriteLine($"\n--- TEST API su {_apiBaseUrl} ---");
 
-            var products = await client.GetAllProductsAsync(includeRelated: false);
+            var products = await client.GetAllProductsAsync();
             PrintProductsSummary(products, "GET /products");
-
-            var productsWithRelated = await client.GetAllProductsAsync(includeRelated: true);
-            PrintProductsSummary(productsWithRelated, "GET /products?includeRelated=true");
 
             int testProductId = 1;
             var product = await client.GetProductByIdAsync(testProductId);
@@ -78,7 +75,7 @@ public class Program
                 }
             }
 
-            var finalProducts = await client.GetAllProductsAsync(includeRelated: false);
+            var finalProducts = await client.GetAllProductsAsync();
             PrintProductsSummary(finalProducts, "Stato Finale");
         }
         catch (HttpRequestException httpEx)

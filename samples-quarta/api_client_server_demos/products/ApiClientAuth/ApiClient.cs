@@ -69,9 +69,9 @@ public class ApiClient : IDisposable
         return true;
     }
 
-    public async Task<List<Product>> GetAllProductsAsync(bool includeRelated)
+    public async Task<List<Product>> GetAllProductsAsync()
     {
-        string endpoint = includeRelated ? "/products?includeRelated=true" : "/products";
+        const string endpoint = "/products";
         using HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
         await EnsureSuccessAsync(response, $"GET {endpoint}");
 
@@ -190,7 +190,7 @@ public class ApiClient : IDisposable
 
     public async Task<decimal?> GetAveragePriceAllProductsAsync()
     {
-        List<Product> products = await GetAllProductsAsync(includeRelated: false);
+        List<Product> products = await GetAllProductsAsync();
         if (products.Count == 0)
         {
             return null;

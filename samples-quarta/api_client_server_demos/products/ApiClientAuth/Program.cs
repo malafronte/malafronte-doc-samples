@@ -18,7 +18,7 @@ public class Program
         {
             Console.WriteLine($"\n--- TEST API su {ApiBaseUrl} ---");
 
-            List<Product> allProducts = await apiClient.GetAllProductsAsync(includeRelated: false);
+            List<Product> allProducts = await apiClient.GetAllProductsAsync();
             Console.WriteLine($"GET /products -> {allProducts.Count} prodotti");
             foreach (Product product in allProducts.Take(3))
             {
@@ -130,7 +130,7 @@ public class Program
                 }
             }
 
-            List<Product> finalProducts = await apiClient.GetAllProductsAsync(includeRelated: false);
+            List<Product> finalProducts = await apiClient.GetAllProductsAsync();
             Console.WriteLine($"\nStato finale: {finalProducts.Count} prodotti disponibili.");
         }
         catch (HttpRequestException httpEx)

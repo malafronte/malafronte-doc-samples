@@ -32,11 +32,9 @@ public sealed class Client : IDisposable
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
-    public async Task<List<Product>> GetAllProductsAsync(bool includeRelated)
+    public async Task<List<Product>> GetAllProductsAsync()
     {
-        string endpoint = includeRelated ? "/products?includeRelated=true" : "/products";
-
-        var products = await _httpClient.GetFromJsonAsync<List<Product>>(endpoint);
+        var products = await _httpClient.GetFromJsonAsync<List<Product>>("/products");
         return products ?? [];
     }
 
