@@ -1,106 +1,137 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using ApiClient.Models;
+using ApiClientAuth.Models;
 
 namespace ApiClientAuth;
 
-// Classe che rappresenta il payload JSON inviato al server per l'autenticazione
-public class LoginRequest
-{
-    [JsonPropertyName("email")]
-    public string Email { get; set; } = "";
-
-    [JsonPropertyName("password")]
-    public string Password { get; set; } = "";
-}
-
-// Classe che rappresenta la risposta JSON del server contenente il token JWT
-public class LoginResponse
-{
-    [JsonPropertyName("access_token")]
-    public string AccessToken { get; set; } = "";
-}
-
 public class Program
 {
-    private static readonly string _apiBaseUrl = "http://localhost:3001";
-    private static HttpClient _httpClient = null!;
-    private static string _token = "";
+    private const string ApiBaseUrl = "http://localhost:3001";
 
     public static async Task Main(string[] args)
     {
         Console.WriteLine("Avvio Client API Prodotti con Autenticazione...");
 
-        ConfigureHttpClient();
+        using var apiClient = new ApiClient(ApiBaseUrl);
+        var jsonOptions = new JsonSerializerOptions { WriteIndented = true };
 
         try
         {
-            Console.WriteLine($"\n--- TEST API su {_apiBaseUrl} ---");
+            Console.WriteLine($"\n--- TEST API su {ApiBaseUrl} ---");
 
-            // 1. GET Tutti i Prodotti (senza dettagli) - Non richiede auth
-            await TestGetAllProducts(includeRelated: false);
+            List<Product> allProducts = await apiClient.GetAllProductsAsync(includeRelated: false);
+            Console.WriteLine($"GET /products -> {allProducts.Count} prodotti");
+            foreach (Product product in allProducts.Take(3))
+            {
+                Console.WriteLine($"  - ID: {product.Id}, Titolo: {product.Title}, Prezzo: {product.Price:F2}");
+            }
 
-            // 2. GET Prodotto Specifico - Non richiede auth
-            int testProductId = 1;
-            await TestGetProductById(testProductId);
+            const int testProductId = 1;
+            Product? productById = await apiClient.GetProductByIdAsync(testProductId);
+            Console.WriteLine($"\nGET /products/{testProductId}");
+            Console.WriteLine(productById == null
+                ? "  Prodotto non trovato"
+                : JsonSerializer.Serialize(productById, jsonOptions));
 
-            // 2b. Download immagine associata a un prodotto - Non richiede auth
-            await TestDownloadProductImage(testProductId);
+            ImageDownloadResult? downloaded = await apiClient.DownloadProductImageAsync(testProductId);
+            if (downloaded == null)
+            {
+                Console.WriteLine("\nDownload immagine (completo): nessuna immagine disponibile.");
+            }
+            else
+            {
+                Console.WriteLine($"\nDownload immagine (completo): {downloaded.FilePath} ({downloaded.ByteCount} byte)");
+            }
 
-            // 2c. Download immagine (versione semplificata, URL assoluto)
-            await TestDownloadProductImageSimple(testProductId);
+            ImageDownloadResult? downloadedSimple = await apiClient.DownloadProductImageSimpleAsync(testProductId);
+            if (downloadedSimple == null)
+            {
+                Console.WriteLine("Download immagine (semplice): nessuna immagine disponibile.");
+            }
+            else
+            {
+                Console.WriteLine($"Download immagine (semplice): {downloadedSimple.FilePath} ({downloadedSimple.ByteCount} byte)");
+            }
 
-            // 3. Esempi Query json-server 0.17.4
             const string sampleCategory = "electronics";
-            await TestGetAveragePriceAllProducts();
-            await TestGetAveragePriceByCategory(sampleCategory);
-            await TestPrintTopThreeProductsByRankingPerCategory();
-            await TestListProductsByCategoryPagedAndSorted(sampleCategory, page: 1, pageSize: 3);
-            await TestListProductsByCategoryPagedAndSorted(sampleCategory, page: 2, pageSize: 3);
-            await RunInteractiveQueryExamples();
+            decimal? averageAll = await apiClient.GetAveragePriceAllProductsAsync();
+            Console.WriteLine(averageAll.HasValue
+                ? $"\nPrezzo medio complessivo: {averageAll.Value:F2}"
+                : "\nPrezzo medio complessivo non disponibile (nessun prodotto).");
 
-            // --- Login ---
-            bool isLoggedIn = await TestLogin("admin@example.com", "admin123");
+            CategoryAverageResult? averageByCategory = await apiClient.GetAveragePriceByCategoryAsync(sampleCategory);
+            Console.WriteLine(averageByCategory == null
+                ? $"Prezzo medio categoria '{sampleCategory}' non disponibile."
+                : $"Prezzo medio categoria '{averageByCategory.Category}': {averageByCategory.AveragePrice:F2} (su {averageByCategory.Count} prodotti)");
+
+            IReadOnlyList<CategoryTopProducts> topByCategory = await apiClient.GetTopThreeProductsByRankingPerCategoryAsync();
+            Console.WriteLine("\nTop 3 prodotti per rating in ogni categoria:");
+            foreach (CategoryTopProducts categoryGroup in topByCategory)
+            {
+                Console.WriteLine($"Categoria: {categoryGroup.Category}");
+                foreach (Product product in categoryGroup.Products)
+                {
+                    Console.WriteLine($"  - #{product.Id} {product.Title} | Rating: {product.Rating:F2} | Prezzo: {product.Price:F2}");
+                }
+            }
+
+            PagedProductsResult page1 = await apiClient.ListProductsByCategoryPagedAndSortedAsync(sampleCategory, page: 1, pageSize: 3);
+            PagedProductsResult page2 = await apiClient.ListProductsByCategoryPagedAndSortedAsync(sampleCategory, page: 2, pageSize: 3);
+            PrintPageResult(page1);
+            PrintPageResult(page2);
+
+            bool isLoggedIn = await apiClient.LoginAsync("admin@example.com", "admin123");
             if (!isLoggedIn)
             {
-                Console.WriteLine("\nErrore: Login fallito. Interruzione ciclo CRUD.");
+                Console.WriteLine("\nErrore: login fallito. Interruzione ciclo CRUD protetto.");
                 return;
             }
 
-            // --- Ciclo CRUD (Richiede Auth) ---
-            ProductDto? createdProduct = null;
+            Console.WriteLine("\nLogin eseguito con successo.");
+
+            Product? createdProduct = null;
             try
             {
-                // 4. POST Nuovo Prodotto
-                createdProduct = await TestCreateProduct();
+                CreateProduct createDto = BuildCreateProduct();
+                createdProduct = await apiClient.CreateProductAsync(createDto);
+
                 if (createdProduct == null)
                 {
-                    Console.WriteLine("\nErrore: Creazione prodotto fallita. Interruzione ciclo CRUD.");
+                    Console.WriteLine("Creazione prodotto fallita: risposta vuota.");
                     return;
                 }
-                Console.WriteLine($"\nProdotto creato con ID: {createdProduct.Id}");
 
-                // 5. PUT Aggiorna Prodotto Creato
-                await TestUpdateProduct(createdProduct);
+                Console.WriteLine($"Prodotto creato con ID: {createdProduct.Id}");
 
-                // 6. GET Verifica Prodotto Aggiornato
-                await TestGetProductById(createdProduct.Id, "Verifica dopo Update");
+                UpdateProduct updateDto = BuildUpdateProduct(createdProduct);
+                Product? updatedProduct = await apiClient.UpdateProductAsync(createdProduct.Id, updateDto);
+                Console.WriteLine(updatedProduct == null
+                    ? "Aggiornamento completato senza payload di risposta."
+                    : $"Prodotto aggiornato: ID {updatedProduct.Id}, Titolo: {updatedProduct.Title}");
+
+                Product? afterUpdate = await apiClient.GetProductByIdAsync(createdProduct.Id);
+                Console.WriteLine("Verifica dopo update:");
+                Console.WriteLine(afterUpdate == null
+                    ? "  Prodotto non trovato"
+                    : JsonSerializer.Serialize(afterUpdate, jsonOptions));
             }
             finally
             {
-                // 7. DELETE Prodotto Creato (se esiste)
                 if (createdProduct != null)
                 {
-                    await TestDeleteProduct(createdProduct.Id);
-                    // 8. GET Verifica Eliminazione
-                    await TestGetProductById(createdProduct.Id, "Verifica dopo Delete");
+                    bool deleted = await apiClient.DeleteProductAsync(createdProduct.Id);
+                    Console.WriteLine(deleted
+                        ? $"Prodotto ID {createdProduct.Id} eliminato."
+                        : $"Prodotto ID {createdProduct.Id} non trovato in fase di delete.");
+
+                    Product? afterDelete = await apiClient.GetProductByIdAsync(createdProduct.Id);
+                    Console.WriteLine(afterDelete == null
+                        ? "Verifica dopo delete: prodotto non più presente (OK)."
+                        : "Verifica dopo delete: prodotto ancora presente (da investigare).");
                 }
             }
 
-            // 9. GET Tutti i Prodotti (alla fine, per vedere lo stato finale)
-            await TestGetAllProducts(includeRelated: false, "Stato Finale");
+            List<Product> finalProducts = await apiClient.GetAllProductsAsync(includeRelated: false);
+            Console.WriteLine($"\nStato finale: {finalProducts.Count} prodotti disponibili.");
         }
         catch (HttpRequestException httpEx)
         {
@@ -115,462 +146,29 @@ public class Program
         catch (Exception ex)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"\nErrore Inaspettato: {ex.Message}");
+            Console.WriteLine($"\nErrore inatteso: {ex.Message}");
             Console.ResetColor();
         }
         finally
         {
-            Console.WriteLine("\n--- Test API Completato ---");
-            _httpClient?.Dispose();
+            Console.WriteLine("\n--- Test API completato ---");
         }
     }
 
-    private static void ConfigureHttpClient()
+    private static void PrintPageResult(PagedProductsResult page)
     {
-        var handler = new HttpClientHandler();
-        _httpClient = new HttpClient(handler)
+        string total = page.TotalCount.HasValue ? page.TotalCount.Value.ToString() : "n/d";
+        Console.WriteLine($"\nPagina {page.Page}, size {page.PageSize}, totale categoria: {total}, elementi ricevuti: {page.Items.Count}");
+
+        foreach (Product product in page.Items)
         {
-            BaseAddress = new Uri(_apiBaseUrl)
-        };
-
-        // Pulisce eventuali header Accept preesistenti
-        _httpClient.DefaultRequestHeaders.Accept.Clear();
-
-        // Imposta l'header Accept per indicare al server che il client si aspetta risposte in formato JSON
-        _httpClient.DefaultRequestHeaders.Accept.Add(
-            new MediaTypeWithQualityHeaderValue("application/json"));
-    }
-
-    private static async Task<bool> TestLogin(string email, string password)
-    {
-        Console.WriteLine($"\nEseguendo POST /login...");
-
-        // Crea l'oggetto con le credenziali da inviare
-        var loginRequest = new LoginRequest { Email = email, Password = password };
-
-        try
-        {
-            // Invia una richiesta POST all'endpoint /login con le credenziali serializzate in JSON
-            HttpResponseMessage response = await _httpClient.PostAsJsonAsync("/login", loginRequest);
-
-            if (response.IsSuccessStatusCode)
-            {
-                // Deserializza la risposta JSON per estrarre il token JWT
-                var loginResponse = await response.Content.ReadFromJsonAsync<LoginResponse>();
-
-                if (loginResponse != null && !string.IsNullOrEmpty(loginResponse.AccessToken))
-                {
-                    // Salva il token in una variabile statica (opzionale, utile per debug o log)
-                    _token = loginResponse.AccessToken;
-
-                    // CONFIGURAZIONE HEADER DI AUTENTICAZIONE:
-                    // Aggiunge il token JWT all'header "Authorization" dell'istanza globale di HttpClient.
-                    // Lo schema "Bearer" indica che stiamo passando un token di portatore.
-                    // Da questo momento in poi, TUTTE le richieste successive effettuate con _httpClient 
-                    // includeranno automaticamente questo header, permettendo l'accesso alle rotte protette.
-                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"Successo ({response.StatusCode}). Token ottenuto e configurato.");
-                    Console.ResetColor();
-                    return true;
-                }
-            }
-
-            await LogErrorResponse(response, "POST Login");
-            return false;
-        }
-        catch (Exception ex)
-        {
-            LogError(ex, "POST /login");
-            return false;
+            Console.WriteLine($"  - #{product.Id} {product.Title} | Prezzo: {product.Price:F2} | Categoria: {product.Category}");
         }
     }
 
-    private static async Task TestGetAllProducts(bool includeRelated, string context = "")
+    private static CreateProduct BuildCreateProduct()
     {
-        string endpoint = includeRelated ? "/products?includeRelated=true" : "/products";
-        Console.WriteLine($"\n{context} Eseguendo GET {endpoint}...");
-
-        try
-        {
-            HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var products = await response.Content.ReadFromJsonAsync<List<ProductDto>>();
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"Successo ({response.StatusCode}). Ricevuti {products?.Count ?? 0} prodotti.");
-                Console.ResetColor();
-                foreach (var p in products?.Take(3) ?? [])
-                {
-                    Console.WriteLine($"  - ID: {p.Id}, Titolo: {p.Title}, Prezzo: {p.Price}");
-                }
-            }
-            else
-            {
-                await LogErrorResponse(response, "GET All Products");
-            }
-        }
-        catch (Exception ex)
-        {
-            LogError(ex, $"GET {endpoint}");
-        }
-    }
-
-    private static async Task TestGetProductById(int id, string context = "")
-    {
-        string endpoint = $"/products/{id}";
-        Console.WriteLine($"\n{context} Eseguendo GET {endpoint}...");
-
-        try
-        {
-            HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var product = await response.Content.ReadFromJsonAsync<ProductDto>();
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"Successo ({response.StatusCode}). Ricevuto Prodotto:");
-                Console.WriteLine(JsonSerializer.Serialize(product, new JsonSerializerOptions { WriteIndented = true }));
-                Console.ResetColor();
-            }
-            else
-            {
-                if (response.StatusCode == System.Net.HttpStatusCode.NotFound && context.Contains("dopo Delete"))
-                {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"Risposta attesa ({response.StatusCode}): Prodotto ID {id} non trovato (corretto dopo DELETE).");
-                    Console.ResetColor();
-                }
-                else
-                {
-                    await LogErrorResponse(response, $"GET Product By ID ({id})");
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            LogError(ex, $"GET {endpoint}");
-        }
-    }
-
-    private static async Task TestDownloadProductImage(int productId)
-    {
-        string productEndpoint = $"/products/{productId}";
-        Console.WriteLine($"\nEsempio: download immagine associata al prodotto ID {productId}...");
-
-        try
-        {
-            HttpResponseMessage productResponse = await _httpClient.GetAsync(productEndpoint);
-            if (!productResponse.IsSuccessStatusCode)
-            {
-                await LogErrorResponse(productResponse, $"GET Product For Image Download ({productId})");
-                return;
-            }
-
-            ProductDto? product = await productResponse.Content.ReadFromJsonAsync<ProductDto>();
-            if (product == null)
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Prodotto non deserializzato, impossibile scaricare immagine.");
-                Console.ResetColor();
-                return;
-            }
-
-            string? imageUrl = !string.IsNullOrWhiteSpace(product.Thumbnail)
-                ? product.Thumbnail
-                : product.Images?.FirstOrDefault(i => !string.IsNullOrWhiteSpace(i.Url))?.Url;
-
-            if (string.IsNullOrWhiteSpace(imageUrl))
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"Nessuna immagine disponibile per il prodotto ID {productId}.");
-                Console.ResetColor();
-                return;
-            }
-
-            Uri imageUri = Uri.TryCreate(imageUrl, UriKind.Absolute, out var absoluteUri)
-                ? absoluteUri
-                : new Uri(_httpClient.BaseAddress!, imageUrl);
-
-            HttpResponseMessage imageResponse = await _httpClient.GetAsync(imageUri);
-            if (!imageResponse.IsSuccessStatusCode)
-            {
-                await LogErrorResponse(imageResponse, $"GET Product Image ({imageUri})");
-                return;
-            }
-
-            byte[] imageBytes = await imageResponse.Content.ReadAsByteArrayAsync();
-            if (imageBytes.Length == 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Immagine scaricata vuota (0 byte).");
-                Console.ResetColor();
-                return;
-            }
-
-            string extension = Path.GetExtension(imageUri.AbsolutePath);
-            if (string.IsNullOrWhiteSpace(extension))
-            {
-                extension = ".img";
-            }
-
-            string downloadsFolder = Path.Combine(AppContext.BaseDirectory, "downloads");
-            Directory.CreateDirectory(downloadsFolder);
-
-            string safeCategory = string.IsNullOrWhiteSpace(product.Category) ? "unknown" : product.Category;
-            string safeCategoryFilePart = string.Concat(safeCategory.Where(ch => !Path.GetInvalidFileNameChars().Contains(ch)));
-            if (string.IsNullOrWhiteSpace(safeCategoryFilePart))
-            {
-                safeCategoryFilePart = "unknown";
-            }
-
-            string filePath = Path.Combine(downloadsFolder, $"product-{productId}-{safeCategoryFilePart}{extension}");
-            await File.WriteAllBytesAsync(filePath, imageBytes);
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Immagine scaricata con successo: {filePath} ({imageBytes.Length} byte)");
-            Console.ResetColor();
-        }
-        catch (Exception ex)
-        {
-            LogError(ex, $"Download product image ({productId})");
-        }
-    }
-
-    private static async Task TestDownloadProductImageSimple(int productId)
-    {
-        Console.WriteLine($"\nEsempio semplificato: download immagine prodotto ID {productId} (URL assoluto)...");
-
-        try
-        {
-            ProductDto? product = await _httpClient.GetFromJsonAsync<ProductDto>($"/products/{productId}");
-            string? imageUrl = product?.Thumbnail ?? product?.Images?.FirstOrDefault()?.Url;
-
-            if (string.IsNullOrWhiteSpace(imageUrl))
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"Nessun URL immagine disponibile per il prodotto ID {productId}.");
-                Console.ResetColor();
-                return;
-            }
-
-            byte[] bytes = await _httpClient.GetByteArrayAsync(imageUrl);
-            string extension = Path.GetExtension(new Uri(imageUrl).AbsolutePath);
-            if (string.IsNullOrWhiteSpace(extension))
-            {
-                extension = ".img";
-            }
-
-            string downloadsFolder = Path.Combine(AppContext.BaseDirectory, "downloads");
-            Directory.CreateDirectory(downloadsFolder);
-            string filePath = Path.Combine(downloadsFolder, $"product-{productId}-simple{extension}");
-
-            await File.WriteAllBytesAsync(filePath, bytes);
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Immagine (metodo semplificato) salvata: {filePath} ({bytes.Length} byte)");
-            Console.ResetColor();
-        }
-        catch (Exception ex)
-        {
-            LogError(ex, $"Download product image simple ({productId})");
-        }
-    }
-
-    private static async Task TestGetAveragePriceAllProducts()
-    {
-        const string endpoint = "/products";
-        Console.WriteLine($"\nEsempio: prezzo medio di tutti i prodotti (GET {endpoint})...");
-
-        try
-        {
-            HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
-            if (!response.IsSuccessStatusCode)
-            {
-                await LogErrorResponse(response, "GET Average Price All Products");
-                return;
-            }
-
-            var products = await response.Content.ReadFromJsonAsync<List<ProductDto>>() ?? [];
-            if (products.Count == 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Nessun prodotto disponibile per calcolare il prezzo medio.");
-                Console.ResetColor();
-                return;
-            }
-
-            decimal averagePrice = products.Average(p => p.Price);
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Prezzo medio complessivo: {averagePrice:F2} (su {products.Count} prodotti)");
-            Console.ResetColor();
-        }
-        catch (Exception ex)
-        {
-            LogError(ex, "GET /products (Average Price All)");
-        }
-    }
-
-    private static async Task TestGetAveragePriceByCategory(string category)
-    {
-        string endpoint = $"/products?category={Uri.EscapeDataString(category)}";
-        Console.WriteLine($"\nEsempio: prezzo medio prodotti categoria '{category}' (GET {endpoint})...");
-
-        try
-        {
-            HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
-            if (!response.IsSuccessStatusCode)
-            {
-                await LogErrorResponse(response, $"GET Average Price By Category ({category})");
-                return;
-            }
-
-            var products = await response.Content.ReadFromJsonAsync<List<ProductDto>>() ?? [];
-            if (products.Count == 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"Nessun prodotto trovato per categoria '{category}'.");
-                Console.ResetColor();
-                return;
-            }
-
-            decimal averagePrice = products.Average(p => p.Price);
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Prezzo medio categoria '{category}': {averagePrice:F2} (su {products.Count} prodotti)");
-            Console.ResetColor();
-        }
-        catch (Exception ex)
-        {
-            LogError(ex, $"GET /products?category={category} (Average Price By Category)");
-        }
-    }
-
-    private static async Task TestPrintTopThreeProductsByRankingPerCategory()
-    {
-        const string endpoint = "/products?_sort=category,rating&_order=asc,desc";
-        Console.WriteLine($"\nEsempio: primi 3 prodotti per ranking (rating) in ogni categoria (GET {endpoint})...");
-
-        try
-        {
-            HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
-            if (!response.IsSuccessStatusCode)
-            {
-                await LogErrorResponse(response, "GET Top 3 Ranking By Category");
-                return;
-            }
-
-            var products = await response.Content.ReadFromJsonAsync<List<ProductDto>>() ?? [];
-            if (products.Count == 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Nessun prodotto disponibile per il ranking per categoria.");
-                Console.ResetColor();
-                return;
-            }
-
-            var grouped = products
-                .GroupBy(p => string.IsNullOrWhiteSpace(p.Category) ? "(senza categoria)" : p.Category!)
-                .OrderBy(g => g.Key, StringComparer.OrdinalIgnoreCase);
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            foreach (var categoryGroup in grouped)
-            {
-                Console.WriteLine($"Categoria: {categoryGroup.Key}");
-                foreach (var product in categoryGroup.OrderByDescending(p => p.Rating).Take(3))
-                {
-                    Console.WriteLine($"  - #{product.Id} {product.Title} | Rating: {product.Rating:F2} | Prezzo: {product.Price:F2}");
-                }
-            }
-            Console.ResetColor();
-        }
-        catch (Exception ex)
-        {
-            LogError(ex, "GET /products?_sort=category,rating&_order=asc,desc (Top 3 Ranking By Category)");
-        }
-    }
-
-    private static async Task TestListProductsByCategoryPagedAndSorted(string category, int page, int pageSize)
-    {
-        string endpoint = $"/products?category={Uri.EscapeDataString(category)}&_sort=price&_order=desc&_page={page}&_limit={pageSize}";
-        Console.WriteLine($"\nEsempio: prodotti categoria '{category}' paginati e ordinati per prezzo desc (GET {endpoint})...");
-
-        try
-        {
-            HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
-            if (!response.IsSuccessStatusCode)
-            {
-                await LogErrorResponse(response, $"GET Paged Products By Category ({category})");
-                return;
-            }
-
-            var products = await response.Content.ReadFromJsonAsync<List<ProductDto>>() ?? [];
-            response.Headers.TryGetValues("X-Total-Count", out IEnumerable<string>? totalCountValues);
-            string totalCount = totalCountValues?.FirstOrDefault() ?? "n/d";
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Pagina {page}, size {pageSize}, totale categoria: {totalCount}, elementi ricevuti: {products.Count}");
-            foreach (var product in products)
-            {
-                Console.WriteLine($"  - #{product.Id} {product.Title} | Prezzo: {product.Price:F2} | Categoria: {product.Category}");
-            }
-            Console.ResetColor();
-        }
-        catch (Exception ex)
-        {
-            LogError(ex, $"GET paged products by category ({category})");
-        }
-    }
-
-    private static async Task RunInteractiveQueryExamples()
-    {
-        Console.WriteLine("\n--- Menu Esempi Query json-server 0.17.4 ---");
-
-        bool continueLoop = true;
-        while (continueLoop)
-        {
-            string category = ReadTextInputWithDefault("Categoria", "electronics");
-            int page = ReadIntInputWithDefault("Pagina", 1, minValue: 1);
-            int pageSize = ReadIntInputWithDefault("Dimensione pagina", 3, minValue: 1);
-
-            await TestGetAveragePriceAllProducts();
-            await TestGetAveragePriceByCategory(category);
-            await TestPrintTopThreeProductsByRankingPerCategory();
-            await TestListProductsByCategoryPagedAndSorted(category, page, pageSize);
-
-            Console.Write("Ripetere il menu? (s/N): ");
-            string? answer = Console.ReadLine()?.Trim();
-            continueLoop = string.Equals(answer, "s", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(answer, "si", StringComparison.OrdinalIgnoreCase);
-        }
-    }
-
-    private static string ReadTextInputWithDefault(string label, string defaultValue)
-    {
-        Console.Write($"{label} [{defaultValue}]: ");
-        string? input = Console.ReadLine();
-        return string.IsNullOrWhiteSpace(input) ? defaultValue : input.Trim();
-    }
-
-    private static int ReadIntInputWithDefault(string label, int defaultValue, int minValue)
-    {
-        Console.Write($"{label} [{defaultValue}]: ");
-        string? input = Console.ReadLine();
-        if (int.TryParse(input, out int value) && value >= minValue)
-        {
-            return value;
-        }
-
-        return defaultValue;
-    }
-
-    private static async Task<ProductDto?> TestCreateProduct()
-    {
-        string endpoint = "/products";
-        Console.WriteLine($"\nEseguendo POST {endpoint}...");
-
-        var newProduct = new CreateProductDto
+        return new CreateProduct
         {
             Title = "Prodotto Console Client Auth",
             Description = "Creato tramite applicazione console C# con Auth.",
@@ -588,46 +186,26 @@ public class Program
             ReturnPolicy = "Console Return Policy",
             MinimumOrderQuantity = 1,
             Thumbnail = "http://example.com/consolethumb.png",
-            Dimensions = new ProductDimensionsDto { Width = 5, Height = 5, Depth = 5 },
-            Tags = new List<ProductTagDto> { new() { Value = "console" }, new() { Value = "auth" } },
-            Reviews = new List<ProductReviewDto> { new() { Rating = 5, Comment = "Creato da console auth!", Date = DateTime.UtcNow, ReviewerName = "ConsoleApp", ReviewerEmail = "console@test.com" } },
-            Images = new List<ProductImageDto> { new() { Url = "http://example.com/consoleimg1.png" } }
+            Dimensions = new ProductDimensions { Width = 5, Height = 5, Depth = 5 },
+            Tags = [new ProductTag { Value = "console" }, new ProductTag { Value = "auth" }],
+            Reviews =
+            [
+                new ProductReview
+                {
+                    Rating = 5,
+                    Comment = "Creato da console auth!",
+                    Date = DateTime.UtcNow,
+                    ReviewerName = "ConsoleApp",
+                    ReviewerEmail = "console@test.com"
+                }
+            ],
+            Images = [new ProductImage { Url = "http://example.com/consoleimg1.png" }]
         };
-
-        try
-        {
-            HttpResponseMessage response = await _httpClient.PostAsJsonAsync(endpoint, newProduct);
-
-            if (response.IsSuccessStatusCode && response.StatusCode == System.Net.HttpStatusCode.Created)
-            {
-                ProductDto? createdProduct = await response.Content.ReadFromJsonAsync<ProductDto>();
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"Successo ({response.StatusCode}). Prodotto creato:");
-                Console.WriteLine($"  Location: {response.Headers.Location}");
-                Console.WriteLine(JsonSerializer.Serialize(createdProduct, new JsonSerializerOptions { WriteIndented = true }));
-                Console.ResetColor();
-                return createdProduct;
-            }
-            else
-            {
-                await LogErrorResponse(response, "POST Create Product");
-                return null;
-            }
-        }
-        catch (Exception ex)
-        {
-            LogError(ex, $"POST {endpoint}");
-            return null;
-        }
     }
 
-    private static async Task TestUpdateProduct(ProductDto productToUpdate)
+    private static UpdateProduct BuildUpdateProduct(Product productToUpdate)
     {
-        int id = productToUpdate.Id;
-        string endpoint = $"/products/{id}";
-        Console.WriteLine($"\nEseguendo PUT {endpoint}...");
-
-        var updateDto = new UpdateProductDto
+        var updateDto = new UpdateProduct
         {
             Title = productToUpdate.Title + " - Aggiornato Auth",
             Description = "Descrizione aggiornata dalla console auth.",
@@ -646,95 +224,22 @@ public class Program
             MinimumOrderQuantity = productToUpdate.MinimumOrderQuantity,
             Thumbnail = productToUpdate.Thumbnail,
             Dimensions = productToUpdate.Dimensions,
-            Tags = productToUpdate.Tags?.ToList() ?? new List<ProductTagDto>(),
-            Reviews = new List<ProductReviewDto> { new() { Rating = 3, Comment = "Aggiornato da console auth", Date = DateTime.UtcNow, ReviewerName = "ConsoleAppUpdate", ReviewerEmail = "console@update.com" } },
-            Images = productToUpdate.Images?.ToList() ?? new List<ProductImageDto>()
+            Tags = productToUpdate.Tags?.ToList() ?? [],
+            Reviews =
+            [
+                new ProductReview
+                {
+                    Rating = 3,
+                    Comment = "Aggiornato da console auth",
+                    Date = DateTime.UtcNow,
+                    ReviewerName = "ConsoleAppUpdate",
+                    ReviewerEmail = "console@update.com"
+                }
+            ],
+            Images = productToUpdate.Images?.ToList() ?? []
         };
 
-        updateDto.Tags?.Add(new ProductTagDto { Value = "updated-by-console-auth" });
-
-        try
-        {
-            HttpResponseMessage response = await _httpClient.PutAsJsonAsync(endpoint, updateDto);
-
-            if (response.IsSuccessStatusCode)
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"Successo ({response.StatusCode}). Prodotto ID {id} aggiornato.");
-                if (response.Content.Headers.ContentLength > 0)
-                {
-                    var updatedProductResponse = await response.Content.ReadFromJsonAsync<ProductDto>();
-                    Console.WriteLine("Dati prodotto aggiornati ricevuti nella risposta:");
-                    Console.WriteLine(JsonSerializer.Serialize(updatedProductResponse, new JsonSerializerOptions { WriteIndented = true }));
-                }
-                Console.ResetColor();
-            }
-            else
-            {
-                await LogErrorResponse(response, $"PUT Update Product ({id})");
-            }
-        }
-        catch (Exception ex)
-        {
-            LogError(ex, $"PUT {endpoint}");
-        }
-    }
-
-    private static async Task TestDeleteProduct(int id)
-    {
-        string endpoint = $"/products/{id}";
-        Console.WriteLine($"\nEseguendo DELETE {endpoint}...");
-
-        try
-        {
-            HttpResponseMessage response = await _httpClient.DeleteAsync(endpoint);
-
-            if (response.IsSuccessStatusCode)
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"Successo ({response.StatusCode}). Prodotto ID {id} eliminato.");
-                Console.ResetColor();
-            }
-            else
-            {
-                await LogErrorResponse(response, $"DELETE Product ({id})");
-            }
-        }
-        catch (Exception ex)
-        {
-            LogError(ex, $"DELETE {endpoint}");
-        }
-    }
-
-    private static async Task LogErrorResponse(HttpResponseMessage response, string operation)
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"Errore durante '{operation}'. Status Code: {response.StatusCode}");
-        try
-        {
-            string errorBody = await response.Content.ReadAsStringAsync();
-            if (!string.IsNullOrWhiteSpace(errorBody))
-            {
-                Console.WriteLine("Corpo della risposta di errore:");
-                try
-                {
-                    using var jsonDoc = JsonDocument.Parse(errorBody);
-                    Console.WriteLine(JsonSerializer.Serialize(jsonDoc, new JsonSerializerOptions { WriteIndented = true }));
-                }
-                catch
-                {
-                    Console.WriteLine(errorBody);
-                }
-            }
-        }
-        catch (Exception ex) { Console.WriteLine($"Impossibile leggere il corpo dell'errore: {ex.Message}"); }
-        Console.ResetColor();
-    }
-
-    private static void LogError(Exception ex, string operation)
-    {
-        Console.ForegroundColor = ConsoleColor.DarkRed;
-        Console.WriteLine($"Eccezione durante '{operation}': {ex.Message}");
-        Console.ResetColor();
+        updateDto.Tags?.Add(new ProductTag { Value = "updated-by-console-auth" });
+        return updateDto;
     }
 }

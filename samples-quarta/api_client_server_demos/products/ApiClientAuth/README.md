@@ -29,6 +29,24 @@ L'obiettivo principale di `ApiClientAuth` è dimostrare come:
    dotnet run
    ```
 
+## Nota su JsonSerializerOptions
+
+Nei progetti precedenti puo essere normale vedere `JsonSerializerOptions` passato alle richieste JSON (ad esempio in `ReadFromJsonAsync(..., options)` o `PostAsJsonAsync(..., options)`).
+
+In questo esempio, invece, i modelli in `Models` usano `JsonPropertyName` su tutte le proprieta principali: questo rende gia esplicita la mappatura tra C# e JSON e spesso rende non necessario configurare opzioni custom.
+
+Quando conviene usare comunque le options:
+
+- vuoi tolleranza verso casing incoerente (`PropertyNameCaseInsensitive = true`);
+- devi aggiungere converter personalizzati (date, enum come stringhe, formati custom);
+- vuoi una configurazione JSON centralizzata e uniforme in tutto il progetto.
+
+Quando puoi evitarle:
+
+- controlli il contratto API;
+- i nomi JSON sono esplicitati con `JsonPropertyName`;
+- preferisci un esempio didattico piu lineare.
+
 ## Esempi Console
 
 Esempio di output durante l'esecuzione dei test pubblici:
