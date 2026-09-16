@@ -1,0 +1,58 @@
+{
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.inlineSuggest.enabled": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
+    }
+  },
+  "python.languageServer": "None",
+  "python.analysis.languageServerMode": "default",
+  "python.analysis.typeCheckingMode": "off",
+  "python.analysis.diagnosticMode": "openFilesOnly",
+  "python.analysis.diagnosticSeverityOverrides": {},
+  "python.analysis.indexing": true,
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.importFormat": "absolute",
+  "python.analysis.inlayHints.variableTypes": false,
+  "python.analysis.inlayHints.functionReturnTypes": false,
+  "python.analysis.inlayHints.callArgumentNames": "off",
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": [],
+  "python.testing.autoTestDiscoverOnSaveEnabled": true,
+  "python.testing.promptToConfigure": false,
+  "ruff.enable": true,
+  "ruff.nativeServer": "on",
+  "ruff.importStrategy": "fromEnvironment",
+  "ruff.configurationPreference": "filesystemFirst",
+  "ruff.configuration": {
+    "unsafe-fixes": false
+  },
+  "ruff.lineLength": 88,
+  "ruff.lint.enable": true,
+  "ruff.lint.preview": false,
+  "ruff.lint.select": [
+    "E4", "E7", "E9", "F", "I", "B", "UP", "SIM", "C4", "PIE", "PLE", "PLW", "RUF100"
+  ],
+  "ruff.lint.extendSelect": [],
+  "ruff.lint.ignore": [],
+  "ruff.showSyntaxErrors": false,
+  "ruff.organizeImports": true,
+  "ruff.fixAll": true,
+  "pylint.enabled": false,
+  "isort.serverEnabled": false,
+  "ty.diagnosticMode": "workspace",
+  "ty.disableLanguageServices": false,
+  "ty.showSyntaxErrors": true,
+  "ty.importStrategy": "fromEnvironment",
+  "ty.configuration": {},
+  "ty.inlayHints.variableTypes": true,
+  "ty.inlayHints.callArgumentNames": true,
+  "ty.completions.autoImport": true
+}
