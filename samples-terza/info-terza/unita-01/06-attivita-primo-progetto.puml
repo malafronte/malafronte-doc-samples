@@ -1,0 +1,27 @@
+﻿' Sorgente PlantUML del diagramma di attività del laboratorio LAB-PY-U1.
+' Rendering locale atteso: 06-attivita-primo-progetto.svg (tema chiaro).
+' Il materiale essenziale non dipende dal server PlantUML esterno.
+@startuml 06-attivita-primo-progetto
+title LAB-PY-U1 — Dal file al primo commit
+skinparam backgroundColor #f7fbfd
+skinparam activity {
+  BackgroundColor #ffffff
+  BorderColor #0e6b85
+  ArrowColor #0e6b85
+  DiamondBackgroundColor #fff8e1
+  DiamondBorderColor #b94e00
+}
+start
+:1 · Previsione del flusso;
+:2 · Inizializzazione con uv;
+:3 · Scrittura ed esecuzione;
+while (Esecuzione riuscita?) is (no)
+  :Lettura del messaggio;
+  :Classificazione\n(sintassi, runtime, semantica);
+  :Correzione e riesecuzione;
+endwhile (sì)
+:4 · Prova nel REPL e confronto;
+:5 · Git e primi commit;
+:6 · Dimostrazione e riflessione;
+stop
+@enduml
