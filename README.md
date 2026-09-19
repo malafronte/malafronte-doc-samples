@@ -17,6 +17,9 @@ Sito di documentazione per i corsi di informatica del Prof. Gennaro Malafronte a
 
 ### [Samples Terza](#samples-terza)
 
+- [Preset Python per VS Code](#samples-terza)
+- [Info-terza: codice del corso](#samples-terza)
+
 ### [Tools and Scripts](#tools-and-scripts)
 
 - [GitHub Download Directory](#github-download-directory)
@@ -76,7 +79,10 @@ Esempi di utilizzo di LINQ (Language Integrated Query) in C#.
 
 ## Samples Terza
 
-Sezione attualmente vuota - in preparazione
+Codice Python del corso di programmazione della terza (sito [info-terza](https://github.com/malafronte/info-terza)). Le pagine del sito mostrano questi file con il componente `RemoteCode`; i file non sono distribuiti come download dal sito.
+
+- **[preset-python/](samples-terza/preset-python/)** - Preset progressivi di VS Code per Python (Beginner, Intermediate, Advanced, Expert, Hero).
+- **[info-terza/](samples-terza/info-terza/)** - Sorgenti Python di riferimento per Unità 1–5: starters dei laboratori, programmi canonici e suite di test. Vedi il [README dedicato](samples-terza/info-terza/README.md).
 
 ---
 
