@@ -7,6 +7,7 @@ Sorgenti Python di riferimento per il sito [info-terza](https://github.com/malaf
 - `unita-01/starter-primo-progetto/main.py` — starter del primo progetto: `main.py` con TODO da completare.
 - `unita-02/starter-calcolatore/rettangolo.py` — starter del calcolatore del rettangolo (LAB-PY-U2).
 - `unita-03/prenotazione_sala.py` — programma monolitico della sala (cap. PY-04), baseline di debugger e rifattorizzazione.
+- `unita-03/conferma_match.py` — conferma testuale con `match/case` su letterali e caso residuale (cap. PY-04).
 - `unita-03/starter-mostra/tariffa_mostra.py` — starter della tariffa della mostra (LAB-PY-U3).
 - `unita-04/esempi/somma_progressiva.py` — esempio completo dell'accumulatore (cap. PY-05).
 - `unita-04/hardware/simulazione_livelli.py` — simulazione CPython dei livelli logici (LAB ESP-02).
