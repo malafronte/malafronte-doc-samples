@@ -125,17 +125,18 @@ def tokenizza(testo: str, separatore: str | None = None) -> list[str]:
     quindi due separatori consecutivi producono un campo vuoto `""`.
 
     Restituisce una NUOVA lista di NUOVE stringhe; l'argomento non viene
-    modificato. Per `testo` vuoto il risultato è sempre `[]`, anche con
-    separatore esplicito: è una scelta del contratto, perché `"".split(",")`
-    restituirebbe `[""]` e un campo vuoto non è un frammento di testo.
+    modificato. Il caso del `testo` vuoto segue le due regole, senza
+    eccezioni: `tokenizza("")` dà `[]`, perché `split()` senza argomenti
+    non produce frammenti; `tokenizza("", ",")` dà `[""]`, perché con un
+    separatore esplicito gli n separatori delimitano n + 1 campi e il testo
+    vuoto contiene un solo campo, che è vuoto. Nessuna informazione si perde:
+    la lunghezza del risultato è sempre il numero di campi attesi.
 
     Esempi di contrasto: `tokenizza("a   b")` dà `["a", "b"]`,
     `tokenizza("a,,b", ",")` dà `["a", "", "b"]`,
     `tokenizza(" a , b ", ",")` dà `[" a ", " b "]`, perché con un
     separatore esplicito gli spazi attorno ai campi restano parte del testo.
     """
-    if testo == "":
-        return []
     if separatore is None:
         return testo.split()
     return testo.split(separatore)
@@ -323,14 +324,15 @@ if __name__ == "__main__":
     print("Ricerche e conteggi")
     print("posizione di '0042' in", codice, "->", posizione_segmento(codice, "0042"))
     print("posizione di 'xyz' ->", posizione_segmento(codice, "xyz"), "(sentinella, non un indice)")
-    print("'a' in 'banana' quante volte ->", quante_volte("banana", "an"))
+    print("'an' in 'banana' quante volte ->", quante_volte("banana", "an"))
     print("'aa' in 'aaa' quante volte ->", quante_volte("aaa", "aa"), "(non sovrapposte)")
 
     print()
     print("Suddivisione e ricomposizione")
     print("senza separatore:", tokenizza("  le due   righe  "))
-    print("con separatore ' ,' :", tokenizza("a,,b", ","))
-    print("testo vuoto:", tokenizza(""))
+    print("con separatore ',':", tokenizza("a,,b", ","))
+    print("testo vuoto senza separatore:", tokenizza(""), "-> []")
+    print("testo vuoto con separatore ',':", tokenizza("", ","), "-> [''] : un solo campo, vuoto")
     print("ricomposione:", ricomponi(["led", "rosso", "5mm"], " / "))
 
     print()
@@ -341,7 +343,8 @@ if __name__ == "__main__":
     print("sostituzione:", demo_sostituisci("led-12", "12", "24"))
     print("confini:", demo_confini("SEN-0042-A", "SEN", "A"))
     print("classi:", demo_classi("128"))
-    print("prefissi:", demo_prefissi("dati.txt", "dati", ".txt"))
+    print("prefissi e suffissi presenti:", demo_prefissi("FAM-LED-12-r2", "FAM-", "-r2"))
+    print("prefisso assente:", demo_prefissi("LED-12-r2", "FAM-", "-r2"), "(il prefisso non viene tolto)")
     print("find/index presenti:", demo_indice("banana", "nan"))
     print("find/index assenti:", demo_indice("banana", "xyz"))
     print("indici:", demo_indici("led"))

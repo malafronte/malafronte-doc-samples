@@ -15,8 +15,17 @@ Sorgenti Python di riferimento per il sito [info-terza](https://github.com/malaf
 - `unita-05/esempi/sala_u5.py` — versione completa della lezione: funzioni annotate, `main` e guardia di avvio.
 - `unita-05/esempi/test_sala_u5.py` — quindici test della sala (D01–D15).
 - `unita-05/esempi/traccia_chiamate_u5.py` — listato canonico per la traccia delle chiamate (cap. PY-08 C).
-- `unita-05/starter-mostra/mostra_prima_u5.py` — baseline monolitica della mostra (LAB-PY-U5).
-- `unita-05/starter-mostra/test_mostra_u5.py` — starter di test: un caso completo, gli altri sono compito dello studente.
+- `unita-05/starter-mostra/mostra_prima_u5.py` - baseline monolitica della mostra (LAB-PY-U5).
+- `unita-05/starter-mostra/test_mostra_u5.py` - starter di test: un caso completo, gli altri sono compito dello studente.
+- `unita-07/esempi/stringhe_u7.py` - API delle stringhe per problemi: pulizia, prefissi, ricerca, conteggio, tokenizzazione e ricomposizione (cap. PY-11, parte I).
+- `unita-07/esempi/liste_tuple_u7.py` - API delle liste e delle tuple, attraversamenti, comprehension e controesempio su `array.array` (cap. PY-11, parte II).
+- `unita-07/esempi/riferimenti_copie_u7.py` - alias, riassegnamento, copia superficiale, ricostruzione riga per riga e tupla con elemento mutabile (cap. PY-11, parte III).
+- `unita-07/esempi/matrici_u7.py` - matrici rettangolari con righe indipendenti, somme per riga e per colonna e trasposta (cap. PY-11, parte V).
+- `unita-07/esempi/analizzatore_testi_u7.py` - analizzatore di testi completo di riferimento (LAB-PY-U7).
+- `unita-07/esempi/osserva_alias_u7.py` - programma di osservazione per la sezione U7 della guida al debugger.
+- `unita-07/esempi/problemi_algoritmici_u7.py` - soluzioni di riferimento dei dieci problemi della famiglia Sequenze, testi e matrici.
+- `unita-07/starter-laboratorio/analizzatore_u7.py` - starter incompleto del LAB-PY-U7: costanti, firme e docstring, corpi da completare.
+- `unita-07/starter-laboratorio/test_analizzatore_u7.py` - suite completa dello starter, con i casi pubblici L01-L14.
 
 ## Convenzioni
 
