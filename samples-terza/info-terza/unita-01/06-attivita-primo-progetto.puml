@@ -2,7 +2,7 @@
 ' Rendering locale atteso: 06-attivita-primo-progetto.svg (tema chiaro).
 ' Il materiale essenziale non dipende dal server PlantUML esterno.
 @startuml 06-attivita-primo-progetto
-title LAB-PY-U1 — Dal file al primo commit
+title LAB-PY-U1 - Dal file al primo commit, casa e laboratorio
 skinparam backgroundColor #f7fbfd
 skinparam activity {
   BackgroundColor #ffffff
@@ -22,6 +22,8 @@ while (Esecuzione riuscita?) is (no)
 endwhile (sì)
 :4 · Prova nel REPL e confronto;
 :5 · Git e primi commit;
-:6 · Dimostrazione e riflessione;
+:6 · Andata: push, clone o pull;
+:7 · Ritorno: pull e cronologie allineate;
+:8 · Dimostrazione e riflessione;
 stop
 @enduml
