@@ -17,6 +17,14 @@ Sorgenti Python di riferimento per il sito [info-terza](https://github.com/malaf
 - `unita-05/esempi/traccia_chiamate_u5.py` — listato canonico per la traccia delle chiamate (cap. PY-08 C).
 - `unita-05/starter-mostra/mostra_prima_u5.py` - baseline monolitica della mostra (LAB-PY-U5).
 - `unita-05/starter-mostra/test_mostra_u5.py` - starter di test: un caso completo, gli altri sono compito dello studente.
+- `unita-06/esempi/ricorsione_lineare_u6.py` - funzioni ricorsive lineari: fattoriale, somma e MCD (cap. PY-10, parte I).
+- `unita-06/esempi/traccia_fattoriale_u6.py` - fattoriale ricorsivo con tracciatore didattico per la discesa e la risalita dei frame (cap. PY-10, parte I).
+- `unita-06/esempi/fibonacci_u6.py` - Fibonacci ricorsivo e iterativo a confronto (cap. PY-10, parte II).
+- `unita-06/esempi/osserva_ricorsione_u6.py` - strumentazione di Fibonacci: ingressi totali e profondità massima (cap. PY-10, parte II).
+- `unita-06/esempi/hanoi_u6.py` - generatore ricorsivo delle mosse della torre di Hanoi (cap. PY-10, parte III).
+- `unita-06/esempi/test_ricorsione_u6.py` - suite di riferimento dei sorgenti d'esempio dell'Unità 6.
+- `unita-06/starter-laboratorio/ricorsione_u6.py` - starter del LAB-PY-U6: versione di partenza da completare.
+- `unita-06/starter-laboratorio/test_ricorsione_u6.py` - suite del LAB-PY-U6: versione di partenza.
 - `unita-07/esempi/stringhe_u7.py` - API delle stringhe per problemi: pulizia, prefissi, ricerca, conteggio, tokenizzazione e ricomposizione (cap. PY-11, parte I).
 - `unita-07/esempi/liste_tuple_u7.py` - API delle liste e delle tuple, attraversamenti, comprehension e controesempio su `array.array` (cap. PY-11, parte II).
 - `unita-07/esempi/riferimenti_copie_u7.py` - alias, riassegnamento, copia superficiale, ricostruzione riga per riga e tupla con elemento mutabile (cap. PY-11, parte III).
