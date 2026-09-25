@@ -34,6 +34,16 @@ Sorgenti Python di riferimento per il sito [info-terza](https://github.com/malaf
 - `unita-07/esempi/problemi_algoritmici_u7.py` - soluzioni di riferimento dei dieci problemi della famiglia Sequenze, testi e matrici.
 - `unita-07/starter-laboratorio/analizzatore_u7.py` - starter incompleto del LAB-PY-U7: costanti, firme e docstring, corpi da completare.
 - `unita-07/starter-laboratorio/test_analizzatore_u7.py` - suite completa dello starter, con i casi pubblici L01-L14.
+- `unita-08/esempi/operazioni_collezioni_u8.py` - operazioni e controesempi su dizionari, viste, copie, chiavi hashable e insiemi (cap. PY-12, parti I-II).
+- `unita-08/esempi/deduplicazione_raggruppamenti_u8.py` - deduplicazione stabile, ultime occorrenze, gruppi indipendenti e pattern di dizionario (cap. PY-12, parti II-III).
+- `unita-08/esempi/record_catalogo_u8.py` - migrazione da liste parallele, record di catalogo, ricerca, aggiornamento e ordinamento (cap. PY-12, parte III).
+- `unita-08/esempi/frequenze_u8.py` - conteggio esplicito delle parole, presentazione con politica di parità e confronto con `Counter` (cap. PY-12, parte IV).
+- `unita-08/esempi/fibonacci_memoria_u8.py` - Fibonacci diretto, iterativo e con memoria esplicita, con conteggi C, D e S (cap. PY-12, parte V).
+- `unita-08/esempi/test_esempi_u8.py` - suite di riferimento dei sorgenti d'esempio dell'Unità 8.
+- `unita-08/starter-laboratorio/analizzatore_u8.py` - starter incompleto del LAB-PY-U8: costanti, firme e docstring, corpi da completare.
+- `unita-08/starter-laboratorio/test_analizzatore_u8.py` - suite dello starter con i casi pubblici L01-L12 e L13 da progettare.
+- `unita-08/riferimento-laboratorio/analizzatore_u8.py` - soluzione formativa delle quattro funzioni del LAB-PY-U8.
+- `unita-08/riferimento-laboratorio/test_analizzatore_u8.py` - suite formativa completa del LAB-PY-U8, incluso un possibile caso L13.
 
 ## Convenzioni
 
