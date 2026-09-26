@@ -44,6 +44,22 @@ Sorgenti Python di riferimento per il sito [info-terza](https://github.com/malaf
 - `unita-08/starter-laboratorio/test_analizzatore_u8.py` - suite dello starter con i casi pubblici L01-L12 e L13 da progettare.
 - `unita-08/riferimento-laboratorio/analizzatore_u8.py` - soluzione formativa delle quattro funzioni del LAB-PY-U8.
 - `unita-08/riferimento-laboratorio/test_analizzatore_u8.py` - suite formativa completa del LAB-PY-U8, incluso un possibile caso L13.
+- `unita-09/esempi/conteggi_scansioni.py` - riepiloghi a una e due scansioni, scansione con arresto e varianti strumentate con visite, addizioni e confronti (cap. PY-13, parte I).
+- `unita-09/esempi/conteggi_cicli.py` - conteggi esatti dei cicli: attraversamenti, coppie di indici, dimezzamenti, raddoppiamenti e matrice rettangolare (cap. PY-13, parti I-II).
+- `unita-09/esempi/confronto_fibonacci.py` - Fibonacci diretto, iterativo e con memoria con conteggi C, D e S, più fattoriale e Hanoi (cap. PY-13, parte III).
+- `unita-09/esempi/capacita_dinamica.py` - simulazione del modello didattico della capacità dinamica e del costo ammortizzato (cap. PY-13, parte III).
+- `unita-09/esempi/misure_u9.py` - esperimenti di misura con `time.perf_counter`, ripetizioni, campioni conservati e tabelle testuali (cap. PY-13, parte IV).
+- `unita-09/esempi/grafici_u9.py` - grafici delle famiglie di crescita, delle visite e delle durate misurate con matplotlib, esportati su file (cap. PY-13, parte IV).
+- `unita-09/esempi/test_esempi_u9.py` - suite di riferimento dei sorgenti d'esempio dell'Unità 9.
+- `unita-09/starter-laboratorio/analisi_u9.py` - interfacce di analisi del LAB-PY-U9, con due corpi da completare.
+- `unita-09/starter-laboratorio/test_analisi_u9.py` - casi pubblici L01-L12 dello starter, con i fallimenti attesi e L12 da progettare.
+- `unita-09/starter-laboratorio/misure_u9.py` - cornice del timer con regione cronometrata e campioni da completare.
+- `unita-09/starter-laboratorio/grafici_u9.py` - cornice del grafico con serie, etichette e salvataggio da completare.
+- `unita-09/riferimento-laboratorio/analisi_u9.py` - soluzione formativa delle interfacce di analisi del LAB-PY-U9.
+- `unita-09/riferimento-laboratorio/test_analisi_u9.py` - suite formativa completa del LAB-PY-U9, incluso un possibile caso L12.
+- `unita-09/riferimento-laboratorio/misure_u9.py` - misuratore completo e spiegato del LAB-PY-U9.
+- `unita-09/riferimento-laboratorio/grafici_u9.py` - grafici completi del LAB-PY-U9.
+- `unita-09/README.md` - mappa dei sorgenti dell'Unità 9: comandi, versioni verificate e ipotesi del modello di costo.
 
 ## Convenzioni
 
