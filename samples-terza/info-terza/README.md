@@ -60,6 +60,19 @@ Sorgenti Python di riferimento per il sito [info-terza](https://github.com/malaf
 - `unita-09/riferimento-laboratorio/misure_u9.py` - misuratore completo e spiegato del LAB-PY-U9.
 - `unita-09/riferimento-laboratorio/grafici_u9.py` - grafici completi del LAB-PY-U9.
 - `unita-09/README.md` - mappa dei sorgenti dell'Unità 9: comandi, versioni verificate e ipotesi del modello di costo.
+- `unita-10/esempi/ricerche_u10.py` - contratto del primo indice con ricerca lineare, dicotomica iterativa e dicotomica ricorsiva su estremi, più le varianti booleana, «un indice qualsiasi», «tutti gli indici» e posizione di inserimento (cap. PY-14, parte I).
+- `unita-10/esempi/ordinamenti_u10.py` - i quattro ordinamenti elementari col contratto comune `list` sul posto e ritorno `None`, più l'approfondimento con l'ultimo scambio (cap. PY-14, parte II).
+- `unita-10/esempi/record_u10.py` - ordinamento di record con funzione chiave, criterio composto `(totale_cent, codice)`, viste ordinate del registro e forme idiomatiche `sorted` / `list.sort` (cap. PY-14, parti III-IV).
+- `unita-10/esempi/conteggi_u10.py` - varianti strumentate con confronti, scambi, spostamenti e sondaggi, e formule attese per `n` piccoli (cap. PY-14, parti II e IV).
+- `unita-10/esempi/misure_u10.py` - cinque famiglie di input deterministiche e protocollo di misura con `time.perf_counter` (cap. PY-14, parte IV).
+- `unita-10/esempi/test_esempi_u10.py` - suite di riferimento dei sorgenti d'esempio dell'Unità 10 (188 test).
+- `unita-10/starter-laboratorio/ordinamenti_u10.py` - firme, docstring e contratti dei quattro ordinamenti del LAB-PY-U10, corpi da completare in L2.
+- `unita-10/starter-laboratorio/conteggi_u10.py` - strumentazione da completare in L4, con `formule_attese` fornita.
+- `unita-10/starter-laboratorio/dataset_u10.py` - cinque famiglie di input e copie indipendenti, fornito completo.
+- `unita-10/starter-laboratorio/misure_u10.py` - cornice del timer con regione cronometrata da completare in L6.
+- `unita-10/starter-laboratorio/test_ordinamenti_u10.py` - casi pubblici L01-L12 con i fallimenti attesi documentati e L12 da progettare.
+- `unita-10/riferimento-laboratorio/` - le cinque controparti complete e verificate dello starter, con il caso L12 compilato.
+- `unita-10/README.md` - mappa dei sorgenti dell'Unità 10: comandi, versioni verificate, contratti e formule attese.
 
 ## Convenzioni
 
