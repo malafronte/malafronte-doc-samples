@@ -20,6 +20,13 @@ mostrano con `RemoteCode` e citano il percorso di questo repository.
   ricerche del cap. PY-14, protocollo di misura con `time.perf_counter`,
   contratto unico per procedure in-place e procedure che restituiscono una lista
   nuova, campioni, sintesi a mediana e metadati.
+- `esempi/ordinamenti_elementari_u11.py` - i quattro ordinamenti elementari del
+  cap. PY-14, copia di servizio della cartella `esempi` per le misure e il
+  grafico del confronto completo U10-U11.
+- `esempi/grafico_u11.py` - confronto sperimentale eseguito: sette procedure,
+  cinque famiglie, quattro dimensioni, cinque campioni per cella. Stampa le
+  tabelle equivalenti e, se `matplotlib` è disponibile, disegna il grafico a due
+  riquadri mostrato dal cap. PY-15, parte IV, sez. F.
 - `esempi/test_esempi_u11.py` - suite deterministica di verifica degli attesi del
   capitolo e delle proprietà dei sorgenti d'esempio.
 - `starter-laboratorio/ordinamenti_u11.py` - firme, docstring e contratti delle

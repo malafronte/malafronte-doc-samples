@@ -76,6 +76,8 @@ Sorgenti Python di riferimento per il sito [info-terza](https://github.com/malaf
 - `unita-11/esempi/merge_quick_u11.py` - le quattro funzioni canoniche: `fondi_ordinate`, `merge_sort`, `partiziona_lomuto` e `quick_sort`, con parametro `chiave` e contratti distinti fra lista nuova e ordinamento sul posto (cap. PY-15, parti I-III).
 - `unita-11/esempi/conteggi_u11.py` - varianti strumentate con confronti, scambi, copie e profondità massima, più `confronti_massimi_fusione` e `copie_attese_merge_sort` (cap. PY-15, parti II-III).
 - `unita-11/esempi/misure_u11.py` - cinque famiglie di input con le regole di U10, ricerche del cap. PY-14 e protocollo di misura con contratto unico per effetti diversi (cap. PY-15, parte IV).
+- `unita-11/esempi/ordinamenti_elementari_u11.py` - i quattro ordinamenti elementari del cap. PY-14, copia di servizio della cartella `esempi`.
+- `unita-11/esempi/grafico_u11.py` - confronto sperimentale del cap. PY-15: tabelle equivalenti e grafico a due riquadri su cinque famiglie e quattro dimensioni.
 - `unita-11/esempi/test_esempi_u11.py` - suite di riferimento dei sorgenti d'esempio dell'Unità 11 (137 test).
 - `unita-11/starter-laboratorio/ordinamenti_u11.py` - firme, docstring e contratti delle quattro funzioni del LAB-PY-U11, corpi da completare in L2.
 - `unita-11/starter-laboratorio/conteggi_u11.py` - strumentazione da completare in L3, con le formule attese fornite.
