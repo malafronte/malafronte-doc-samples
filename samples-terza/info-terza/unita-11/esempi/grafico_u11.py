@@ -173,7 +173,7 @@ def stampa_tabelle(risultati, dimensioni=DIMENSIONI):
     print("Ripetizioni per cella:", RIPETIZIONI)
     for famiglia in FAMIGLIE:
         print()
-        print(f"Famiglia {famiglia} - durate medie in millisecondi")
+        print(f"Famiglia {famiglia} - durata mediana in millisecondi")
         for n in dimensioni:
             for nome, _ in PROCEDURE:
                 sintesi = risultati.get((nome, famiglia, n))
@@ -243,7 +243,7 @@ def disegna_grafico(risultati, percorso, dimensioni=DIMENSIONI):
             asse, famiglia, serie, "mediana della durata (ms, scala log)", "famiglia " + famiglia
         )
     figura.suptitle(
-        "Durata mediana di quattro procedure di ordinamento - cinque campioni per punto"
+        "Durata mediana di sette procedure di ordinamento - cinque campioni per punto"
     )
     figura.tight_layout()
     figura.savefig(percorso, dpi=120)
