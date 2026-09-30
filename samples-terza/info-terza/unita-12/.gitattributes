@@ -1,0 +1,4 @@
+# Le fixture sono byte-esatte: nessuna conversione di fine riga.
+# Il contenuto dei file in dati/ è oggetto di verifica (BOM, byte UTF-8,
+# lunghezze dichiarate) e la normalizzazione dei terminatori lo altererebbe.
+dati/** -text
