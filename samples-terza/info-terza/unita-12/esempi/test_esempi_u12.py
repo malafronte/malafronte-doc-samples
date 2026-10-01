@@ -3,7 +3,7 @@
 I test controllano gli attesi dichiarati nei capitoli PY-16, PY-17 e PY-18 e le
 proprietà dei moduli `utilita_u12`, `demo_import_u12`, `codifiche_u12` ed
 `eccezioni_date_u12`: valore dell'inventario, assenza di effetti all'import,
-conti separati di punti di codice e byte, comportamento del BOM con i due
+conti separati di codepoint e byte, comportamento del BOM con i due
 codec, controlli separati di conversione e dominio, `else`/`finally`, date con
 riferimenti fissi e fixture di testo e immagini nella cartella `dati/`.
 

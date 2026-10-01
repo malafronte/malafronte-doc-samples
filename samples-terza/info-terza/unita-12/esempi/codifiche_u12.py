@@ -8,7 +8,7 @@ dell'Unità 12.
 
 Nuclei:
 
-- `sommario_testo(testo)` - punti di codice, byte UTF-8 e loro forma
+- `sommario_testo(testo)` - codepoint, byte UTF-8 e loro forma
   esadecimale, per contare `str` e `bytes` senza confonderli;
 - `decodifiche_con_firma(dati)` - la stessa sequenza decodificata con `utf-8`
   e con `utf-8-sig`, per osservare che cosa succede al BOM iniziale;
@@ -22,12 +22,12 @@ BOM_UTF8 = b"\xef\xbb\xbf"
 
 
 def sommario_testo(testo):
-    """Restituisce punti di codice e byte UTF-8 del testo ricevuto.
+    """Restituisce codepoint e byte UTF-8 del testo ricevuto.
 
     Il risultato è un dizionario nuovo con:
     - `testo`: il testo ricevuto, invariato;
-    - `punti_codice`: quanti punti di codice contiene (`len(testo)`);
-    - `punti`: i punti di codice come interi, nell'ordine del testo;
+    - `punti_codice`: quanti codepoint contiene (`len(testo)`);
+    - `punti`: i codepoint come interi, nell'ordine del testo;
     - `byte_utf8`: la sequenza `bytes` della codifica UTF-8;
     - `byte_hex`: gli stessi byte in cifre esadecimali maiuscole, separati da
       uno spazio (per esempio `"C3 A8"`).
@@ -46,7 +46,7 @@ def decodifiche_con_firma(dati):
     """Decodifica la stessa sequenza di byte con `utf-8` e con `utf-8-sig`.
 
     Con `utf-8` un eventuale BOM iniziale diventa il carattere U+FEFF, che
-    compare come primo punto di codice della stringa. Con `utf-8-sig` la firma
+    compare come primo codepoint della stringa. Con `utf-8-sig` la firma
     iniziale viene omessa e il testo è quello «pulito». Una U+FEFF interna o
     non iniziale **resta** in entrambi i casi: i due codec differiscono solo
     sull'inizio della sequenza.
@@ -86,7 +86,7 @@ def confronto_bytearray():
 
 def main():
     """Stampa i confronti canonici del capitolo su byte e codifiche."""
-    print("Il punto di codice e i suoi byte UTF-8")
+    print("Il codepoint e i suoi byte UTF-8")
     for testo, etichetta in (("è", "precomposta"), ("e\u0300", "combinante"), ("", "vuota")):
         sommario = sommario_testo(testo)
         print(f"{etichetta:12} testo={testo!r:12} punti={sommario['punti_codice']}"

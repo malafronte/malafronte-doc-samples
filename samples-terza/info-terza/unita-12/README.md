@@ -21,7 +21,7 @@ repository.
   modi diversi **senza duplicare il calcolo**. `input` e `print` vivono solo in
   `main()`, sotto la guardia `if __name__ == "__main__"`.
 - `esempi/codifiche_u12.py` - confronti di `str`, `bytes` e `bytearray` **in
-  memoria**: punti di codice contro byte UTF-8, accento precomposto contro
+  memoria**: codepoint contro byte UTF-8, accento precomposto contro
   combinante, firma `EF BB BF` e comportamento dei codec `utf-8` e `utf-8-sig`.
 - `esempi/eccezioni_date_u12.py` - funzioni pure con `raise`, propagazione su due
   chiamate, registro di `try`/`except`/`else`/`finally`, giorni fra due date,
