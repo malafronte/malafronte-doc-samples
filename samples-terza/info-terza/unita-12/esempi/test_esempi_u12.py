@@ -223,8 +223,9 @@ def test_valida_quantita_reale_non_e_un_intero():
 
 def test_valida_quantita_con_argomento_non_testo_e_un_uso_sbagliato():
     """Un difetto di programmazione non diventa «dato non valido»."""
-    with pytest.raises(TypeError):
-        valida_quantita(None)
+    for argomento in (None, 42, 42.9, b"42", True):
+        with pytest.raises(TypeError):
+            valida_quantita(argomento)
 
 
 def test_prezzo_totale_lascia_propagare_l_errore_di_conversione():
@@ -255,6 +256,28 @@ def test_altro_e_finally_sulla_conversione_fallita():
 # ---------------------------------------------------------------------------
 # Date e durate (cap. PY-18)
 # ---------------------------------------------------------------------------
+
+
+def test_date_rifiutano_le_altre_forme_iso_e_le_cifre_non_ascii():
+    for testo in ("20240228", "2024-W09-3", "2024-2-28", "２０２４-02-28"):
+        with pytest.raises(ValueError, match="formato atteso AAAA-MM-GG"):
+            giorni_tra(testo, "2024-03-01")
+        with pytest.raises(ValueError, match="formato atteso AAAA-MM-GG"):
+            giorni_tra("2024-02-28", testo)
+        with pytest.raises(ValueError, match="formato atteso AAAA-MM-GG"):
+            eta_anni(testo, "2026-03-01")
+        with pytest.raises(ValueError, match="formato atteso AAAA-MM-GG"):
+            eta_anni("2010-01-01", testo)
+
+
+def test_date_separano_il_calendario_dal_formato():
+    with pytest.raises(ValueError, match="giorno inesistente nel calendario"):
+        giorni_tra("2024-02-30", "2024-03-01")
+
+
+def test_date_rifiutano_argomenti_non_stringa():
+    with pytest.raises(TypeError, match="stringa"):
+        giorni_tra(None, "2024-03-01")
 
 
 def test_giorni_tra_sull_anno_bisestile():

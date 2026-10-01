@@ -104,6 +104,6 @@ precedenti, più `try`/`except`/`else`/`finally`, `raise` e i tipi `date`,
 | Avvio | la guardia `if __name__ == "__main__"` è l'unico avvio automatico: all'import non partono domande |
 | Nuovi testi | UTF-8 **senza BOM**; la fixture `frase_con_bom.txt` è un ingresso esterno deliberato |
 | BOM | `utf-8` conserva la firma iniziale come `U+FEFF`; `utf-8-sig` la omette **solo all'inizio**; nessuna rimozione indiscriminata di `U+FEFF` |
-| Date | formato ISO `AAAA-MM-GG` per `date.fromisoformat`; `datetime.strptime` solo con formato esplicito; convenzione 29 febbraio → 1° marzo negli anni non bisestili |
+| Date | `data_iso` impone esattamente `AAAA-MM-GG` con cifre ASCII prima di `date.fromisoformat`, separando formato e calendario; forme compatte e settimanali rifiutate; `datetime.strptime` solo con formato esplicito; convenzione 29 febbraio → 1° marzo negli anni non bisestili |
 | Errori | classi mirate; `ValueError` per formato non convertibile e per dominio violato, con diagnosi distinte; un argomento di tipo sbagliato resta un `TypeError`, cioè un difetto di programmazione, non «dato non valido» |
 | Fixture | file sintetici in `dati/`, mai sovrascritti dagli esperimenti; le copie di lavoro appartengono a chi esegue; il `.gitattributes` dell'unità esclude `dati/**` dalla conversione dei terminatori di riga, perché le verifiche confrontano byte esatti |

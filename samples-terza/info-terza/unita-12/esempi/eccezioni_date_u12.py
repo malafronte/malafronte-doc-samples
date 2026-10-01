@@ -38,6 +38,8 @@ def valida_quantita(testo):
     dato sbagliato ma un uso sbagliato della funzione: non viene convertito in
     `ValueError` e il difetto resta visibile.
     """
+    if not isinstance(testo, str):
+        raise TypeError("la quantità deve essere una stringa")
     valore = int(testo)  # ValueError se il formato non è convertibile
     if valore < 0:
         raise ValueError(f"quantità negativa: {valore}")
@@ -76,16 +78,38 @@ def prova_conversione(testo):
     return passaggi
 
 
+def data_iso(testo):
+    """Converte solo AAAA-MM-GG, distinguendo formato e calendario.
+
+    Le cifre devono essere ASCII. Le altre forme ammesse da fromisoformat
+    (data compatta e data settimanale) non appartengono a questo contratto.
+    Un argomento non stringa solleva TypeError, non ValueError.
+    """
+    if not isinstance(testo, str):
+        raise TypeError("la data deve essere una stringa")
+    if not (
+        len(testo) == 10
+        and testo[4] == "-"
+        and testo[7] == "-"
+        and all("0" <= cifra <= "9" for cifra in testo[:4] + testo[5:7] + testo[8:])
+    ):
+        raise ValueError(f"formato atteso AAAA-MM-GG: {testo!r}")
+    try:
+        return date.fromisoformat(testo)
+    except ValueError:
+        raise ValueError(f"giorno inesistente nel calendario: {testo!r}")
+
+
 def giorni_tra(inizio, fine):
     """Restituisce i giorni fra due date in formato ISO `AAAA-MM-GG`.
 
     Il secondo giorno non può precedere il primo: in quel caso la funzione
-    solleva `ValueError` nominando le due date. Un formato non valido viene
-    rifiutato dalla conversione `date.fromisoformat`, che solleva `ValueError`.
+    solleva `ValueError` nominando le due date. `data_iso` rifiuta con diagnosi
+    distinte il formato diverso da AAAA-MM-GG e il giorno inesistente.
     Lo stesso giorno dà 0; la differenza è di calendario, non di 24 ore.
     """
-    data_inizio = date.fromisoformat(inizio)
-    data_fine = date.fromisoformat(fine)
+    data_inizio = data_iso(inizio)
+    data_fine = data_iso(fine)
     if data_fine < data_inizio:
         raise ValueError(f"la seconda data precede la prima: {fine} < {inizio}")
     return (data_fine - data_inizio).days
@@ -108,15 +132,15 @@ def compleanno_anno(data_nascita, anno):
 
 
 def eta_anni(nascita, riferimento):
-    """Restituisce gli anni compiuti alla data di riferimento, entrambe ISO.
+    """Restituisce gli anni compiuti al riferimento, entrambe AAAA-MM-GG.
 
     La nascita non può essere successiva al riferimento: in quel caso la
     funzione solleva `ValueError`. Gli anni compiuti non si ottengono dividendo
     i giorni per 365: si confronta la ricorrenza del compleanno nell'anno del
     riferimento e, se non è ancora trascorsa, si sottrae un anno.
     """
-    data_nascita = date.fromisoformat(nascita)
-    data_riferimento = date.fromisoformat(riferimento)
+    data_nascita = data_iso(nascita)
+    data_riferimento = data_iso(riferimento)
     if data_nascita > data_riferimento:
         raise ValueError(f"la nascita è successiva al riferimento: {nascita} > {riferimento}")
     anni = data_riferimento.year - data_nascita.year
