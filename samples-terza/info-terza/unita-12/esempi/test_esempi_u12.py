@@ -1,18 +1,23 @@
-"""Suite di verifica dei sorgenti d'esempio dell'Unità 12 (blocco moduli, byte, eccezioni, date).
+"""Suite di verifica dei sorgenti d'esempio dell'Unità 12 (moduli, byte, eccezioni, date, testo).
 
-I test controllano gli attesi dichiarati nei capitoli PY-16, PY-17 e PY-18 e le
-proprietà dei moduli `utilita_u12`, `demo_import_u12`, `codifiche_u12` ed
-`eccezioni_date_u12`: valore dell'inventario, assenza di effetti all'import,
-conti separati di codepoint e byte, comportamento del BOM con i due
-codec, controlli separati di conversione e dominio, `else`/`finally`, date con
-riferimenti fissi e fixture di testo e immagini nella cartella `dati/`.
+I test controllano gli attesi dichiarati nei capitoli PY-16, PY-17, PY-18 e
+PY-19 e le proprietà dei moduli `utilita_u12`, `demo_import_u12`,
+`codifiche_u12`, `eccezioni_date_u12`, `analisi_testo_u12`,
+`percorsi_testo_u12` e `cli_testo_u12`: valore dell'inventario, assenza di
+effetti all'import, conti separati di codepoint e byte, comportamento del BOM
+con i due codec, controlli separati di conversione e dominio, `else`/`finally`,
+date con riferimenti fissi, fixture di testo e immagini nella cartella `dati/`,
+conteggio delle parole e classifiche con parità alfabetica, righe, EOF,
+terminatori, modalità di apertura e diagnosi delle aperture.
 
 Esecuzione dalla cartella `unita-12/`:
 
     uv run --python 3.14 --with pytest python -m pytest esempi/test_esempi_u12.py -q
 
 La suite è deterministica: usa dati espliciti e riferimenti di data fissi,
-mai `date.today()` né durate reali.
+mai `date.today()` né durate reali. I test che scrivono file usano la cartella
+isolata `tmp_path` oppure copie di lavoro: le fixture di `dati/` restano
+invariate.
 """
 
 import subprocess
@@ -22,6 +27,9 @@ from pathlib import Path
 
 import pytest
 
+from analisi_testo_u12 import analizza_file, conta_parole, ordina_frequenze
+from cli_testo_u12 import main as cli_main
+from cli_testo_u12 import righe_presentazione
 from codifiche_u12 import BOM_UTF8, confronto_bytearray, decodifiche_con_firma, sommario_testo
 from demo_import_u12 import genera_inventario, presentazione_riga, presentazione_tabella
 from eccezioni_date_u12 import (
@@ -32,6 +40,16 @@ from eccezioni_date_u12 import (
     prezzo_totale,
     prova_conversione,
     valida_quantita,
+)
+from percorsi_testo_u12 import (
+    byte_iniziali,
+    esperimento_modalita,
+    leggi_con_iterazione,
+    leggi_con_readline,
+    leggi_con_readlines,
+    prova_apertura,
+    radici_di_lavoro,
+    riepilogo_percorso,
 )
 from utilita_u12 import valore_magazzino
 
@@ -375,3 +393,333 @@ def test_immagine_troncata_ha_la_firma_ma_non_la_lunghezza_dichiarata():
     assert troncata[:2] == b"BM"
     assert int.from_bytes(troncata[2:6], "little") == lunghezza_dichiarata
     assert len(troncata) < lunghezza_dichiarata
+
+
+# ---------------------------------------------------------------------------
+# Analisi di testo: parole, frequenze e classifiche (cap. PY-19)
+# ---------------------------------------------------------------------------
+
+RIGHE_CANONICHE = ["Sole luna sole", "mare LUNA sole"]
+FREQUENZE_PARITA = {"luna": 2, "sole": 2, "mare": 1}
+
+
+def test_conta_parole_sul_dataset_canonico():
+    totale, frequenze = conta_parole(RIGHE_CANONICHE)
+    assert totale == 6
+    assert frequenze == {"sole": 3, "luna": 2, "mare": 1}
+
+
+def test_conta_parole_attraversa_l_iterabile_una_sola_volta():
+    class UnaSolaVolta:
+        def __init__(self, righe):
+            self.righe = list(righe)
+            self.passaggi = 0
+
+        def __iter__(self):
+            self.passaggi += 1
+            if self.passaggi > 1:
+                raise AssertionError("iterabile attraversato più di una volta")
+            return iter(self.righe)
+
+    sorgente = UnaSolaVolta(RIGHE_CANONICHE)
+    assert conta_parole(sorgente) == (6, {"sole": 3, "luna": 2, "mare": 1})
+    assert sorgente.passaggi == 1
+
+
+def test_conta_parole_normalizza_maiuscole_e_accenti():
+    assert conta_parole(["Città CITTÀ città"]) == (3, {"città": 3})
+
+
+def test_conta_parole_su_righe_vuote_e_su_soli_spazi():
+    assert conta_parole([]) == (0, {})
+    assert conta_parole(["", " ", "\t\n"]) == (0, {})
+
+
+def test_ordina_frequenze_crescente_con_parita_alfabetica():
+    assert ordina_frequenze(FREQUENZE_PARITA) == [("mare", 1), ("luna", 2), ("sole", 2)]
+
+
+def test_ordina_frequenze_decrescente_mantiene_la_parita_alfabetica():
+    assert ordina_frequenze(FREQUENZE_PARITA, decrescente=True) == [
+        ("luna", 2),
+        ("sole", 2),
+        ("mare", 1),
+    ]
+
+
+def test_l_ordinamento_sulla_coppia_intera_non_rispetta_la_parita():
+    naive = sorted(FREQUENZE_PARITA.items(), reverse=True)
+    assert naive == [("sole", 2), ("mare", 1), ("luna", 2)]
+    assert naive != ordina_frequenze(FREQUENZE_PARITA, decrescente=True)
+
+
+def test_ordina_frequenze_non_modifica_il_dizionario():
+    frequenze = {"sole": 3, "luna": 1}
+    elenco = ordina_frequenze(frequenze)
+    assert elenco == [("luna", 1), ("sole", 3)]
+    elenco.append(("aggiunta", 9))
+    assert frequenze == {"sole": 3, "luna": 1}
+
+
+def test_ordina_frequenze_sul_dizionario_vuoto():
+    assert ordina_frequenze({}) == []
+    assert ordina_frequenze({}, decrescente=True) == []
+
+
+# ---------------------------------------------------------------------------
+# File di testo: fixture, EOF, BOM e diagnosi (cap. PY-19)
+# ---------------------------------------------------------------------------
+
+TESTI = DATI / "testi"
+
+
+def test_analizza_file_sul_canonico():
+    risultato = analizza_file(TESTI / "analisi_canonica.txt")
+    assert risultato["totale"] == 6
+    assert risultato["frequenze"] == {"sole": 3, "luna": 2, "mare": 1}
+    assert risultato["classifica_crescente"] == [("mare", 1), ("luna", 2), ("sole", 3)]
+    assert risultato["classifica_decrescente"] == [("sole", 3), ("luna", 2), ("mare", 1)]
+
+
+def test_analizza_file_sul_dataset_di_parita():
+    risultato = analizza_file(TESTI / "analisi_parita.txt")
+    assert risultato["totale"] == 5
+    assert risultato["classifica_crescente"] == [("mare", 1), ("luna", 2), ("sole", 2)]
+    assert risultato["classifica_decrescente"] == [("luna", 2), ("sole", 2), ("mare", 1)]
+
+
+def test_file_vuoto_e_soli_spazi_danno_zeri_e_classifiche_vuote():
+    atteso = {
+        "totale": 0,
+        "frequenze": {},
+        "classifica_crescente": [],
+        "classifica_decrescente": [],
+    }
+    assert analizza_file(TESTI / "analisi_vuota.txt") == atteso
+    assert analizza_file(TESTI / "analisi_spazi.txt") == atteso
+
+
+def test_ultima_riga_senza_terminatore_non_perde_token():
+    risultato = analizza_file(TESTI / "analisi_no_newline.txt")
+    assert risultato["totale"] == 6
+    assert risultato["frequenze"] == {"sole": 3, "luna": 2, "mare": 1}
+
+
+def test_sole_e_sole_con_la_virgola_restano_distinti():
+    risultato = analizza_file(TESTI / "analisi_punteggiatura.txt")
+    assert risultato["totale"] == 2
+    assert risultato["frequenze"] == {"sole": 1, "sole,": 1}
+
+
+def test_bom_non_ammesso_separa_la_prima_parola():
+    risultato = analizza_file(TESTI / "analisi_con_bom.txt")
+    assert risultato["totale"] == 6
+    assert risultato["frequenze"] == {"\ufeffsole": 1, "luna": 2, "sole": 2, "mare": 1}
+
+
+def test_bom_ammesso_con_utf8_sig_restituisce_il_canonico():
+    with open(TESTI / "analisi_con_bom.txt", "r", encoding="utf-8-sig") as sorgente:
+        assert conta_parole(sorgente) == (6, {"sole": 3, "luna": 2, "mare": 1})
+
+
+def test_analizza_file_non_modifica_il_file_di_ingresso():
+    percorso = TESTI / "analisi_canonica.txt"
+    byte_prima = percorso.read_bytes()
+    analizza_file(percorso)
+    assert percorso.read_bytes() == byte_prima
+
+
+def test_percorso_assente_solleva_file_not_found():
+    with pytest.raises(FileNotFoundError):
+        analizza_file(TESTI / "non_esiste.txt")
+
+
+def test_directory_al_posto_del_file_solleva_un_os_error():
+    # la classe esatta dipende dal sistema operativo: PermissionError su
+    # Windows, IsADirectoryError sui sistemi Unix
+    with pytest.raises((PermissionError, IsADirectoryError)):
+        analizza_file(TESTI)
+
+
+def test_byte_incompatibili_sollevano_unicode_decode_error():
+    with pytest.raises(UnicodeDecodeError):
+        analizza_file(TESTI / "byte_incompatibili.txt")
+
+
+# ---------------------------------------------------------------------------
+# Percorsi, righe, modalità e chiusura (cap. PY-19)
+# ---------------------------------------------------------------------------
+
+
+def test_riepilogo_percorso_distingue_file_directory_e_assente():
+    fatti_file = riepilogo_percorso(TESTI / "analisi_canonica.txt")
+    assert fatti_file["esiste"] is True
+    assert fatti_file["e_file"] is True
+    assert fatti_file["e_directory"] is False
+    assert fatti_file["nome"] == "analisi_canonica.txt"
+    assert fatti_file["suffisso"] == ".txt"
+    fatti_cartella = riepilogo_percorso(TESTI)
+    assert fatti_cartella["e_directory"] is True
+    assert fatti_cartella["e_file"] is False
+    fatti_assente = riepilogo_percorso(TESTI / "non_esiste.txt")
+    assert fatti_assente["esiste"] is False
+    assert fatti_assente["e_file"] is False
+    assert fatti_assente["e_directory"] is False
+
+
+def test_stesso_percorso_relativo_da_radici_diverse():
+    fatti = radici_di_lavoro()
+    assert fatti["os.getcwd()"] == fatti["Path.cwd()"]
+    assert fatti["relativo da Path.cwd()"] != fatti["relativo dalla cartella del sorgente"]
+    assert fatti["cartella del sorgente"] != fatti["os.getcwd()"]
+
+
+def test_variabile_di_ambiente_con_default(monkeypatch):
+    monkeypatch.delenv("CORSO_UTENTE", raising=False)
+    assert radici_di_lavoro()["CORSO_UTENTE (default: ospite)"] == "ospite"
+    monkeypatch.setenv("CORSO_UTENTE", "anna")
+    assert radici_di_lavoro()["CORSO_UTENTE (default: ospite)"] == "anna"
+
+
+def test_le_tre_letture_concordano_sul_canonico():
+    percorso = TESTI / "analisi_canonica.txt"
+    attese = ["Sole luna sole\n", "mare LUNA sole\n"]
+    assert leggi_con_iterazione(percorso) == attese
+    assert leggi_con_readline(percorso) == (attese, True)
+    assert leggi_con_readlines(percorso) == attese
+
+
+def test_ultima_riga_senza_terminatore_non_ha_il_newline():
+    righe, ultima_terminata = leggi_con_readline(TESTI / "analisi_no_newline.txt")
+    assert righe == ["Sole luna sole\n", "mare LUNA sole"]
+    assert ultima_terminata is False
+
+
+def test_readline_su_file_vuoto_restituisce_subito_stringa_vuota():
+    righe, ultima_terminata = leggi_con_readline(TESTI / "analisi_vuota.txt")
+    assert righe == []
+    assert ultima_terminata is False
+
+
+def test_eof_e_riga_vuota_sono_valori_diversi(tmp_path):
+    percorso = tmp_path / "riga_vuota.txt"
+    percorso.write_bytes(b"\n")
+    with open(percorso, "r", encoding="utf-8") as sorgente:
+        assert sorgente.readline() == "\n"
+        assert sorgente.readline() == ""
+
+
+def test_la_modalita_w_tronca_un_file_esistente(tmp_path):
+    percorso = tmp_path / "appunti.txt"
+    percorso.write_text("contenuto lungo da non perdere\n", encoding="utf-8")
+    with open(percorso, "w", encoding="utf-8") as destinazione:
+        destinazione.write("breve\n")
+    assert percorso.read_text(encoding="utf-8") == "breve\n"
+
+
+def test_esperimento_modalita_descrive_creazione_troncatura_e_rifiuto(tmp_path):
+    osservazioni = esperimento_modalita(tmp_path)
+    assert [passo for passo, _ in osservazioni] == [
+        "w su file assente: crea",
+        "a su file esistente: aggiunge in fondo",
+        "w su file esistente: tronca e riscrive",
+        "x su file esistente: rifiuta",
+        "contenuto finale di prova_modalita.txt",
+        "x su nome libero: crea",
+    ]
+    assert (tmp_path / "prova_modalita.txt").read_text(encoding="utf-8") == "riscrittura\n"
+    assert (tmp_path / "secondo_prova.txt").read_text(encoding="utf-8") == "creato da x\n"
+
+
+def test_byte_iniziali_della_firma_utf8():
+    assert byte_iniziali(TESTI / "analisi_con_bom.txt", 3) == BOM_UTF8
+    assert byte_iniziali(TESTI / "analisi_canonica.txt", 3) == b"Sol"
+
+
+def test_byte_iniziali_su_file_vuoto_e_una_sequenza_vuota():
+    assert byte_iniziali(TESTI / "analisi_vuota.txt") == b""
+
+
+def test_prova_apertura_nomina_le_classi_degli_errori():
+    assert prova_apertura(TESTI / "analisi_canonica.txt") == "apertura riuscita"
+    assert prova_apertura(TESTI / "non_esiste.txt") == "apertura non riuscita: FileNotFoundError"
+    assert prova_apertura(TESTI) in (
+        "apertura non riuscita: PermissionError",
+        "apertura non riuscita: IsADirectoryError",
+    )
+
+
+def test_apertura_riuscita_non_decodifica():
+    # il file con byte incompatibili si apre e fallisce soltanto alla lettura
+    assert prova_apertura(TESTI / "byte_incompatibili.txt") == "apertura riuscita"
+
+
+def test_il_with_chiude_il_file_anche_in_uscita_anomala(tmp_path):
+    percorso = tmp_path / "prova.txt"
+    percorso.write_text("prima\nseconda\n", encoding="utf-8")
+    with pytest.raises(ValueError):
+        with open(percorso, "r", encoding="utf-8") as sorgente:
+            sorgente.readline()
+            raise ValueError("guasto previsto dal test")
+    assert sorgente.closed is True
+
+
+# ---------------------------------------------------------------------------
+# CLI dell'analisi di testo (cap. PY-19)
+# ---------------------------------------------------------------------------
+
+
+def test_cli_sul_canonico_stampa_il_riepilogo_e_codice_zero(capsys):
+    codice = cli_main([str(TESTI / "analisi_canonica.txt")])
+    uscita = capsys.readouterr().out
+    assert codice == 0
+    assert "parole totali: 6" in uscita
+    assert "parole distinte: 3" in uscita
+    assert "  mare 1\n  luna 2\n  sole 3" in uscita
+    assert "  sole 3\n  luna 2\n  mare 1" in uscita
+
+
+def test_cli_sul_vuoto_dichiara_le_classifiche_vuote(capsys):
+    codice = cli_main([str(TESTI / "analisi_vuota.txt")])
+    uscita = capsys.readouterr().out
+    assert codice == 0
+    assert "parole totali: 0" in uscita
+    assert uscita.count("(vuota)") == 2
+
+
+def test_cli_sui_casi_di_errore_codici_e_messaggi(capsys):
+    assert cli_main([str(TESTI / "non_esiste.txt")]) == 1
+    assert "file non trovato" in capsys.readouterr().out
+    assert cli_main([str(TESTI)]) == 1
+    assert "non leggibile" in capsys.readouterr().out
+    assert cli_main([str(TESTI / "byte_incompatibili.txt")]) == 1
+    assert "byte non UTF-8" in capsys.readouterr().out
+    assert cli_main([]) == 2
+    assert "uso:" in capsys.readouterr().out
+
+
+def test_righe_presentazione_non_stampa_ma_restituisce_righe():
+    risultato = {
+        "totale": 2,
+        "frequenze": {"a": 1, "b": 1},
+        "classifica_crescente": [("a", 1), ("b", 1)],
+        "classifica_decrescente": [("a", 1), ("b", 1)],
+    }
+    righe = righe_presentazione(risultato)
+    assert righe[0] == "parole totali: 2"
+    assert righe[1] == "parole distinte: 2"
+    assert "  a 1" in righe
+    assert "  b 1" in righe
+
+
+def test_l_import_dei_moduli_nuovi_non_produce_output():
+    esito = subprocess.run(
+        [sys.executable, "-c", "import cli_testo_u12; import percorsi_testo_u12"],
+        cwd=CARTELLA_ESEMPI,
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert esito.returncode == 0
+    assert esito.stdout == ""
+    assert esito.stderr == ""
