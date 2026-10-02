@@ -1,0 +1,14 @@
+[
+  {
+    "codice": "007",
+    "descrizione": "Vite, lunga",
+    "quantita": 4,
+    "prezzo_centesimi": 25
+  },
+  {
+    "codice": "012",
+    "descrizione": "Caffè \"A\"",
+    "quantita": 2,
+    "prezzo_centesimi": 350
+  }
+]

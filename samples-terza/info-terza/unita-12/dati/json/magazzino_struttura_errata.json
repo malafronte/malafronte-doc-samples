@@ -1,0 +1,5 @@
+{
+  "articoli": [
+    {"codice": "007", "descrizione": "Vite, lunga", "quantita": 4, "prezzo_centesimi": 25}
+  ]
+}

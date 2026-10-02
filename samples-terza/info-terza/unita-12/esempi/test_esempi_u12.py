@@ -1,14 +1,19 @@
-"""Suite di verifica dei sorgenti d'esempio dell'Unità 12 (moduli, byte, eccezioni, date, testo).
+"""Suite di verifica dei sorgenti d'esempio dell'Unità 12 (moduli, byte, eccezioni, date, testo, record).
 
-I test controllano gli attesi dichiarati nei capitoli PY-16, PY-17, PY-18 e
-PY-19 e le proprietà dei moduli `utilita_u12`, `demo_import_u12`,
+I test controllano gli attesi dichiarati nei capitoli PY-16, PY-17, PY-18,
+PY-19 e PY-20 e le proprietà dei moduli `utilita_u12`, `demo_import_u12`,
 `codifiche_u12`, `eccezioni_date_u12`, `analisi_testo_u12`,
-`percorsi_testo_u12` e `cli_testo_u12`: valore dell'inventario, assenza di
-effetti all'import, conti separati di codepoint e byte, comportamento del BOM
-con i due codec, controlli separati di conversione e dominio, `else`/`finally`,
-date con riferimenti fissi, fixture di testo e immagini nella cartella `dati/`,
-conteggio delle parole e classifiche con parità alfabetica, righe, EOF,
-terminatori, modalità di apertura e diagnosi delle aperture.
+`percorsi_testo_u12`, `cli_testo_u12`, `dominio_magazzino_u12`,
+`persistenza_magazzino_u12`, `cli_magazzino_u12` e `json_u12`: valore
+dell'inventario, assenza di effetti all'import, conti separati di codepoint e
+byte, comportamento del BOM con i due codec, controlli separati di conversione
+e dominio, `else`/`finally`, date con riferimenti fissi, fixture di testo e
+immagini nella cartella `dati/`, conteggio delle parole e classifiche con
+parità alfabetica, righe, EOF, terminatori, modalità di apertura e diagnosi
+delle aperture, quindi schema del magazzino, CRUD senza aggiornamenti parziali,
+caricamento CSV con intestazioni e BOM, salvataggio mediante temporaneo con i
+guasti simulati della matrice MAG-01-MAG-20 e serializzazione JSON con i tre
+controlli separati di sintassi, struttura e dominio.
 
 Esecuzione dalla cartella `unita-12/`:
 
@@ -17,9 +22,12 @@ Esecuzione dalla cartella `unita-12/`:
 La suite è deterministica: usa dati espliciti e riferimenti di data fissi,
 mai `date.today()` né durate reali. I test che scrivono file usano la cartella
 isolata `tmp_path` oppure copie di lavoro: le fixture di `dati/` restano
-invariate.
+invariate. I guasti di scrittura e di sostituzione sono intercettati in modo
+deterministico (monkeypatch mirato), non affidati ai permessi della cartella.
 """
 
+import csv
+import json
 import subprocess
 import sys
 from datetime import date
@@ -28,10 +36,24 @@ from pathlib import Path
 import pytest
 
 from analisi_testo_u12 import analizza_file, conta_parole, ordina_frequenze
+from cli_magazzino_u12 import main as cli_magazzino_main
+from cli_magazzino_u12 import riga_articolo, righe_situazione
 from cli_testo_u12 import main as cli_main
 from cli_testo_u12 import righe_presentazione
 from codifiche_u12 import BOM_UTF8, confronto_bytearray, decodifiche_con_firma, sommario_testo
 from demo_import_u12 import genera_inventario, presentazione_riga, presentazione_tabella
+from dominio_magazzino_u12 import (
+    CAMPI_ARTICOLO,
+    articolo_a_riga,
+    cerca_articolo,
+    elimina_articolo,
+    formatta_centesimi,
+    inserisci_articolo,
+    modifica_articolo,
+    riga_a_articolo,
+    riepilogo_magazzino,
+    valida_articolo,
+)
 from eccezioni_date_u12 import (
     compleanno_anno,
     data_da_formato,
@@ -40,6 +62,13 @@ from eccezioni_date_u12 import (
     prezzo_totale,
     prova_conversione,
     valida_quantita,
+)
+from json_u12 import (
+    carica_json,
+    deserializza_articoli,
+    deserializza_articoli_strict,
+    salva_json,
+    serializza_articoli,
 )
 from percorsi_testo_u12 import (
     byte_iniziali,
@@ -51,6 +80,7 @@ from percorsi_testo_u12 import (
     radici_di_lavoro,
     riepilogo_percorso,
 )
+from persistenza_magazzino_u12 import carica_articoli, salva_articoli
 from utilita_u12 import valore_magazzino
 
 CARTELLA_ESEMPI = Path(__file__).resolve().parent
@@ -765,3 +795,633 @@ def test_l_import_dei_moduli_nuovi_non_produce_output():
     assert esito.returncode == 0
     assert esito.stdout == ""
     assert esito.stderr == ""
+
+
+# ---------------------------------------------------------------------------
+# Magazzino CSV: schema, CRUD e persistenza (cap. PY-20) - matrice MAG
+# ---------------------------------------------------------------------------
+
+CSV_DATI = DATI / "csv"
+JSON_DATI = DATI / "json"
+
+ARTICOLO_020 = {"codice": "020", "descrizione": "Bullone", "quantita": 1, "prezzo_centesimi": 7}
+
+
+def _copia_canonico(tmp_path):
+    """Copia di lavoro dell'archivio canonico: la fixture resta invariata."""
+    destinazione = tmp_path / "magazzino.csv"
+    destinazione.write_bytes((CSV_DATI / "magazzino_canonico.csv").read_bytes())
+    return destinazione
+
+
+def _input_finto(comandi):
+    """Sostituisce `input` con una sequenza finita di risposte, poi EOF."""
+    rimanenti = iter(comandi)
+
+    def leggi(messaggio=""):
+        try:
+            return next(rimanenti)
+        except StopIteration:
+            raise EOFError
+
+    return leggi
+
+
+def _esegui_cli(archivio, testo):
+    """Avvia la CLI in un processo proprio, con uno script di input."""
+    return subprocess.run(
+        [sys.executable, str(CARTELLA_ESEMPI / "cli_magazzino_u12.py"), str(archivio)],
+        input=testo,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        timeout=60,
+    )
+
+
+# --- conversione e schema -------------------------------------------------
+
+
+def test_riga_a_articolo_converte_i_tipi_e_conserva_gli_zeri():
+    articolo = riga_a_articolo(["007", "Vite, lunga", "4", "25"], "record 1")
+    assert articolo == RECORD_CANONICI[0]
+    assert isinstance(articolo["quantita"], int)
+    assert isinstance(articolo["prezzo_centesimi"], int)
+    assert articolo_a_riga(articolo) == ["007", "Vite, lunga", "4", "25"]
+
+
+def test_riga_a_articolo_diagnostica_campo_e_riferimento():
+    with pytest.raises(ValueError, match="record 2, campo 'quantita'"):
+        riga_a_articolo(["007", "x", "tre", "1"], "record 2")
+    with pytest.raises(ValueError, match="attesi 4 campi"):
+        riga_a_articolo(["007", "x", "1"], "record 2")
+
+
+def test_valida_articolo_rifiuta_bool_e_float_come_quantita():
+    for valore in (True, False, 1.0, "1", None):
+        with pytest.raises(ValueError, match="atteso un intero"):
+            valida_articolo(
+                {"codice": "007", "descrizione": "x", "quantita": valore, "prezzo_centesimi": 0}
+            )
+
+
+def test_valida_articolo_separa_campi_mancanti_non_previsti_e_domini():
+    with pytest.raises(ValueError, match="mancante"):
+        valida_articolo({"codice": "007", "descrizione": "x", "quantita": 1})
+    with pytest.raises(ValueError, match="non previsto"):
+        valida_articolo(
+            {"codice": "007", "descrizione": "x", "quantita": 1, "prezzo_centesimi": 0, "note": "n"}
+        )
+    with pytest.raises(ValueError, match="spazi iniziali"):
+        valida_articolo(
+            {"codice": " 007", "descrizione": "x", "quantita": 1, "prezzo_centesimi": 0}
+        )
+    with pytest.raises(ValueError, match="non bianco"):
+        valida_articolo(
+            {"codice": "007", "descrizione": "   ", "quantita": 1, "prezzo_centesimi": 0}
+        )
+    with pytest.raises(ValueError, match="maggiore o uguale a zero"):
+        valida_articolo(
+            {"codice": "007", "descrizione": "x", "quantita": -1, "prezzo_centesimi": 0}
+        )
+
+
+def test_formatta_centesimi_gestisce_zero_e_resti_piccoli():
+    assert formatta_centesimi(0) == "0,00 €"
+    assert formatta_centesimi(5) == "0,05 €"
+    assert formatta_centesimi(800) == "8,00 €"
+    assert formatta_centesimi(1234) == "12,34 €"
+
+
+# --- MAG-01-MAG-10: avvio, ricerche, CRUD e stato -------------------------
+
+
+def test_mag01_primo_avvio_con_archivio_assente(monkeypatch, tmp_path, capsys):
+    archivio = tmp_path / "nuovo.csv"
+    monkeypatch.setattr("builtins.input", _input_finto(["1", "0"]))
+    assert cli_magazzino_main([str(archivio)]) == 0
+    uscita = capsys.readouterr().out
+    assert "archivio assente" in uscita
+    assert "(magazzino vuoto)" in uscita
+    assert not archivio.exists()
+
+
+def test_mag02_il_canonico_ricostruisce_i_tipi_e_il_valore():
+    articoli = carica_articoli(CSV_DATI / "magazzino_canonico.csv")
+    assert articoli == RECORD_CANONICI
+    for articolo in articoli:
+        assert isinstance(articolo["quantita"], int)
+        assert isinstance(articolo["prezzo_centesimi"], int)
+    assert riepilogo_magazzino(articoli) == {
+        "articoli": 2,
+        "quantita_totale": 6,
+        "valore_centesimi": 800,
+    }
+
+
+def test_mag03_ricerca_prima_ultima_posizione_e_assente():
+    articoli = [dict(record) for record in RECORD_CANONICI]
+    prima = [dict(record) for record in articoli]
+    assert cerca_articolo(articoli, "007") == 0
+    assert cerca_articolo(articoli, "012") == 1
+    assert cerca_articolo(articoli, "999") is None
+    assert cerca_articolo(articoli, "7") is None
+    assert articoli == prima
+
+
+def test_mag04_inserimento_ordinario_e_duplicato_rifiutato():
+    articoli = [dict(record) for record in RECORD_CANONICI]
+    assert inserisci_articolo(articoli, dict(ARTICOLO_020)) is None
+    assert len(articoli) == 3
+    assert articoli[2] == ARTICOLO_020
+    articoli[2]["descrizione"] = "cambiata solo nella lista"
+    assert ARTICOLO_020["descrizione"] == "Bullone"
+    prima = [dict(record) for record in articoli]
+    with pytest.raises(ValueError, match="già presente"):
+        inserisci_articolo(articoli, dict(RECORD_CANONICI[0]))
+    assert articoli == prima
+
+
+def test_mag05_modifica_valida_aggiorna_i_tre_campi():
+    articoli = [dict(record) for record in RECORD_CANONICI]
+    assert modifica_articolo(articoli, "007", "Vite, corta", 9, 30) is True
+    assert articoli[0] == {
+        "codice": "007",
+        "descrizione": "Vite, corta",
+        "quantita": 9,
+        "prezzo_centesimi": 30,
+    }
+
+
+def test_mag06_modifica_con_campo_invalido_non_applica_nulla():
+    articoli = [dict(record) for record in RECORD_CANONICI]
+    prima = [dict(record) for record in articoli]
+    with pytest.raises(ValueError, match="quantita"):
+        modifica_articolo(articoli, "007", "nuova", -1, 30)
+    assert articoli == prima
+    with pytest.raises(ValueError, match="descrizione"):
+        modifica_articolo(articoli, "007", "   ", 1, 30)
+    assert articoli == prima
+    assert modifica_articolo(articoli, "999", "x", 1, 1) is False
+    assert articoli == prima
+
+
+def test_mag06b_cli_con_modifica_rifiutata_non_scritto_nulla(monkeypatch, tmp_path, capsys):
+    archivio = _copia_canonico(tmp_path)
+    originali = archivio.read_bytes()
+
+    def vietato(percorso, articoli):
+        raise AssertionError("nessuna modifica pendente: non si deve scrivere")
+
+    monkeypatch.setattr("cli_magazzino_u12.salva_articoli", vietato)
+    monkeypatch.setattr("builtins.input", _input_finto(["4", "007", "Nuova", "-1", "5", "0"]))
+    assert cli_magazzino_main([str(archivio)]) == 0
+    assert "aggiornamento rifiutato" in capsys.readouterr().out
+    assert archivio.read_bytes() == originali
+
+
+def test_mag07_elimina_restituisce_true_o_false_senza_domande():
+    articoli = [dict(record) for record in RECORD_CANONICI]
+    assert elimina_articolo(articoli, "007") is True
+    assert articoli == [RECORD_CANONICI[1]]
+    assert elimina_articolo(articoli, "007") is False
+    assert articoli == [RECORD_CANONICI[1]]
+
+
+def test_mag07b_cli_annulla_conferma_non_ammessa_e_assente(monkeypatch, tmp_path, capsys):
+    archivio = _copia_canonico(tmp_path)
+    originali = archivio.read_bytes()
+    monkeypatch.setattr("builtins.input", _input_finto(["5", "007", "x", "5", "007", "n", "5", "999", "0"]))
+    assert cli_magazzino_main([str(archivio)]) == 0
+    uscita = capsys.readouterr().out
+    assert uscita.count("eliminazione annullata") == 2
+    assert "articolo assente: nessun codice '999'" in uscita
+    assert archivio.read_bytes() == originali
+
+
+def test_mag07c_cli_conferma_s_elimina_e_poi_salva(monkeypatch, tmp_path, capsys):
+    archivio = _copia_canonico(tmp_path)
+    monkeypatch.setattr("builtins.input", _input_finto(["5", "007", "s", "0"]))
+    assert cli_magazzino_main([str(archivio)]) == 0
+    assert "articolo '007' eliminato" in capsys.readouterr().out
+    assert [articolo["codice"] for articolo in carica_articoli(archivio)] == ["012"]
+
+
+def test_mag08_salvataggio_esplicito_e_prosecuzione(monkeypatch, tmp_path, capsys):
+    archivio = _copia_canonico(tmp_path)
+    chiamate = []
+    reale = salva_articoli
+
+    def spia(percorso, articoli):
+        chiamate.append(Path(percorso))
+        return reale(percorso, articoli)
+
+    monkeypatch.setattr("cli_magazzino_u12.salva_articoli", spia)
+    monkeypatch.setattr("builtins.input", _input_finto(["3", "020", "Bullone", "1", "7", "6", "1", "0"]))
+    assert cli_magazzino_main([str(archivio)]) == 0
+    uscita = capsys.readouterr().out
+    assert "archivio salvato" in uscita
+    assert "articoli: 3" in uscita
+    assert len(chiamate) == 1
+
+
+def test_mag09_uscita_con_modifiche_salva_e_il_riavvio_e_equivalente(monkeypatch, tmp_path, capsys):
+    archivio = _copia_canonico(tmp_path)
+    monkeypatch.setattr("builtins.input", _input_finto(["3", "020", "Bullone", "1", "7", "0"]))
+    assert cli_magazzino_main([str(archivio)]) == 0
+    assert "archivio salvato" in capsys.readouterr().out
+    ricaricati = carica_articoli(archivio)
+    assert [articolo["codice"] for articolo in ricaricati] == ["007", "012", "020"]
+    monkeypatch.setattr("builtins.input", _input_finto(["0"]))
+    assert cli_magazzino_main([str(archivio)]) == 0
+    assert carica_articoli(archivio) == ricaricati
+
+
+def test_mag10_uscita_senza_modifiche_non_riscrive(monkeypatch, tmp_path):
+    archivio = _copia_canonico(tmp_path)
+    originali = archivio.read_bytes()
+
+    def vietato(percorso, articoli):
+        raise AssertionError("il salvataggio non deve essere richiesto")
+
+    monkeypatch.setattr("cli_magazzino_u12.salva_articoli", vietato)
+    monkeypatch.setattr("builtins.input", _input_finto(["1", "2", "007", "0"]))
+    assert cli_magazzino_main([str(archivio)]) == 0
+    assert archivio.read_bytes() == originali
+
+
+# --- MAG-11 e MAG-15: caricamento, diagnosi e stato precedente ------------
+
+
+def test_mag11_intestazione_colonne_tipo_dominio_e_duplicato(tmp_path):
+    casi = [
+        (b"codice,descrizione,quantita\n007,x,1\n", "colonna mancante"),
+        (b"codice,descrizione,quantita,prezzo_centesimi,note\n007,x,1,2,n\n", "colonna non prevista"),
+        (b"codice,codice,quantita,prezzo_centesimi\n007,x,1,2\n", "duplicati"),
+        (b"descrizione,codice,quantita,prezzo_centesimi\nx,007,1,2\n", "ordine"),
+        (b"codice,descrizione,quantita,prezzo_centesimi\n007,x,tre,2\n", "non è un intero"),
+        (b"codice,descrizione,quantita,prezzo_centesimi\n007,x,-1,2\n", "maggiore o uguale a zero"),
+    ]
+    percorso = tmp_path / "archivio.csv"
+    for contenuto, atteso in casi:
+        percorso.write_bytes(contenuto)
+        with pytest.raises(ValueError, match=atteso):
+            carica_articoli(percorso)
+
+
+def test_mag11_fixture_di_errore_e_file_assente_distinto_da_corrotto(tmp_path):
+    with pytest.raises(ValueError, match="colonna mancante"):
+        carica_articoli(CSV_DATI / "magazzino_schema_errato.csv")
+    with pytest.raises(ValueError, match="già presente"):
+        carica_articoli(CSV_DATI / "magazzino_duplicati.csv")
+    with pytest.raises(FileNotFoundError):
+        carica_articoli(tmp_path / "assente.csv")
+    vuoto = tmp_path / "vuoto.csv"
+    vuoto.write_bytes(b"")
+    with pytest.raises(ValueError, match="senza intestazione"):
+        carica_articoli(vuoto)
+
+
+def test_mag11b_strict_true_segnala_quello_che_strict_false_accetta():
+    righe = ['007,"Vite,4,25']
+    assert list(csv.reader(righe, strict=False)) == [["007", "Vite,4,25"]]
+    with pytest.raises(csv.Error):
+        list(csv.reader(righe, strict=True))
+
+
+def test_mag11c_cli_con_archivio_corrotto_diagnostica_e_ferma(monkeypatch, tmp_path, capsys):
+    archivio = tmp_path / "corrotto.csv"
+    originali = (CSV_DATI / "magazzino_duplicati.csv").read_bytes()
+    archivio.write_bytes(originali)
+    monkeypatch.setattr("cli_magazzino_u12.salva_articoli", lambda p, a: None)
+    assert cli_magazzino_main([str(archivio)]) == 1
+    uscita = capsys.readouterr().out
+    assert "archivio non valido" in uscita
+    assert "già presente" in uscita
+    assert "1 - elenco e riepilogo" not in uscita
+    assert archivio.read_bytes() == originali
+
+
+def test_mag15_fallimento_e_raccolta_vuota_valida_sono_casi_diversi(tmp_path):
+    # Il caricatore non pubblica liste parziali: il record valido in testa al
+    # file dei duplicati non viene reso disponibile quando il secondo fallisce.
+    percorso = tmp_path / "duplicati.csv"
+    percorso.write_bytes((CSV_DATI / "magazzino_duplicati.csv").read_bytes())
+    with pytest.raises(ValueError):
+        carica_articoli(percorso)
+    solo_intestazione = tmp_path / "solo_intestazione.csv"
+    solo_intestazione.write_bytes(b"codice,descrizione,quantita,prezzo_centesimi\n")
+    assert carica_articoli(solo_intestazione) == []
+
+
+def test_righe_fisiche_vuote_ignorate_e_record_vuoti_rifiutati(tmp_path):
+    percorso = tmp_path / "righe_vuote.csv"
+    percorso.write_bytes(b"codice,descrizione,quantita,prezzo_centesimi\n\n007,x,1,2\n\n")
+    assert [articolo["codice"] for articolo in carica_articoli(percorso)] == ["007"]
+    casi = [
+        (b",x,1,2\n", "campo 'codice'"),
+        (b"007,,1,2\n", "campo 'descrizione'"),
+        (b"007,x,,2\n", "non è un intero"),
+    ]
+    altro = tmp_path / "vuoti.csv"
+    for riga, atteso in casi:
+        altro.write_bytes(b"codice,descrizione,quantita,prezzo_centesimi\n" + riga)
+        with pytest.raises(ValueError, match=atteso):
+            carica_articoli(altro)
+
+
+# --- MAG-12-MAG-14: guasti di scrittura e di sostituzione -----------------
+
+
+def test_mag12_guasto_durante_la_scrittura_del_temporaneo(monkeypatch, tmp_path):
+    archivio = _copia_canonico(tmp_path)
+    originali = archivio.read_bytes()
+    articoli = carica_articoli(archivio)
+    reale = csv.writer
+    scritte = {"n": 0}
+
+    class ScrittoreGuasto:
+        def __init__(self, vero):
+            self.vero = vero
+
+        def writerow(self, riga):
+            scritte["n"] += 1
+            if scritte["n"] > 2:
+                # Il guasto arriva dopo intestazione e primo record scritti.
+                raise OSError("guasto simulato durante la scrittura")
+            self.vero.writerow(riga)
+
+    monkeypatch.setattr(
+        csv, "writer", lambda uscita, **opzioni: ScrittoreGuasto(reale(uscita, **opzioni))
+    )
+    with pytest.raises(OSError, match="guasto simulato durante la scrittura"):
+        salva_articoli(archivio, articoli)
+    assert scritte["n"] == 3
+    assert archivio.read_bytes() == originali
+    assert list(tmp_path.glob("*.tmp")) == []
+
+
+def test_mag13_guasto_alla_sostituzione_con_temporaneo_pulito(monkeypatch, tmp_path):
+    archivio = _copia_canonico(tmp_path)
+    originali = archivio.read_bytes()
+    articoli = carica_articoli(archivio)
+
+    def sostituzione_fallita(self, destinazione):
+        raise OSError("guasto simulato alla sostituzione")
+
+    monkeypatch.setattr(Path, "replace", sostituzione_fallita)
+    with pytest.raises(OSError, match="guasto simulato alla sostituzione"):
+        salva_articoli(archivio, articoli)
+    assert archivio.read_bytes() == originali
+    assert list(tmp_path.glob("*.tmp")) == []
+
+
+def test_mag13b_residuo_di_pulizia_non_maschera_il_guasto_primario(monkeypatch, tmp_path):
+    archivio = _copia_canonico(tmp_path)
+    originali = archivio.read_bytes()
+    articoli = carica_articoli(archivio)
+
+    def sostituzione_fallita(self, destinazione):
+        raise OSError("guasto simulato alla sostituzione")
+
+    def pulizia_fallita(self, missing_ok=False):
+        raise OSError("pulizia fallita")
+
+    monkeypatch.setattr(Path, "replace", sostituzione_fallita)
+    monkeypatch.setattr(Path, "unlink", pulizia_fallita)
+    with pytest.raises(OSError, match="guasto simulato alla sostituzione") as sollevata:
+        salva_articoli(archivio, articoli)
+    note = getattr(sollevata.value, "__notes__", [])
+    assert any("temporaneo non rimosso" in nota for nota in note)
+    assert archivio.read_bytes() == originali
+    residui = list(tmp_path.glob("*.tmp"))
+    assert len(residui) == 1
+
+
+def test_mag14_guasto_del_salvataggio_alla_voce_zero(monkeypatch, tmp_path, capsys):
+    archivio = _copia_canonico(tmp_path)
+    originali = archivio.read_bytes()
+
+    def guasto(percorso, articoli):
+        raise OSError("guasto simulato al salvataggio")
+
+    monkeypatch.setattr("cli_magazzino_u12.salva_articoli", guasto)
+    monkeypatch.setattr(
+        "builtins.input", _input_finto(["3", "020", "Bullone", "1", "7", "0", "0"])
+    )
+    assert cli_magazzino_main([str(archivio)]) == 1
+    uscita = capsys.readouterr().out
+    assert uscita.count("salvataggio non riuscito") == 2
+    assert "si resta nel menu con le modifiche in memoria" in uscita
+    assert "archivio salvato" not in uscita
+    assert "sessione interrotta" in uscita
+    assert "modifiche non salvate" in uscita
+    assert archivio.read_bytes() == originali
+
+
+# --- MAG-16-MAG-20: round-trip, comandi, EOF, riavvii, import -------------
+
+
+def test_mag16_round_trip_byte_identico_sul_canonico(tmp_path):
+    articoli = carica_articoli(CSV_DATI / "magazzino_canonico.csv")
+    copia = tmp_path / "copia.csv"
+    salva_articoli(copia, articoli)
+    assert copia.read_bytes() == (CSV_DATI / "magazzino_canonico.csv").read_bytes()
+    assert not copia.read_bytes().startswith(b"\xef\xbb\xbf")
+    assert carica_articoli(copia) == articoli
+
+
+def test_mag16b_bom_ammesso_in_entrata_e_mai_in_uscita(tmp_path):
+    con_bom = CSV_DATI / "magazzino_con_bom.csv"
+    prima_riga = con_bom.read_text(encoding="utf-8").splitlines()[0]
+    assert prima_riga == "\ufeffcodice,descrizione,quantita,prezzo_centesimi"
+    articoli = carica_articoli(con_bom)
+    assert articoli == RECORD_CANONICI
+    uscita = tmp_path / "uscita.csv"
+    salva_articoli(uscita, articoli)
+    assert not uscita.read_bytes().startswith(b"\xef\xbb\xbf")
+
+
+def test_mag16c_quoting_multilinea_record_e_righe_fisiche_distinte(tmp_path):
+    articoli = carica_articoli(CSV_DATI / "magazzino_quoting.csv")
+    assert len(articoli) == 3
+    assert articoli[2]["descrizione"] == "Riga uno\nRiga due"
+    righe_fisiche = (CSV_DATI / "magazzino_quoting.csv").read_text(encoding="utf-8").count("\n")
+    assert righe_fisiche == 5
+    copia = tmp_path / "quoting.csv"
+    salva_articoli(copia, articoli)
+    assert carica_articoli(copia) == articoli
+
+
+def test_mag17_comando_sconosciuto_e_input_numerico_non_valido(monkeypatch, tmp_path, capsys):
+    archivio = _copia_canonico(tmp_path)
+    monkeypatch.setattr(
+        "builtins.input", _input_finto(["7", "abc", "3", "030", "Dado", "tre", "1", "0"])
+    )
+    assert cli_magazzino_main([str(archivio)]) == 0
+    uscita = capsys.readouterr().out
+    assert uscita.count("comando non riconosciuto") == 2
+    assert "inserimento rifiutato" in uscita
+    assert "non è un intero" in uscita
+    assert carica_articoli(archivio) == RECORD_CANONICI
+
+
+def test_mag18_eof_con_modifiche_pendenti_avvisa_e_non_salva(tmp_path):
+    archivio = _copia_canonico(tmp_path)
+    originali = archivio.read_bytes()
+    esito = _esegui_cli(archivio, "3\n020\nBullone\n1\n7\n")
+    assert esito.returncode == 1
+    assert "sessione interrotta" in esito.stdout
+    assert "modifiche non salvate" in esito.stdout
+    assert "archivio salvato" not in esito.stdout
+    assert archivio.read_bytes() == originali
+
+
+def test_mag18b_eof_senza_modifiche_avvisa_senza_allarme(tmp_path):
+    archivio = _copia_canonico(tmp_path)
+    esito = _esegui_cli(archivio, "")
+    assert esito.returncode == 1
+    assert "sessione interrotta" in esito.stdout
+    assert "modifiche non salvate" not in esito.stdout
+
+
+def test_mag19_più_avvii_consecutivi_non_duplicano_i_dati(tmp_path):
+    archivio = _copia_canonico(tmp_path)
+    assert _esegui_cli(archivio, "3\n020\nBullone\n1\n7\n0\n").returncode == 0
+    assert [articolo["codice"] for articolo in carica_articoli(archivio)] == ["007", "012", "020"]
+    secondo = _esegui_cli(archivio, "1\n0\n")
+    assert secondo.returncode == 0
+    assert "articoli: 3" in secondo.stdout
+    assert _esegui_cli(archivio, "1\n0\n").returncode == 0
+    ricaricati = carica_articoli(archivio)
+    assert len(ricaricati) == 3
+    for articolo in ricaricati:
+        assert isinstance(articolo["quantita"], int)
+
+
+def test_mag20_import_dei_tre_moduli_senza_effetti():
+    esito = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            "import dominio_magazzino_u12; import persistenza_magazzino_u12; import cli_magazzino_u12",
+        ],
+        cwd=CARTELLA_ESEMPI,
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert esito.returncode == 0
+    assert esito.stdout == ""
+    assert esito.stderr == ""
+    assert list(CARTELLA_ESEMPI.glob("*.csv")) == []
+    assert list(CARTELLA_UNITA.glob("*.csv")) == []
+
+
+# --- presentazione della CLI ----------------------------------------------
+
+
+def test_righe_situazione_mostra_conversione_e_record():
+    righe = righe_situazione(RECORD_CANONICI)
+    assert righe[0] == '007 - Vite, lunga - quantita 4 - prezzo 0,25 €'
+    assert righe[1] == '012 - Caffè "A" - quantita 2 - prezzo 3,50 €'
+    assert "valore complessivo: 800 centesimi = 8,00 €" in righe
+    assert righe_situazione([])[0] == "(magazzino vuoto)"
+    assert riga_articolo(ARTICOLO_020) == "020 - Bullone - quantita 1 - prezzo 0,07 €"
+
+
+def test_carica_restituisce_liste_nuove_e_salva_non_modifica(tmp_path):
+    primi = carica_articoli(CSV_DATI / "magazzino_canonico.csv")
+    secondi = carica_articoli(CSV_DATI / "magazzino_canonico.csv")
+    assert primi == secondi
+    assert primi is not secondi
+    prima = [dict(record) for record in primi]
+    salva_articoli(tmp_path / "magazzino.csv", primi)
+    assert primi == prima
+
+
+# ---------------------------------------------------------------------------
+# JSON: serializzazione e controlli separati (cap. PY-20)
+# ---------------------------------------------------------------------------
+
+
+def test_json_round_trip_canonico_e_byte_del_file():
+    articoli = carica_articoli(CSV_DATI / "magazzino_canonico.csv")
+    testo = serializza_articoli(articoli)
+    assert (JSON_DATI / "magazzino_canonico.json").read_text(encoding="utf-8") == testo + "\n"
+    ricostruiti = deserializza_articoli(testo)
+    assert ricostruiti == articoli
+    for articolo in ricostruiti:
+        assert isinstance(articolo["quantita"], int)
+
+
+def test_json_sintassi_struttura_e_dominio_sono_diagnosi_distinte():
+    with pytest.raises(json.JSONDecodeError):
+        carica_json(JSON_DATI / "magazzino_sintassi_errata.json")
+    with pytest.raises(ValueError, match="radice errata"):
+        carica_json(JSON_DATI / "magazzino_struttura_errata.json")
+    with pytest.raises(ValueError, match="record 2"):
+        carica_json(JSON_DATI / "magazzino_domini_errati.json")
+    assert issubclass(json.JSONDecodeError, ValueError)
+
+
+def test_json_tipi_non_ammessi_e_campi_mancanti_o_extra():
+    base = {"codice": "007", "descrizione": "Vite", "quantita": 1, "prezzo_centesimi": 2}
+    for campo, valore in [
+        ("quantita", True),
+        ("quantita", 1.0),
+        ("quantita", None),
+        ("prezzo_centesimi", -1),
+    ]:
+        record = dict(base)
+        record[campo] = valore
+        with pytest.raises(ValueError, match=campo):
+            deserializza_articoli(json.dumps([record]))
+    mancante = dict(base)
+    del mancante["prezzo_centesimi"]
+    with pytest.raises(ValueError, match="mancante"):
+        deserializza_articoli(json.dumps([mancante]))
+    extra = dict(base)
+    extra["note"] = "n"
+    with pytest.raises(ValueError, match="non previsto"):
+        deserializza_articoli(json.dumps([extra]))
+
+
+def test_json_duplicati_di_codice_e_nomi_doppi():
+    primo = {"codice": "007", "descrizione": "x", "quantita": 1, "prezzo_centesimi": 0}
+    doppio = dict(primo, descrizione="y")
+    with pytest.raises(ValueError, match="già presente"):
+        deserializza_articoli(json.dumps([primo, doppio]))
+    con_nome_doppio = (
+        '[{"codice": "007", "descrizione": "x", "quantita": 1,'
+        ' "quantita": 2, "prezzo_centesimi": 0}]'
+    )
+    assert deserializza_articoli(con_nome_doppio) == [
+        {"codice": "007", "descrizione": "x", "quantita": 2, "prezzo_centesimi": 0}
+    ]
+    with pytest.raises(ValueError, match="nome JSON duplicato"):
+        deserializza_articoli_strict(con_nome_doppio)
+
+
+def test_json_nan_non_e_valore_interoperabile():
+    record = {"codice": "007", "descrizione": "x", "quantita": 1, "prezzo_centesimi": 0}
+    record["prezzo_centesimi"] = float("nan")
+    with pytest.raises(ValueError, match="Out of range float"):
+        serializza_articoli([record])
+
+
+def test_json_bom_in_entrata_segnalato_dal_parser(tmp_path):
+    percorso = tmp_path / "con_bom.json"
+    percorso.write_bytes(b"\xef\xbb\xbf" + b"[]\n")
+    with pytest.raises(json.JSONDecodeError, match="BOM"):
+        carica_json(percorso)
+
+
+def test_salva_json_non_modifica_la_lista_e_non_lascia_bom(tmp_path):
+    articoli = [dict(RECORD_CANONICI[0]), dict(RECORD_CANONICI[1])]
+    prima = [dict(record) for record in articoli]
+    percorso = tmp_path / "magazzino.json"
+    salva_json(percorso, articoli)
+    assert articoli == prima
+    assert not percorso.read_bytes().startswith(b"\xef\xbb\xbf")
+    assert carica_json(percorso) == articoli
