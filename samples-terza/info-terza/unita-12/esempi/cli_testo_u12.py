@@ -55,8 +55,11 @@ def main(argv=None):
     Con un solo argomento - il percorso del file - l'analisi viene eseguita e
     presentata. Gli errori attesi ricevono ciascuno il proprio messaggio: il
     percorso assente, il percorso che non è un file leggibile e i byte che non
-    sono UTF-8 non vengono mai presentati come un'analisi riuscita. I difetti
-    di programmazione non vengono catturati.
+    sono UTF-8 non vengono mai presentati come un'analisi riuscita. Gli altri
+    errori di I/O ricevono il dettaglio del sistema. La diagnosi di decodifica
+    non dichiara una posizione assoluta: l'indice dell'eccezione è relativo al
+    buffer del decoder, non necessariamente all'intero file. I difetti di
+    programmazione non vengono catturati.
     """
     if argv is None:
         argv = sys.argv[1:]
@@ -73,8 +76,11 @@ def main(argv=None):
     except (IsADirectoryError, PermissionError):
         print(f"percorso non leggibile come file (directory o permessi): {percorso}")
         return 1
-    except UnicodeDecodeError as errore:
-        print(f"byte non UTF-8 alla posizione {errore.start}: {percorso}")
+    except UnicodeDecodeError:
+        print(f"byte non UTF-8 nel file: {percorso}")
+        return 1
+    except OSError as errore:
+        print(f"errore di accesso o lettura: {percorso} ({errore})")
         return 1
 
     for riga in righe_presentazione(risultato):

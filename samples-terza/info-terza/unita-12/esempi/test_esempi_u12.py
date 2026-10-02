@@ -698,6 +698,48 @@ def test_cli_sui_casi_di_errore_codici_e_messaggi(capsys):
     assert "uso:" in capsys.readouterr().out
 
 
+def test_cli_non_dichiara_una_posizione_assoluta_dal_buffer(tmp_path, capsys):
+    percorso = tmp_path / "incompatibile_dopo_piu_blocchi.txt"
+    dati = b"sole\n" * 2000 + b"\xe8"
+    percorso.write_bytes(dati)
+    assert cli_main([str(percorso)]) == 1
+    assert capsys.readouterr().out == f"byte non UTF-8 nel file: {percorso}\n"
+    assert percorso.read_bytes() == dati
+
+
+@pytest.mark.skipif(sys.platform != "win32", reason="nome non ammesso su Windows")
+def test_cli_diagnostica_un_nome_non_valido_su_windows(tmp_path, capsys):
+    percorso = tmp_path / "nome<non_valido>.txt"
+    assert cli_main([str(percorso)]) == 1
+    uscita = capsys.readouterr().out
+    assert "errore di accesso o lettura" in uscita
+    assert str(percorso) in uscita
+    assert "parole totali" not in uscita
+
+
+def test_cli_diagnostica_gli_altri_errori_di_io(monkeypatch, capsys):
+    def lettura_fallita(percorso):
+        raise OSError("guasto di lettura simulato")
+
+    monkeypatch.setattr("cli_testo_u12.analizza_file", lettura_fallita)
+    assert cli_main(["registro.txt"]) == 1
+    uscita = capsys.readouterr().out
+    assert "errore di accesso o lettura" in uscita
+    assert "guasto di lettura simulato" in uscita
+    assert "parole totali" not in uscita
+
+
+@pytest.mark.parametrize("tipo_errore", (TypeError, ValueError))
+def test_cli_lascia_visibili_i_difetti_di_programmazione(tipo_errore, monkeypatch, capsys):
+    def calcolo_errato(percorso):
+        raise tipo_errore("difetto di programmazione simulato")
+
+    monkeypatch.setattr("cli_testo_u12.analizza_file", calcolo_errato)
+    with pytest.raises(tipo_errore, match="difetto di programmazione simulato"):
+        cli_main(["registro.txt"])
+    assert capsys.readouterr().out == ""
+
+
 def test_righe_presentazione_non_stampa_ma_restituisce_righe():
     risultato = {
         "totale": 2,
