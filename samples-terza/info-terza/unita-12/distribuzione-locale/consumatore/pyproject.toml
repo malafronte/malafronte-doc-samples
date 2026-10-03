@@ -1,0 +1,11 @@
+[project]
+name = "consumatore-utilita-u12"
+version = "0.1.0"
+description = "Progetto consumatore della libreria personale utilita-magazzino-u12."
+requires-python = ">=3.14"
+dependencies = [
+    "utilita-magazzino-u12",
+]
+
+[tool.uv.sources]
+utilita-magazzino-u12 = { path = "../autore/dist/utilita_magazzino_u12-0.1.0-py3-none-any.whl" }

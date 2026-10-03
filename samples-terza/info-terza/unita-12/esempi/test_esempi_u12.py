@@ -1,10 +1,11 @@
 """Suite di verifica dei sorgenti d'esempio dell'Unità 12 (moduli, byte, eccezioni, date, testo, record).
 
 I test controllano gli attesi dichiarati nei capitoli PY-16, PY-17, PY-18,
-PY-19 e PY-20 e le proprietà dei moduli `utilita_u12`, `demo_import_u12`,
+PY-19, PY-20 e PY-21 e le proprietà dei moduli `utilita_u12`, `demo_import_u12`,
 `codifiche_u12`, `eccezioni_date_u12`, `analisi_testo_u12`,
 `percorsi_testo_u12`, `cli_testo_u12`, `dominio_magazzino_u12`,
-`persistenza_magazzino_u12`, `cli_magazzino_u12` e `json_u12`: valore
+`persistenza_magazzino_u12`, `cli_magazzino_u12`, `json_u12` e
+`record_binari_u12`: valore
 dell'inventario, assenza di effetti all'import, conti separati di codepoint e
 byte, comportamento del BOM con i due codec, controlli separati di conversione
 e dominio, `else`/`finally`, date con riferimenti fissi, fixture di testo e
@@ -13,7 +14,9 @@ parità alfabetica, righe, EOF, terminatori, modalità di apertura e diagnosi
 delle aperture, quindi schema del magazzino, CRUD senza aggiornamenti parziali,
 caricamento CSV con intestazioni e BOM, salvataggio mediante temporaneo con i
 guasti simulati della matrice MAG-01-MAG-20 e serializzazione JSON con i tre
-controlli separati di sintassi, struttura e dominio.
+controlli separati di sintassi, struttura e dominio. La sezione sui record
+binari verifica byte esatti, offset `i * 2`, domini di indice e valore,
+archivio vuoto o incompleto e `seek` dalle tre origini.
 
 Esecuzione dalla cartella `unita-12/`:
 
@@ -81,6 +84,7 @@ from percorsi_testo_u12 import (
     riepilogo_percorso,
 )
 from persistenza_magazzino_u12 import carica_articoli, salva_articoli
+from record_binari_u12 import aggiorna_record_due_byte, leggi_record_due_byte, traccia_seek
 from utilita_u12 import valore_magazzino
 
 CARTELLA_ESEMPI = Path(__file__).resolve().parent
@@ -1452,3 +1456,121 @@ def test_salva_json_non_modifica_la_lista_e_non_lascia_bom(tmp_path):
     assert articoli == prima
     assert not percorso.read_bytes().startswith(b"\xef\xbb\xbf")
     assert carica_json(percorso) == articoli
+
+
+# ---------------------------------------------------------------------------
+# Record binari e accesso per posizione (cap. PY-21)
+# ---------------------------------------------------------------------------
+
+BIN_DATI = DATI / "binari"
+BYTE_CANONICI = bytes([0x0A, 0x00, 0xF4, 0x01, 0xFF, 0xFF])
+
+
+def test_fixture_binaria_canonica_ha_i_byte_attesi():
+    percorso = BIN_DATI / "record_canonici.bin"
+    assert percorso.read_bytes() == BYTE_CANONICI
+    assert percorso.read_bytes().hex(" ").upper() == "0A 00 F4 01 FF FF"
+    assert len(BYTE_CANONICI) == 6
+    assert (BIN_DATI / "record_vuoto.bin").read_bytes() == b""
+    assert (BIN_DATI / "record_troncato.bin").read_bytes() == bytes([0x0A, 0x00, 0xF4, 0x01, 0xFF])
+
+
+def test_lettura_dei_tre_record_canonici():
+    percorso = BIN_DATI / "record_canonici.bin"
+    assert leggi_record_due_byte(percorso, 0) == 10
+    assert leggi_record_due_byte(percorso, 1) == 500
+    assert leggi_record_due_byte(percorso, 2) == 65535
+
+
+def test_aggiornamento_indice_1_byte_lunghezza_e_altri_record(tmp_path):
+    percorso = tmp_path / "record.bin"
+    percorso.write_bytes(BYTE_CANONICI)
+    assert aggiorna_record_due_byte(percorso, 1, 42) is None
+    assert percorso.read_bytes().hex(" ").upper() == "0A 00 2A 00 FF FF"
+    assert percorso.stat().st_size == 6
+    assert percorso.read_bytes()[2:4] == (42).to_bytes(2, "little")
+    assert leggi_record_due_byte(percorso, 0) == 10
+    assert leggi_record_due_byte(percorso, 1) == 42
+    assert leggi_record_due_byte(percorso, 2) == 65535
+
+
+def test_estremi_del_dominio_su_primo_e_ultimo_record(tmp_path):
+    percorso = tmp_path / "record.bin"
+    percorso.write_bytes(BYTE_CANONICI)
+    aggiorna_record_due_byte(percorso, 0, 0)
+    aggiorna_record_due_byte(percorso, 2, 65535)
+    assert percorso.read_bytes().hex(" ").upper() == "00 00 F4 01 FF FF"
+    aggiorna_record_due_byte(percorso, 2, 0)
+    aggiorna_record_due_byte(percorso, 0, 65535)
+    assert percorso.read_bytes().hex(" ").upper() == "FF FF F4 01 00 00"
+
+
+def test_valore_fuori_dominio_rifiutato_prima_della_scrittura(tmp_path):
+    percorso = tmp_path / "record.bin"
+    percorso.write_bytes(BYTE_CANONICI)
+    for valore, diagnosi in [(-1, "fuori dominio"), (65536, "fuori dominio")]:
+        with pytest.raises(ValueError, match=diagnosi):
+            aggiorna_record_due_byte(percorso, 1, valore)
+    # un argomento di tipo sbagliato è un difetto di programmazione: TypeError
+    for valore in [True, "42", 1.0, None]:
+        with pytest.raises(TypeError, match="atteso un intero"):
+            aggiorna_record_due_byte(percorso, 1, valore)
+    assert percorso.read_bytes() == BYTE_CANONICI
+
+
+def test_indice_fuori_dominio_rifiutato_in_lettura_e_scrittura(tmp_path):
+    percorso = tmp_path / "record.bin"
+    percorso.write_bytes(BYTE_CANONICI)
+    with pytest.raises(ValueError, match="negativo"):
+        leggi_record_due_byte(percorso, -1)
+    with pytest.raises(ValueError, match="fuori intervallo"):
+        leggi_record_due_byte(percorso, 3)
+    with pytest.raises(TypeError, match="atteso un intero"):
+        leggi_record_due_byte(percorso, "1")
+    with pytest.raises(TypeError, match="atteso un intero"):
+        aggiorna_record_due_byte(percorso, True, 42)
+    with pytest.raises(ValueError, match="fuori intervallo"):
+        aggiorna_record_due_byte(percorso, 3, 42)
+    assert percorso.read_bytes() == BYTE_CANONICI
+
+
+def test_archivio_vuoto_non_offre_alcun_record(tmp_path):
+    percorso = tmp_path / "vuoto.bin"
+    percorso.write_bytes(b"")
+    with pytest.raises(ValueError, match="contiene 0 record"):
+        leggi_record_due_byte(percorso, 0)
+    with pytest.raises(ValueError, match="contiene 0 record"):
+        aggiorna_record_due_byte(percorso, 0, 1)
+    assert percorso.read_bytes() == b""
+
+
+def test_archivio_troncato_diagnosticato_senza_zero_sintetico(tmp_path):
+    percorso = BIN_DATI / "record_troncato.bin"
+    with pytest.raises(ValueError, match="archivio incompleto: 5 byte"):
+        leggi_record_due_byte(percorso, 0)
+    with pytest.raises(ValueError, match="archivio incompleto: 5 byte"):
+        aggiorna_record_due_byte(percorso, 0, 7)
+    assert percorso.read_bytes() == bytes([0x0A, 0x00, 0xF4, 0x01, 0xFF])
+
+
+def test_percorso_assente_propaga_file_not_found_e_non_crea_file(tmp_path):
+    percorso = tmp_path / "assente.bin"
+    with pytest.raises(FileNotFoundError):
+        leggi_record_due_byte(percorso, 0)
+    with pytest.raises(FileNotFoundError):
+        aggiorna_record_due_byte(percorso, 0, 1)
+    assert not percorso.exists()
+
+
+def test_seek_dalle_tre_origini_e_fine_file_binaria():
+    traccia = traccia_seek(BIN_DATI / "record_canonici.bin")
+    assert traccia == [
+        ("apertura", 0, None),
+        ("seek(4) da inizio", 4, None),
+        ("read(2)", 6, b"\xff\xff"),
+        ("seek(-4, 1) da posizione corrente", 2, None),
+        ("read(2)", 4, b"\xf4\x01"),
+        ("seek(-2, 2) da fine", 4, None),
+        ("read(2)", 6, b"\xff\xff"),
+        ("read(2) a fine file", 6, b""),
+    ]

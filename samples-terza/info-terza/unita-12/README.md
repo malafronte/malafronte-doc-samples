@@ -1,11 +1,12 @@
-# Unità 12 - sorgenti Python d'esempio (cap. PY-16 … PY-20)
+# Unità 12 - sorgenti Python d'esempio (cap. PY-16 … PY-22)
 
 Sorgenti d'esempio dell'Unità 12 del corso di informatica della terza: moduli e
 organizzazione del progetto, file, stream, byte e codifiche, eccezioni, diagnosi,
-date, percorsi, file di testo, analisi delle parole, record su CSV e JSON e
-magazzino persistente. Questa versione del README accompagna i **primi tre
-blocchi** dei materiali (PY-16-PY-20); le cartelle del laboratorio, delle
-applicazioni e della distribuzione locale arrivano con i blocchi successivi e
+date, percorsi, file di testo, analisi delle parole, record su CSV e JSON,
+magazzino persistente, record binari a posizione calcolata e distribuzione
+locale di una libreria personale. Questa versione del README accompagna i
+**primi quattro blocchi** dei materiali (PY-16-PY-22); le cartelle del
+laboratorio e delle applicazioni grafiche arrivano con i blocchi successivi e
 verranno aggiunte a questa mappa.
 
 Come per le altre unità, questi sorgenti non si distribuiscono come download dal
@@ -56,9 +57,15 @@ repository.
   `ensure_ascii=False` e `allow_nan=False`, `deserializza_articoli` con i tre
   controlli separati di sintassi, struttura e dominio, variante `strict` con
   `object_pairs_hook` contro i nomi duplicati, confronto CSV/JSON.
+- `esempi/record_binari_u12.py` - **record binari a posizione calcolata**
+  (cap. PY-21): `leggi_record_due_byte` e `aggiorna_record_due_byte` su record
+  interi senza segno a 16 bit little-endian, offset `i * 2`, controlli di
+  dominio **prima** della scrittura puntiforme in `r+b`, e `traccia_seek` che
+  mostra `seek` da inizio, posizione corrente e fine. La dimostrazione della
+  guardia usa una cartella temporanea: le fixture non vengono toccate.
 - `esempi/test_esempi_u12.py` - suite deterministica degli attesi dei capitoli
-  PY-16-PY-20, con la matrice MAG-01-MAG-20 del magazzino, e delle proprietà
-  delle fixture.
+  PY-16-PY-21, con la matrice MAG-01-MAG-20 del magazzino, le verifiche byte
+  esatte dei record binari e le proprietà delle fixture.
 - `dati/testi/frase_senza_bom.txt` e `dati/testi/frase_con_bom.txt` - **stesso
   testo** in UTF-8, senza e con la firma iniziale `EF BB BF`. Il testo contiene
   un accento precomposto (`è` = `U+00E8`), un accento combinante
@@ -112,31 +119,51 @@ repository.
   oggetto invece che di lista: diagnosi di struttura.
 - `dati/json/magazzino_domini_errati.json` - struttura valida con `"quantita":
   true` nel secondo record: diagnosi di dominio sul campo.
+- `dati/binari/record_canonici.bin` - archivio canonico dei record binari:
+  tre interi senza segno a due byte little-endian `[10, 500, 65535]`, i byte
+  `0A 00 F4 01 FF FF`, lunghezza 6. Nessuna intestazione: il record di indice
+  `i` comincia all'offset `i * 2`.
+- `dati/binari/record_vuoto.bin` - archivio da zero byte: nessun record
+  disponibile, ogni indice è fuori intervallo.
+- `dati/binari/record_troncato.bin` - primi **5 byte** del canonico: lunghezza
+  dispari, record incompleto, diagnosi senza zero sintetico.
+- `distribuzione-locale/autore/` - **progetto autore** della libreria personale
+  `utilita_magazzino-u12` (cap. PY-22): layout `src`, package con API pubblica
+  `valore_magazzino`, `formatta_centesimi` e `normalizza_codice`, test
+  discriminanti, `pyproject.toml` con backend hatchling, `.python-version`,
+  `uv.lock` e README con i comandi verificati.
+- `distribuzione-locale/consumatore/` - **progetto consumatore** separato:
+  dipende dalla wheel prodotta dall'autore, la installa nel proprio ambiente e
+  la usa da `usa_utilita.py` senza accesso ai sorgenti dell'autore; il README
+  documenta comandi, ricostruzione dell'ambiente e limiti della wheel locale.
 
 ## Esempi, errori intenzionali, starter e riferimento
 
-La cartella contiene allo stato attuale un solo gruppo di file:
+La cartella contiene allo stato attuale tre gruppi di file:
 
 - `esempi/` - sorgenti **completi e corretti** che accompagnano i capitoli
-  PY-16-PY-19; ogni frammento deliberatamente errato mostrato nei capitoli è
+  PY-16-PY-21; ogni frammento deliberatamente errato mostrato nei capitoli è
   isolato e commentato nei listati della pagina, e **non** si trova in questi
   file: la dimostrazione ordinaria non si interrompe;
 - `dati/` - fixture sintetiche di riferimento, **in sola lettura**: gli
-  esperimenti degli esercizi si fanno su copie, mai sovrascrivendo l'originale.
+  esperimenti degli esercizi si fanno su copie, mai sovrascrivendo l'originale;
+- `distribuzione-locale/` - i due progetti della filiera del cap. PY-22,
+  `autore/` e `consumatore/`, ciascuno con il proprio ambiente e il proprio
+  `uv.lock`: il `dist/` dell'autore e le `.venv/` sono artefatti locali e non
+  si versionano, come da `.gitignore` del repository.
 
-Le cartelle `starter-laboratorio/`, `riferimento-laboratorio/`,
-`applicazioni-librerie/` e `distribuzione-locale/` non esistono ancora: il
-README verrà aggiornato quando quei materiali entreranno nei blocchi
-successivi, mantenendo la distinzione fra codice corretto, errori intenzionali,
-starter incompleto e riferimento.
+Le cartelle `starter-laboratorio/`, `riferimento-laboratorio/` e
+`applicazioni-librerie/` non esistono ancora: il README verrà aggiornato quando
+quei materiali entreranno nei blocchi successivi, mantenendo la distinzione fra
+codice corretto, errori intenzionali, starter incompleto e riferimento.
 
 ## Comandi di esecuzione
 
 I comandi sono indicati per la cartella `unita-12/` di questo repository. Con
 `uv` non servono installazioni globali: l'interprete e le dipendenze compaiono
-nel comando. Nessun sorgente dei primi tre blocchi richiede dipendenze esterne:
-`random`, `datetime`, `subprocess`, `os`, `csv`, `json`, `tempfile` e `pathlib`
-appartengono alla libreria standard.
+nel comando. Nessun sorgente dei primi quattro blocchi richiede dipendenze
+esterne: `random`, `datetime`, `subprocess`, `os`, `csv`, `json`, `tempfile` e
+`pathlib` appartengono alla libreria standard.
 
 ```powershell
 # dimostrazioni dei moduli d'esempio (nessuna dipendenza esterna)
@@ -147,6 +174,7 @@ uv run --python 3.14 python esempi/analisi_testo_u12.py
 uv run --python 3.14 python esempi/percorsi_testo_u12.py
 uv run --python 3.14 python esempi/dominio_magazzino_u12.py
 uv run --python 3.14 python esempi/json_u12.py
+uv run --python 3.14 python esempi/record_binari_u12.py
 
 # la CLI dimostrativa chiede la scelta dal menu (0 termina)
 uv run --python 3.14 python esempi/demo_import_u12.py
@@ -158,28 +186,41 @@ uv run --python 3.14 python esempi/cli_testo_u12.py dati/testi/analisi_canonica.
 # (0 uscita ordinaria, 1 interruzione o archivio non valido, 2 uso)
 uv run --python 3.14 python esempi/cli_magazzino_u12.py dati/csv/magazzino_canonico.csv
 
-# suite di verifica dei primi tre blocchi
+# suite di verifica dei primi quattro blocchi
 uv run --python 3.14 --with pytest python -m pytest esempi/test_esempi_u12.py -q
+
+# filiera della libreria personale: i comandi girano nelle rispettive cartelle
+cd distribuzione-locale/autore
+uv sync                                     # ambiente proprio e progetto installato in modalità modificabile
+uv run pytest tests/ -q                     # suite della libreria
+uv build                                    # dist/ con wheel e sdist
+cd ../consumatore
+uv add ..\autore\dist\utilita_magazzino_u12-0.1.0-py3-none-any.whl
+uv run python usa_utilita.py                # import dalla .venv del consumatore
 ```
 
-La suite è **una**: non ci sono ancora moduli omonimi fra `esempi/`, starter e
-riferimento. Quando compariranno, le suite andranno eseguite una alla volta,
+La suite di `esempi/` è **una**; quella della libreria vive nel progetto autore
+ed è separata. Non ci sono ancora moduli omonimi fra `esempi/`, starter e
+riferimento: quando compariranno, le suite andranno eseguite una alla volta,
 ciascuna con il proprio percorso, per la collisione dei nomi dei moduli.
 
 ## Versioni verificate
 
 - CPython **3.14.7**, serie 3.14 usata dal corso;
-- pytest 9.1.1, invocato con `uv run --with pytest`;
+- uv **0.12.15**, con backend di build hatchling per il progetto autore;
+- pytest 9.1.1, invocato con `uv run --with pytest` (suite di `esempi/`) e come
+  dipendenza di sviluppo del progetto autore;
 - Windows 11, esecuzione normale fuori dal debugger.
 
 I sorgenti non usano costrutti successivi a quelli già impiegati nelle unità
 precedenti, più `try`/`except`/`else`/`finally`, `raise` e i tipi `date`,
 `datetime` e `timedelta` introdotti dal cap. PY-18, le API di file e percorsi
-(`open`, `with`, `pathlib`, `os.getenv`) introdotte dal cap. PY-19 e i moduli
-`csv`, `json` e `tempfile` del cap. PY-20. I test non usano `date.today()`:
-ogni data di riferimento è scritta nel test.
+(`open`, `with`, `pathlib`, `os.getenv`) introdotte dal cap. PY-19, i moduli
+`csv`, `json` e `tempfile` del cap. PY-20 e le operazioni binarie
+(`tell`/`seek`, `int.to_bytes`/`int.from_bytes`) del cap. PY-21. I test non
+usano `date.today()`: ogni data di riferimento è scritta nel test.
 
-## Contratti e convenzioni dei primi tre blocchi
+## Contratti e convenzioni dei primi quattro blocchi
 
 | Elemento | Convenzione |
 |---|---|
@@ -203,3 +244,9 @@ ogni data di riferimento è scritta nel test.
 | `salva_articoli(percorso, articoli)` | validazione integrale, temporaneo nella **stessa directory** (`NamedTemporaryFile` con `delete=False`), scrittura, chiusura, sostituzione con `Path.replace`; UTF-8 senza BOM e `lineterminator="\n"`; su guasto la destinazione resta valida, il temporaneo è rimosso e l'eccezione primaria si propaga |
 | JSON | scrittura con `ensure_ascii=False` e `allow_nan=False`, UTF-8 senza BOM; lettura con sintassi (`JSONDecodeError`), struttura e dominio (`ValueError`) separati; nomi duplicati: `json.load` tiene l'ultimo valore, il rifiuto è dell'`object_pairs_hook` esplicito |
 | CLI del magazzino | `cli_magazzino_u12.py`: menu 1-6/0; flag `modificato` (`True` solo su mutazione riuscita, `False` solo su salvataggio riuscito); conferma con `strip().casefold()`; EOF segnalato senza scritture implicite; codici di uscita 0/1/2 |
+| Record binari | archivio di interi senza segno a **due byte** (16 bit) little-endian, senza intestazione; record di indice `i` all'offset `i * 2`; file canonico `[10, 500, 65535]` = `0A 00 F4 01 FF FF`, lunghezza 6 |
+| `leggi_record_due_byte(percorso, indice)` | indice intero non negativo minore del numero di record; struttura verificata sulla lunghezza reale (multipli di 2); record incompleto o indice fuori dominio → `ValueError` con diagnosi, mai zero sintetico; file assente → `FileNotFoundError` |
+| `aggiorna_record_due_byte(percorso, indice, valore)` | valore intero 0-65535 e indice validati **prima** della scrittura puntiforme in `r+b` (che non tronca); altri record e lunghezza invariati; nessun aggiornamento parziale su esito negativo; non è un protocollo transazionale |
+| `traccia_seek(percorso)` | lista di triple `(operazione, posizione, byte_letti)` con `tell()` dopo ogni operazione: `seek` da inizio, posizione corrente e fine, e `b""` come fine file binario |
+| Libreria `utilita_magazzino-u12` | `valore_magazzino` con **validazione esplicita** (interi non negativi, `bool` escluso, diagnosi con posizione e campo); `formatta_centesimi` con conversione centesimi→euro visibile (`800` → `"8,00 €"`, `5` → `"0,05 €"`); `normalizza_codice` elimina gli spazi esterni **senza** sostituire la validazione dell'archivio |
+| Filiera di distribuzione | layout `src`, backend hatchling dichiarato, test nel progetto autore, `uv build` produce wheel e sdist; il consumatore è un progetto diverso che dipende dalla **wheel locale** (path + `uv.lock`) e importa il package dalla propria `.venv`, senza `sys.path` né copie dei sorgenti; `dist/` e `.venv/` non si versionano |
