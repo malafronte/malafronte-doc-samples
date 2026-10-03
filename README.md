@@ -82,7 +82,7 @@ Esempi di utilizzo di LINQ (Language Integrated Query) in C#.
 Codice Python del corso di programmazione della terza (sito [info-terza](https://github.com/malafronte/info-terza)). Le pagine del sito mostrano questi file con il componente `RemoteCode`; i file non sono distribuiti come download dal sito.
 
 - **[preset-python/](samples-terza/preset-python/)** - Preset progressivi di VS Code per Python (Beginner, Intermediate, Advanced, Expert, Hero).
-- **[info-terza/](samples-terza/info-terza/)** - Sorgenti Python di riferimento per Unità 1–5: starters dei laboratori, programmi canonici e suite di test. Vedi il [README dedicato](samples-terza/info-terza/README.md).
+- **[info-terza/](samples-terza/info-terza/)** - Sorgenti Python di riferimento per le Unità 1–12: starters dei laboratori, programmi canonici, suite di test e le versioni complete del progetto progressivo in `progetto-progressivo-python/`. Vedi il [README dedicato](samples-terza/info-terza/README.md).
 
 ---
 

@@ -4,7 +4,8 @@ Sorgenti Python di riferimento per il sito [info-terza](https://github.com/malaf
 
 ## Struttura
 
-- `unita-01/starter-primo-progetto/main.py` — starter del primo progetto: `main.py` con TODO da completare.
+- `progetto-progressivo-python/` - versioni complete di riferimento della Raccolta progressiva di programmi: dodici fotografie cumulative `unita-01` … `unita-12`, ciascuna con README, ambiente, prove e documentazione. Vedi il [README dell'area](progetto-progressivo-python/README.md).
+- `unita-01/starter-primo-progetto/main.py` - starter del primo progetto: `main.py` con TODO da completare.
 - `unita-02/starter-calcolatore/rettangolo.py` — starter del calcolatore del rettangolo (LAB-PY-U2).
 - `unita-03/prenotazione_sala.py` — programma monolitico della sala (cap. PY-04), baseline di debugger e rifattorizzazione.
 - `unita-03/conferma_match.py` — conferma testuale con `match/case` su letterali e caso residuale (cap. PY-04).
