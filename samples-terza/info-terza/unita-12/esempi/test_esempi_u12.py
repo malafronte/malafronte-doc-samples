@@ -1198,6 +1198,33 @@ def test_mag13b_residuo_di_pulizia_non_maschera_il_guasto_primario(monkeypatch, 
     assert len(residui) == 1
 
 
+@pytest.mark.parametrize("voce", ("6", "0"))
+def test_mag13c_cli_mostra_il_percorso_del_residuo(voce, monkeypatch, tmp_path, capsys):
+    archivio = _copia_canonico(tmp_path)
+    originali = archivio.read_bytes()
+
+    def sostituzione_fallita(self, destinazione):
+        raise OSError("guasto simulato alla sostituzione")
+
+    def pulizia_fallita(self, missing_ok=False):
+        raise OSError("pulizia fallita")
+
+    # Il context limita i guasti alla sessione: la pulizia di pytest resta reale.
+    with monkeypatch.context() as guasti:
+        guasti.setattr(Path, "replace", sostituzione_fallita)
+        guasti.setattr(Path, "unlink", pulizia_fallita)
+        guasti.setattr("builtins.input", _input_finto(["3", "020", "Bullone", "1", "7", voce]))
+        assert cli_magazzino_main([str(archivio)]) == 1
+    uscita = capsys.readouterr().out
+    residui = list(tmp_path.glob("*.tmp"))
+    assert len(residui) == 1
+    assert "salvataggio non riuscito: guasto simulato alla sostituzione" in uscita
+    assert f"temporaneo non rimosso: {residui[0]}" in uscita
+    assert "archivio salvato" not in uscita
+    assert "modifiche non salvate" in uscita
+    assert archivio.read_bytes() == originali
+
+
 def test_mag14_guasto_del_salvataggio_alla_voce_zero(monkeypatch, tmp_path, capsys):
     archivio = _copia_canonico(tmp_path)
     originali = archivio.read_bytes()

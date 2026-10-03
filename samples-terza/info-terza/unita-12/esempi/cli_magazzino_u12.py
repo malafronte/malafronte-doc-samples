@@ -5,6 +5,9 @@ decisioni sui dati appartengono al modulo di dominio, la lettura e la
 scrittura del file al modulo di persistenza; qui restano il menu, i messaggi,
 il flag delle modifiche pendenti e il recupero dagli errori.
 
+Le diagnosi di salvataggio mostrano anche le note dell'eccezione, compreso
+il percorso di un temporaneo che non sia stato possibile rimuovere.
+
 Stato della sessione: la lista `articoli` e il flag `modificato`. Il flag
 diventa `True` solo quando un'operazione è **riuscita** e torna `False` solo
 dopo un salvataggio riuscito. Il salvataggio non è automatico: la voce "6"
@@ -181,6 +184,8 @@ def main(argv=None):
                         salva_articoli(percorso, articoli)
                     except (OSError, csv.Error, ValueError) as errore:
                         print(f"salvataggio non riuscito: {errore}")
+                        for nota in getattr(errore, "__notes__", []):
+                            print(nota)
                         print("le modifiche restano in memoria")
                     else:
                         modificato = False
@@ -193,6 +198,8 @@ def main(argv=None):
                         salva_articoli(percorso, articoli)
                     except (OSError, csv.Error, ValueError) as errore:
                         print(f"salvataggio non riuscito: {errore}")
+                        for nota in getattr(errore, "__notes__", []):
+                            print(nota)
                         print("si resta nel menu con le modifiche in memoria")
                     else:
                         modificato = False
