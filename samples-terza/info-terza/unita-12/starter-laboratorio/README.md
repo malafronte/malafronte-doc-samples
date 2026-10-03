@@ -39,16 +39,19 @@ raccolta-programmi/
 │   ├── dominio_archivio_u12.py      <- corpi da completare in L2, L3 e L4
 │   ├── persistenza_archivio_u12.py  <- corpi da completare in L3 e L4
 │   ├── cli_archivio_u12.py          <- main da completare in L5
-│   └── test_archivio_u12.py         <- casi pubblici L01-L12
+│   └── test_archivio_u12.py         <- casi pubblici L01-L11 e comportamenti CLI; L12 da progettare
 ├── dati/
 │   └── unita-12/
 │       ├── ingresso/                <- le cinque fixture, copiate e non modificate
 │       └── lavoro/                  <- archivio della sessione e copie di prova
 └── documentazione/
     └── unita-12/
-        ├── schema-e-contratti.md
-        ├── sessioni-e-diagnosi.md
-        └── verifica.md
+        ├── schema-e-contratti.md    <- scheda «Schema e contratti» compilata
+        ├── sessioni-e-stato.md      <- scheda «Sessioni e stato» compilata
+        ├── casi-e-diagnosi.md       <- scheda «Casi e diagnosi» compilata
+        ├── verifica.md              <- comandi eseguiti ed esiti
+        ├── transcritto.md           <- sessione: input digitati e testo del programma
+        └── README.md                <- origine dei dati, limiti e modifica di requisito
 ```
 
 Ordine di copia:
