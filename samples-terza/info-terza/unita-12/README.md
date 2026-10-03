@@ -143,10 +143,27 @@ repository.
   dipende dalla wheel prodotta dall'autore, la installa nel proprio ambiente e
   la usa da `usa_utilita.py` senza accesso ai sorgenti dell'autore; il README
   documenta comandi, ricostruzione dell'ambiente e limiti della wheel locale.
+- `starter-laboratorio/` - **baseline incompleta del LAB-PY-U12** (archivio
+  materiali di laboratorio): `dominio_archivio_u12.py`,
+  `persistenza_archivio_u12.py`, `cli_archivio_u12.py` e
+  `test_archivio_u12.py`, con firme, docstring e contratti completi e i corpi
+  che sollevano `NotImplementedError` nominando la fase; `dati-ingresso/`
+  contiene le cinque fixture byte-esatte di sessione e il README elenca
+  stati, comandi e primo esito atteso (33 fallimenti per corpo mancante,
+  2 superati).
+- `riferimento-laboratorio/` - **controparte completa** dello starter, con la
+  stessa suite che supera tutti i 35 casi: si legge dopo il tentativo, come
+  confronto formativo; il README documenta le scelte del riferimento e i
+  limiti dichiarati.
+- `applicazioni-librerie/` - **progetto applicativo dedicato** per le
+  applicazioni delle librerie richieste: `turtle_u12.py`, `tkinter_u12.py`,
+  `grafico_frequenze_u12.py` e `immagini_u12.py`, con `pyproject.toml`,
+  `uv.lock` e README; matplotlib e pillow sono dipendenze dichiarate e
+  bloccate, turtle e tkinter appartengono alla libreria standard.
 
 ## Esempi, errori intenzionali, starter e riferimento
 
-La cartella contiene allo stato attuale tre gruppi di file:
+La cartella contiene questi gruppi di file:
 
 - `esempi/` - sorgenti **completi e corretti** che accompagnano i capitoli
   PY-16-PY-21; ogni frammento deliberatamente errato mostrato nei capitoli è
@@ -159,10 +176,11 @@ La cartella contiene allo stato attuale tre gruppi di file:
   `uv.lock`: il `dist/` dell'autore e le `.venv/` sono artefatti locali e non
   si versionano, come da `.gitignore` del repository.
 
-Le cartelle `starter-laboratorio/`, `riferimento-laboratorio/` e
-`applicazioni-librerie/` non esistono ancora: il README verrà aggiornato quando
-quei materiali entreranno nei blocchi successivi, mantenendo la distinzione fra
-codice corretto, errori intenzionali, starter incompleto e riferimento.
+Le tre cartelle `starter-laboratorio/`, `riferimento-laboratorio/` e
+`applicazioni-librerie/` completano la distinzione fra codice corretto, errori
+intenzionali, starter incompleto e riferimento: lo starter dichiara i corpi
+mancanti, il riferimento li completa con la stessa suite, e le applicazioni
+delle librerie vivono in un progetto con le proprie dipendenze.
 
 ## Comandi di esecuzione
 
@@ -197,6 +215,24 @@ uv run --python 3.14 python esempi/cli_magazzino_u12.py dati/csv/magazzino_canon
 # suite di verifica dei primi quattro blocchi
 uv run --python 3.14 --with pytest python -m pytest esempi/test_esempi_u12.py -q
 
+# suite del LAB-PY-U12: una cartella alla volta, moduli omonimi
+cd riferimento-laboratorio
+uv run --python 3.14 --with pytest python -m pytest test_archivio_u12.py -q   # 35 passed
+uv run --python 3.14 python dominio_archivio_u12.py
+uv run --python 3.14 python persistenza_archivio_u12.py ..\starter-laboratorio\dati-ingresso\archivio_materiali.csv
+cd ../starter-laboratorio
+uv run --python 3.14 --with pytest python -m pytest test_archivio_u12.py -q   # 33 fallimenti attesi (NotImplementedError)
+cd ..
+
+# applicazioni delle librerie: progetto dedicato con le proprie dipendenze
+cd applicazioni-librerie
+uv sync
+uv run python grafico_frequenze_u12.py
+uv run python immagini_u12.py
+uv run python turtle_u12.py
+uv run python tkinter_u12.py
+cd ..
+
 # filiera della libreria personale: i comandi girano nelle rispettive cartelle
 cd distribuzione-locale/autore
 uv sync                                     # ambiente proprio e progetto installato in modalità modificabile
@@ -208,16 +244,19 @@ uv run python usa_utilita.py                # import dalla .venv del consumatore
 ```
 
 La suite di `esempi/` è **una**; quella della libreria vive nel progetto autore
-ed è separata. Non ci sono ancora moduli omonimi fra `esempi/`, starter e
-riferimento: quando compariranno, le suite andranno eseguite una alla volta,
-ciascuna con il proprio percorso, per la collisione dei nomi dei moduli.
+ed è separata. Con l'arrivo dello starter e del riferimento esistono moduli
+omonimi fra le due cartelle del LAB-PY-U12: le suite vanno eseguite **una alla
+volta**, ciascuna dalla propria cartella, mai `pytest` sulla radice del
+repository.
 
 ## Versioni verificate
 
 - CPython **3.14.7**, serie 3.14 usata dal corso;
 - uv **0.12.15**, con backend di build hatchling per il progetto autore;
-- pytest 9.1.1, invocato con `uv run --with pytest` (suite di `esempi/`) e come
-  dipendenza di sviluppo del progetto autore;
+- pytest 9.1.1, invocato con `uv run --with pytest` (suite di `esempi/`, dello
+  starter e del riferimento) e come dipendenza di sviluppo del progetto autore;
+- matplotlib **3.11.2** e pillow **12.3.0** nel progetto `applicazioni-librerie`
+  (risolti da `uv.lock`), Tk **9.0** per turtle e tkinter;
 - Windows 11, esecuzione normale fuori dal debugger.
 
 I sorgenti non usano costrutti successivi a quelli già impiegati nelle unità
@@ -228,7 +267,7 @@ precedenti, più `try`/`except`/`else`/`finally`, `raise` e i tipi `date`,
 (`tell`/`seek`, `int.to_bytes`/`int.from_bytes`) del cap. PY-21. I test non
 usano `date.today()`: ogni data di riferimento è scritta nel test.
 
-## Contratti e convenzioni dei primi quattro blocchi
+## Contratti e convenzioni
 
 | Elemento | Convenzione |
 |---|---|
@@ -259,3 +298,13 @@ usano `date.today()`: ogni data di riferimento è scritta nel test.
 | Immagini BMP | sottoinsieme dichiarato: 24 bit non compresso, intestazione di 54 byte, pixel in ordine **BGR**, righe dal basso verso l'alto, riga allineata a 4 byte; `intestazione_bmp` confronta dimensione dichiarata ed effettiva (campo `completo`); `leggi_pixel` calcola l'offset con l'allineamento di riga e rifiuta pixel incompleti; `inverti_colori` e `scambia_blu_rosso` producono solo copie di lavoro, e una destinazione coincidente con la sorgente è rifiutata |
 | Libreria `utilita_magazzino-u12` | `valore_magazzino` con **validazione esplicita** (interi non negativi, `bool` escluso, diagnosi con posizione e campo); `formatta_centesimi` con conversione centesimi→euro visibile (`800` → `"8,00 €"`, `5` → `"0,05 €"`); `normalizza_codice` elimina gli spazi esterni **senza** sostituire la validazione dell'archivio |
 | Filiera di distribuzione | layout `src`, backend hatchling dichiarato, test nel progetto autore, `uv build` produce wheel e sdist; il consumatore è un progetto diverso che dipende dalla **wheel locale** (path + `uv.lock`) e importa il package dalla propria `.venv`, senza `sys.path` né copie dei sorgenti; `dist/` e `.venv/` non si versionano |
+| Schema del materiale (LAB-PY-U12) | campi `codice,descrizione,quantita` in quest'ordine, senza prezzo: l'archivio di laboratorio è un trasferimento semplificato dello schema del magazzino; `codice` come nel magazzino, `descrizione` con almeno un carattere non bianco, `quantita` intera non negativa con `bool` escluso |
+| `valida_materiale` / `riga_a_materiale` | stesse politiche di `valida_articolo` / `riga_a_articolo`: conversione e dominio separati, `ValueError` con campo e riferimento, nessun risultato parziale, nessuna mutazione del record ricevuto |
+| CRUD del LAB-PY-U12 | `cerca_materiale` → indice oppure `None` (indice 0 valido); `inserisci_materiale` → `None` con copia del record o `ValueError` con lista invariata; `modifica_materiale` → `True`/`False`/`ValueError` senza aggiornamenti parziali; `elimina_materiale` → `True`/`False`, la conferma `s/n` resta alla CLI |
+| `carica_materiali` / `salva_materiali` | stesse politiche di `carica_articoli` / `salva_articoli` con lo schema a tre campi: tutto-o-niente in lettura, temporaneo + chiusura + `Path.replace` in scrittura |
+| CLI del LAB-PY-U12 | `cli_archivio_u12.py`: menu 1-6/0 con `match/case`, flag `modificato` aggiornato solo su mutazione riuscita e azzerato solo su salvataggio riuscito, conferma normalizzata con `strip().casefold()`, EOF dichiarato senza scritture implicite, codici di uscita 0/1/2 |
+| Suite del LAB-PY-U12 | `test_archivio_u12.py` identico in starter e riferimento: 35 casi, fixture create in `tmp_path`, guasti di scrittura e sostituzione simulati con intercettazione deterministica; lo starter produce **33 fallimenti per `NotImplementedError`** e 2 superati, il riferimento li supera tutti |
+| `turtle_u12.py` | geometria separata dalla finestra: `angoli_poligono` (360 / lati), `disegna_poligono(penna, lati, lato, colore=None)` e `disegna_due_figure(penna, lati, lato)` accettano un oggetto penna con `forward`/`left`/`penup`/`pendown`/`color`; `TypeError` per i tipi, `ValueError` per meno di tre lati o lato non positivo; chiusura con `exitonclick()` |
+| `tkinter_u12.py` | calcolo puro (`centesimi_da_testo`, `valore_in_centesimi`, `formatta_euro`) separato dalla finestra `ttk`; callback passata **senza parentesi**; la variante di input invalido aggiorna la stessa etichetta; nessuna classe definita dall'utente |
+| `grafico_frequenze_u12.py` | dati già calcolati separati dal grafico; `ordina_per_grafico` usa la chiave `(-conteggio, parola)`; backend `Agg` selezionato prima di `pyplot`; `savefig` su percorso dichiarato; tabella equivalente sempre disponibile |
+| `immagini_u12.py` | `Pillow` importato come `PIL`; immagine sintetica RGB con pixel ricostruibili dalla posizione; inversione punto per punto `255 - c` confrontata con `ImageOps.invert`; salvataggio solo in file nuovo, destinazione coincidente con la sorgente rifiutata |

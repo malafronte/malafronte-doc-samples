@@ -1,0 +1,3 @@
+# Output generati dalle dimostrazioni (PNG di matplotlib e Pillow):
+# sono prodotti rigenenerabili, non sorgenti da versionare.
+output/
