@@ -4,8 +4,8 @@ I test controllano gli attesi dichiarati nei capitoli PY-16, PY-17, PY-18,
 PY-19, PY-20 e PY-21 e le proprietà dei moduli `utilita_u12`, `demo_import_u12`,
 `codifiche_u12`, `eccezioni_date_u12`, `analisi_testo_u12`,
 `percorsi_testo_u12`, `cli_testo_u12`, `dominio_magazzino_u12`,
-`persistenza_magazzino_u12`, `cli_magazzino_u12`, `json_u12` e
-`record_binari_u12`: valore
+`persistenza_magazzino_u12`, `cli_magazzino_u12`, `json_u12`,
+`record_binari_u12` e `immagini_bmp_u12`: valore
 dell'inventario, assenza di effetti all'import, conti separati di codepoint e
 byte, comportamento del BOM con i due codec, controlli separati di conversione
 e dominio, `else`/`finally`, date con riferimenti fissi, fixture di testo e
@@ -16,7 +16,9 @@ caricamento CSV con intestazioni e BOM, salvataggio mediante temporaneo con i
 guasti simulati della matrice MAG-01-MAG-20 e serializzazione JSON con i tre
 controlli separati di sintassi, struttura e dominio. La sezione sui record
 binari verifica byte esatti, offset `i * 2`, domini di indice e valore,
-archivio vuoto o incompleto e `seek` dalle tre origini.
+archivio vuoto o incompleto e `seek` dalle tre origini; la sezione sulle
+immagini verifica l'intestazione BMP, i pixel BGR a posizione calcolata e i
+due filtri RGB dell'esempio del cap. PY-21.
 
 Esecuzione dalla cartella `unita-12/`:
 
@@ -65,6 +67,12 @@ from eccezioni_date_u12 import (
     prezzo_totale,
     prova_conversione,
     valida_quantita,
+)
+from immagini_bmp_u12 import (
+    intestazione_bmp,
+    inverti_colori,
+    leggi_pixel,
+    scambia_blu_rosso,
 )
 from json_u12 import (
     carica_json,
@@ -1464,6 +1472,7 @@ def test_salva_json_non_modifica_la_lista_e_non_lascia_bom(tmp_path):
 
 BIN_DATI = DATI / "binari"
 BYTE_CANONICI = bytes([0x0A, 0x00, 0xF4, 0x01, 0xFF, 0xFF])
+IMMAGINI = DATI / "immagini"
 
 
 def test_fixture_binaria_canonica_ha_i_byte_attesi():
@@ -1574,3 +1583,59 @@ def test_seek_dalle_tre_origini_e_fine_file_binaria():
         ("read(2)", 6, b"\xff\xff"),
         ("read(2) a fine file", 6, b""),
     ]
+
+
+# ---------------------------------------------------------------------------
+# Immagini come file binari: intestazione BMP e filtri RGB (cap. PY-21, sez. G)
+# ---------------------------------------------------------------------------
+
+
+def test_intestazione_bmp_canonica_e_completezza():
+    campi = intestazione_bmp(IMMAGINI / "immagine_originale.bmp")
+    assert campi["firma"] == "BM"
+    assert campi["dimensione_dichiarata"] == 246
+    assert campi["dimensione_effettiva"] == 246
+    assert campi["offset_pixel"] == 54
+    assert (campi["larghezza"], campi["altezza"], campi["bit_per_pixel"]) == (8, 8, 24)
+    assert campi["completo"] is True
+
+
+def test_intestazione_bmp_troncata_indice_leggibile_contenuto_incompleto():
+    campi = intestazione_bmp(IMMAGINI / "immagine_troncata.bmp")
+    assert campi["firma"] == "BM"
+    assert campi["dimensione_dichiarata"] == 246
+    assert campi["dimensione_effettiva"] == 94
+    assert campi["completo"] is False
+
+
+def test_lettura_pixel_bgr_e_indici():
+    percorso = IMMAGINI / "immagine_originale.bmp"
+    assert leggi_pixel(percorso, 0) == (160, 20, 200)   # BGR: file A0 14 C8
+    assert leggi_pixel(percorso, 63) == (20, 160, 200)  # ultimo pixel: file 14 A0 C8
+    with pytest.raises(ValueError, match="fuori intervallo"):
+        leggi_pixel(percorso, 64)
+    with pytest.raises(TypeError, match="atteso un intero"):
+        leggi_pixel(percorso, "0")
+
+
+def test_inversione_dei_colori_byte_e_lunghezza_invariati(tmp_path):
+    originale = IMMAGINI / "immagine_originale.bmp"
+    invertita = tmp_path / "invertita.bmp"
+    assert inverti_colori(originale, invertita) == 64
+    assert leggi_pixel(invertita, 0) == (95, 235, 55)   # 255 - (160, 20, 200)
+    assert invertita.stat().st_size == originale.stat().st_size
+    # header e byte di sorgente invariati
+    assert invertita.read_bytes()[:54] == originale.read_bytes()[:54]
+    assert leggi_pixel(originale, 0) == (160, 20, 200)
+
+
+def test_scambio_blu_rosso_rivela_l_ordine_bgr(tmp_path):
+    scambiata = tmp_path / "scambiata.bmp"
+    assert scambia_blu_rosso(IMMAGINI / "immagine_originale.bmp", scambiata) == 64
+    assert leggi_pixel(scambiata, 0) == (200, 20, 160)
+
+
+def test_scrittura_su_copia_di_lavoro_non_sulla_sorgente():
+    with pytest.raises(ValueError, match="coincide con la sorgente"):
+        inverti_colori(IMMAGINI / "immagine_originale.bmp", IMMAGINI / "immagine_originale.bmp")
+    assert leggi_pixel(IMMAGINI / "immagine_originale.bmp", 0) == (160, 20, 200)

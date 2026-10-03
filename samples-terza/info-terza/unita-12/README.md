@@ -63,9 +63,16 @@ repository.
   dominio **prima** della scrittura puntiforme in `r+b`, e `traccia_seek` che
   mostra `seek` da inizio, posizione corrente e fine. La dimostrazione della
   guardia usa una cartella temporanea: le fixture non vengono toccate.
+- `esempi/immagini_bmp_u12.py` - **immagini come file binari** (cap. PY-21,
+  sez. G): lettura dell'intestazione BMP con `int.from_bytes`, pixel BGR a
+  posizione calcolata con riga allineata a quattro byte, filtri RGB elementari
+  `inverti_colori` e `scambia_blu_rosso` con copia di lavoro esplicita.
+  Sottoinsieme dichiarato: BMP 24 bit non compresso; formati compressi e
+  varianti restano alla libreria Pillow del laboratorio.
 - `esempi/test_esempi_u12.py` - suite deterministica degli attesi dei capitoli
   PY-16-PY-21, con la matrice MAG-01-MAG-20 del magazzino, le verifiche byte
-  esatte dei record binari e le proprietà delle fixture.
+  esatte dei record binari, le prove sull'intestazione BMP e sui filtri RGB, e
+  le proprietà delle fixture.
 - `dati/testi/frase_senza_bom.txt` e `dati/testi/frase_con_bom.txt` - **stesso
   testo** in UTF-8, senza e con la firma iniziale `EF BB BF`. Il testo contiene
   un accento precomposto (`è` = `U+00E8`), un accento combinante
@@ -175,6 +182,7 @@ uv run --python 3.14 python esempi/percorsi_testo_u12.py
 uv run --python 3.14 python esempi/dominio_magazzino_u12.py
 uv run --python 3.14 python esempi/json_u12.py
 uv run --python 3.14 python esempi/record_binari_u12.py
+uv run --python 3.14 python esempi/immagini_bmp_u12.py
 
 # la CLI dimostrativa chiede la scelta dal menu (0 termina)
 uv run --python 3.14 python esempi/demo_import_u12.py
@@ -248,5 +256,6 @@ usano `date.today()`: ogni data di riferimento è scritta nel test.
 | `leggi_record_due_byte(percorso, indice)` | indice intero non negativo minore del numero di record; struttura verificata sulla lunghezza reale (multipli di 2); record incompleto o indice fuori dominio → `ValueError` con diagnosi, mai zero sintetico; file assente → `FileNotFoundError` |
 | `aggiorna_record_due_byte(percorso, indice, valore)` | valore intero 0-65535 e indice validati **prima** della scrittura puntiforme in `r+b` (che non tronca); altri record e lunghezza invariati; nessun aggiornamento parziale su esito negativo; non è un protocollo transazionale |
 | `traccia_seek(percorso)` | lista di triple `(operazione, posizione, byte_letti)` con `tell()` dopo ogni operazione: `seek` da inizio, posizione corrente e fine, e `b""` come fine file binario |
+| Immagini BMP | sottoinsieme dichiarato: 24 bit non compresso, intestazione di 54 byte, pixel in ordine **BGR**, righe dal basso verso l'alto, riga allineata a 4 byte; `intestazione_bmp` confronta dimensione dichiarata ed effettiva (campo `completo`); `leggi_pixel` calcola l'offset con l'allineamento di riga e rifiuta pixel incompleti; `inverti_colori` e `scambia_blu_rosso` producono solo copie di lavoro, e una destinazione coincidente con la sorgente è rifiutata |
 | Libreria `utilita_magazzino-u12` | `valore_magazzino` con **validazione esplicita** (interi non negativi, `bool` escluso, diagnosi con posizione e campo); `formatta_centesimi` con conversione centesimi→euro visibile (`800` → `"8,00 €"`, `5` → `"0,05 €"`); `normalizza_codice` elimina gli spazi esterni **senza** sostituire la validazione dell'archivio |
 | Filiera di distribuzione | layout `src`, backend hatchling dichiarato, test nel progetto autore, `uv build` produce wheel e sdist; il consumatore è un progetto diverso che dipende dalla **wheel locale** (path + `uv.lock`) e importa il package dalla propria `.venv`, senza `sys.path` né copie dei sorgenti; `dist/` e `.venv/` non si versionano |
