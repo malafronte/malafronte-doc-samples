@@ -426,6 +426,46 @@ def test_cli_primo_avvio_con_archivio_assente_parte_vuoto(tmp_path, monkeypatch,
     assert not percorso.exists()
 
 
+@pytest.mark.parametrize("modifiche_pendenti", [False, True])
+@pytest.mark.parametrize(
+    "risposte_parziali",
+    [
+        ["2"],
+        ["3"],
+        ["3", "020"],
+        ["3", "020", "Guanto"],
+        ["4"],
+        ["4", "007"],
+        ["4", "007", "Descrizione nuova"],
+        ["5"],
+        ["5", "007"],
+    ],
+)
+def test_cli_eof_in_ogni_domanda_interrompe_senza_scrivere(
+    tmp_path, monkeypatch, capsys, risposte_parziali, modifiche_pendenti
+):
+    """L'EOF può arrivare in ogni campo, non soltanto alla scelta del menu."""
+    percorso = tmp_path / "archivio.csv"
+    persistenza.salva_materiali(percorso, [dict(MATERIALE_A)])
+    prima = percorso.read_bytes()
+    prefisso = ["3", "030", "Materiale nuovo", "1"] if modifiche_pendenti else []
+    risposte = iter(prefisso + risposte_parziali)
+
+    def domanda(messaggio):
+        try:
+            return next(risposte)
+        except StopIteration:
+            raise EOFError from None
+
+    monkeypatch.setattr(builtins, "input", domanda)
+    assert cli.main(["cli_archivio_u12.py", str(percorso)]) == 1
+    uscita = capsys.readouterr().out
+    assert "sessione interrotta: fine dell'input" in uscita
+    assert ("modifiche non salvate" in uscita) is modifiche_pendenti
+    assert "archivio salvato" not in uscita
+    assert percorso.read_bytes() == prima
+
+
 def test_cli_archivio_non_valido_arresta_senza_menu(tmp_path, capsys):
     percorso = scrivi_archivio(tmp_path / "corrotto.csv", "codice,descrizione\n007,Vite,1\n")
     assert cli.main(["cli_archivio_u12.py", str(percorso)]) == 1

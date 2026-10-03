@@ -149,17 +149,19 @@ repository.
   `test_archivio_u12.py`, con firme, docstring e contratti completi e i corpi
   che sollevano `NotImplementedError` nominando la fase; `dati-ingresso/`
   contiene le cinque fixture byte-esatte di sessione e il README elenca
-  stati, comandi e primo esito atteso (33 fallimenti per corpo mancante,
+  stati, comandi e primo esito atteso (51 fallimenti per corpo mancante,
   2 superati).
 - `riferimento-laboratorio/` - **controparte completa** dello starter, con la
-  stessa suite che supera tutti i 35 casi: si legge dopo il tentativo, come
+  stessa suite che supera tutti i 53 test: si legge dopo il tentativo, come
   confronto formativo; il README documenta le scelte del riferimento e i
   limiti dichiarati.
 - `applicazioni-librerie/` - **progetto applicativo dedicato** per le
   applicazioni delle librerie richieste: `turtle_u12.py`, `tkinter_u12.py`,
   `grafico_frequenze_u12.py` e `immagini_u12.py`, con `pyproject.toml`,
   `uv.lock` e README; matplotlib e pillow sono dipendenze dichiarate e
-  bloccate, turtle e tkinter appartengono alla libreria standard.
+  bloccate, turtle e tkinter appartengono alla libreria standard. Il supporto
+  `penna_di_prova_u12.py` registra i movimenti senza finestra;
+  `test_applicazioni_u12.py` verifica le regressioni con `unittest`.
 
 ## Esempi, errori intenzionali, starter e riferimento
 
@@ -217,11 +219,11 @@ uv run --python 3.14 --with pytest python -m pytest esempi/test_esempi_u12.py -q
 
 # suite del LAB-PY-U12: una cartella alla volta, moduli omonimi
 cd riferimento-laboratorio
-uv run --python 3.14 --with pytest python -m pytest test_archivio_u12.py -q   # 35 passed
+uv run --python 3.14 --with pytest python -m pytest test_archivio_u12.py -q   # 53 passed
 uv run --python 3.14 python dominio_archivio_u12.py
 uv run --python 3.14 python persistenza_archivio_u12.py ..\starter-laboratorio\dati-ingresso\archivio_materiali.csv
 cd ../starter-laboratorio
-uv run --python 3.14 --with pytest python -m pytest test_archivio_u12.py -q   # 33 fallimenti attesi (NotImplementedError)
+uv run --python 3.14 --with pytest python -m pytest test_archivio_u12.py -q   # 51 fallimenti attesi (NotImplementedError)
 cd ..
 
 # applicazioni delle librerie: progetto dedicato con le proprie dipendenze
@@ -302,9 +304,9 @@ usano `date.today()`: ogni data di riferimento è scritta nel test.
 | `valida_materiale` / `riga_a_materiale` | stesse politiche di `valida_articolo` / `riga_a_articolo`: conversione e dominio separati, `ValueError` con campo e riferimento, nessun risultato parziale, nessuna mutazione del record ricevuto |
 | CRUD del LAB-PY-U12 | `cerca_materiale` → indice oppure `None` (indice 0 valido); `inserisci_materiale` → `None` con copia del record o `ValueError` con lista invariata; `modifica_materiale` → `True`/`False`/`ValueError` senza aggiornamenti parziali; `elimina_materiale` → `True`/`False`, la conferma `s/n` resta alla CLI |
 | `carica_materiali` / `salva_materiali` | stesse politiche di `carica_articoli` / `salva_articoli` con lo schema a tre campi: tutto-o-niente in lettura, temporaneo + chiusura + `Path.replace` in scrittura |
-| CLI del LAB-PY-U12 | `cli_archivio_u12.py`: menu 1-6/0 con `match/case`, flag `modificato` aggiornato solo su mutazione riuscita e azzerato solo su salvataggio riuscito, conferma normalizzata con `strip().casefold()`, EOF dichiarato senza scritture implicite, codici di uscita 0/1/2 |
-| Suite del LAB-PY-U12 | `test_archivio_u12.py` identico in starter e riferimento: 35 casi, fixture create in `tmp_path`, guasti di scrittura e sostituzione simulati con intercettazione deterministica; lo starter produce **33 fallimenti per `NotImplementedError`** e 2 superati, il riferimento li supera tutti |
-| `turtle_u12.py` | geometria separata dalla finestra: `angoli_poligono` (360 / lati), `disegna_poligono(penna, lati, lato, colore=None)` e `disegna_due_figure(penna, lati, lato)` accettano un oggetto penna con `forward`/`left`/`penup`/`pendown`/`color`; `TypeError` per i tipi, `ValueError` per meno di tre lati o lato non positivo; chiusura con `exitonclick()` |
+| CLI del LAB-PY-U12 | `cli_archivio_u12.py`: menu 1-6/0 con `match/case`, flag `modificato` aggiornato solo su mutazione riuscita e azzerato solo su salvataggio riuscito, conferma normalizzata con `strip().casefold()`, EOF dichiarato in ogni domanda senza scritture implicite, codici di uscita 0/1/2 |
+| Suite del LAB-PY-U12 | `test_archivio_u12.py` identico in starter e riferimento: 53 test, compresi 18 EOF nei campi e nelle conferme; fixture create in `tmp_path`, guasti di scrittura e sostituzione simulati con intercettazione deterministica; lo starter produce **51 fallimenti per `NotImplementedError`** e 2 superati, il riferimento li supera tutti |
+| `turtle_u12.py` | `angoli_poligono` è pura (360 / lati); `disegna_poligono(penna, lati, lato, colore=None)` e `disegna_due_figure(penna, lati, lato)` modificano la penna e restituiscono `None`; il supporto fornito registra le chiamate in `azioni`; `TypeError` per i tipi, `ValueError` per meno di tre lati o lato non positivo; chiusura con `exitonclick()` |
 | `tkinter_u12.py` | calcolo puro (`centesimi_da_testo`, `valore_in_centesimi`, `formatta_euro`) separato dalla finestra `ttk`; callback passata **senza parentesi**; la variante di input invalido aggiorna la stessa etichetta; nessuna classe definita dall'utente |
-| `grafico_frequenze_u12.py` | dati già calcolati separati dal grafico; `ordina_per_grafico` usa la chiave `(-conteggio, parola)`; backend `Agg` selezionato prima di `pyplot`; `savefig` su percorso dichiarato; tabella equivalente sempre disponibile |
-| `immagini_u12.py` | `Pillow` importato come `PIL`; immagine sintetica RGB con pixel ricostruibili dalla posizione; inversione punto per punto `255 - c` confrontata con `ImageOps.invert`; salvataggio solo in file nuovo, destinazione coincidente con la sorgente rifiutata |
+| `grafico_frequenze_u12.py` | dati già calcolati separati dal grafico; chiave `(-conteggio, parola)`, pareggio discriminante con `sole` inserito prima di `luna`; backend `Agg`, PNG 1280×720, valori sulle barre e tacche intere; `massimo_y=4` comune ai due esempi; tabella equivalente per entrambi |
+| `immagini_u12.py` | `Pillow` importato come `PIL`; lato sintetico intero 1-6, pixel noti; inversione `255 - c` confrontata con `ImageOps.invert`; `salva_png` rifiuta percorsi che identificano la sorgente dichiarata, anche con rappresentazioni diverse o collegamenti allo stesso file |

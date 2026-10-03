@@ -4,7 +4,9 @@ Applicazione della libreria `turtle` dell'Unità 12: la geometria del disegno
 è separata dalla finestra. Le funzioni ricevono un oggetto "penna" con i
 metodi `forward`, `left`, `penup`, `pendown` e `color`: la tartaruga reale di
 `turtle` li possiede, e anche un oggetto di prova può fornirli. Questo rende
-la geometria verificabile senza aprire una finestra.
+la geometria verificabile senza aprire una finestra. `angoli_poligono` è pura;
+le funzioni di disegno modificano la penna ricevuta e restituiscono `None`.
+Il supporto `penna_di_prova_u12.crea_penna_di_prova` registra questi effetti.
 
 Contratti:
 
@@ -82,9 +84,11 @@ if __name__ == "__main__":
     # Dimostrazione sotto guardia: la finestra si apre solo all'esecuzione
     # diretta del file e si chiude con un clic sulla finestra.
     schermo = turtle.Screen()
+    schermo.setup(width=620, height=500)
     schermo.title("LAB-PY-U12 - poligoni con turtle")
     tartaruga = turtle.Turtle()
     tartaruga.speed(3)
+    tartaruga.pensize(3)
 
     # Variante 1: il numero dei lati cambia, la procedura no.
     disegna_poligono(tartaruga, lati=6, lato=80, colore="steel blue")

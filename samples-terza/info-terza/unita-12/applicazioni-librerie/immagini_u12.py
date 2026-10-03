@@ -10,7 +10,7 @@ Contratti:
 
 - `crea_immagine_sintetica(percorso, lato=4)` → genera un'immagine RGB di
   `lato × lato` pixel con valori noti e la salva in PNG; restituisce la tupla
-  `(larghezza, altezza)`.
+  `(larghezza, altezza)`; `lato` è un intero fra 1 e 6 inclusi.
 - `carica_rgb(percorso)` → apre il file con `Image.open` e lo converte in
   modalità `RGB`; restituisce l'immagine. Il file sorgente resta apribile e
   invariato.
@@ -18,9 +18,9 @@ Contratti:
   canale `c` diventa `255 - c`; l'immagine ricevuta non è modificata.
 - `confronta_imageops(immagine)` → restituisce `True` se l'inversione manuale
   coincide con `ImageOps.invert(immagine)` su tutti i pixel.
-- `salva_png(immagine, percorso, sorgente=None)` → salva in un file **nuovo**;
-  se `sorgente` è dichiarato e coincide con `percorso`, rifiuta la scrittura:
-  l'originale non va mai sovrascritto dalla propria trasformazione.
+- `salva_png(immagine, percorso, sorgente=None)` → salva in un file distinto
+  dalla sorgente dichiarata; se i due percorsi identificano lo stesso file,
+  rifiuta la scrittura. L'originale non va sovrascritto dalla trasformazione.
 
 Errori: `TypeError` per argomenti di tipo sbagliato, `ValueError` per i dati
 fuori dominio o per la destinazione coincidente con la sorgente. Le classi
@@ -32,6 +32,8 @@ in modo esplicito; nessuna installazione globale. Si importa `PIL`, non
 `pillow`: il nome della distribuzione e quello del package non coincidono.
 """
 
+from pathlib import Path
+
 from PIL import Image
 from PIL import ImageOps
 
@@ -41,12 +43,14 @@ def crea_immagine_sintetica(percorso, lato=4):
 
     Il pixel alla posizione `(x, y)` ha canali `(16 + 40 * x, 16 + 40 * y,
     128)`: il valore si ricostruisce dalla posizione e permette di verificare
-    ogni trasformazione senza un editor di immagini.
+    ogni trasformazione senza un editor di immagini. Il lato è limitato a
+    1-6: all'indice 5 i canali valgono 216; all'indice 6 varrebbero 256,
+    oltre il massimo 255 di un canale RGB a 8 bit.
     """
     if isinstance(lato, bool) or not isinstance(lato, int):
         raise TypeError(f"lato: atteso un intero, ricevuto {type(lato).__name__}")
-    if lato < 1:
-        raise ValueError(f"lato: deve essere almeno 1, ricevuto {lato}")
+    if not 1 <= lato <= 6:
+        raise ValueError(f"lato: deve essere fra 1 e 6, ricevuto {lato}")
     immagine = Image.new("RGB", (lato, lato))
     for y in range(lato):
         for x in range(lato):
@@ -90,8 +94,17 @@ def salva_png(immagine, percorso, sorgente=None):
     """Salva l'immagine in PNG su un percorso diverso dalla sorgente."""
     if not isinstance(immagine, Image.Image):
         raise TypeError("immagine: attesa un'immagine PIL")
-    if sorgente is not None and percorso == sorgente:
-        raise ValueError("destinazione coincidente con la sorgente: l'originale non si sovrascrive")
+    if sorgente is not None:
+        destinazione = Path(percorso)
+        origine = Path(sorgente)
+        # resolve confronta percorsi relativi/assoluti e collegamenti simbolici.
+        coincidente = destinazione.resolve() == origine.resolve()
+        # Due nomi già esistenti possono anche essere collegamenti fisici
+        # allo stesso file: samefile confronta l'identità nel file system.
+        if not coincidente and destinazione.exists() and origine.exists():
+            coincidente = destinazione.samefile(origine)
+        if coincidente:
+            raise ValueError("destinazione coincidente con la sorgente: l'originale non si sovrascrive")
     immagine.save(percorso, format="PNG")
     return percorso
 
@@ -99,8 +112,6 @@ def salva_png(immagine, percorso, sorgente=None):
 if __name__ == "__main__":
     # Dimostrazione sotto guardia: immagine sintetica, apertura, trasformazione
     # e salvataggio in file nuovi nella cartella `output` accanto al sorgente.
-    from pathlib import Path
-
     uscita = Path(__file__).with_name("output")
     uscita.mkdir(exist_ok=True)
     originale = uscita / "pillow-originale.png"
@@ -116,6 +127,6 @@ if __name__ == "__main__":
     print(f"pixel (0, 0) dopo l'inversione: {invertita.getpixel((0, 0))}")
     print(f"inversione manuale uguale a ImageOps.invert: {confronta_imageops(aperta)}")
 
-    salva_png(invertita, uscita / "pillow-invertita.png")
+    salva_png(invertita, uscita / "pillow-invertita.png", sorgente=originale)
     di_nuovo = carica_rgb(originale)
     print(f"originale dopo il salvataggio: {di_nuovo.getpixel((0, 0))}")

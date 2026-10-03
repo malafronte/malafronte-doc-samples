@@ -13,8 +13,10 @@ Contratti:
   chiave a due livelli del [cap. PY-19](/info-terza/corso/python/moduli-persistenza-errori/19-percorsi-file-testo/#g-il-problema-svolto-analizzare-un-file-di-testo).
 - `tabella_equivalente(righe)` → righe di testo della tabella che accompagna
   il grafico: il risultato è leggibile anche senza il PNG.
-- `costruisci_grafico(frequenze, percorso_png, titolo=...)` → salva il PNG e
-  restituisce il percorso; nessuna finestra interattiva viene aperta.
+- `costruisci_grafico(frequenze, percorso_png, titolo=..., massimo_y=None)` →
+  salva il PNG e restituisce il percorso; nessuna finestra interattiva viene
+  aperta. `massimo_y`, se fornito, è un intero positivo che contiene tutte
+  le barre e permette di confrontare grafici con la stessa scala verticale.
 
 Il backend `Agg` viene selezionato **prima** di importare `pyplot`: è il
 backend senza finestra, che rende `savefig` eseguibile anche su una macchina
@@ -30,6 +32,7 @@ import matplotlib
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
 
 
 def ordina_per_grafico(frequenze):
@@ -45,26 +48,48 @@ def tabella_equivalente(righe):
     return testo
 
 
-def costruisci_grafico(frequenze, percorso_png, titolo="Frequenza delle parole"):
+def costruisci_grafico(
+    frequenze, percorso_png, titolo="Frequenza delle parole", massimo_y=None
+):
     """Disegna le barre delle frequenze e salva il PNG sul percorso dichiarato.
 
     Le barre sono ordinate con `ordina_per_grafico`; l'asse orizzontale porta
     le parole, l'asse verticale il numero di occorrenze. Il percorso di output
     è esplicito: il file non viene mai scritto in una posizione implicita.
+    I dati sono conteggi interi non negativi di parole già normalizzate:
+    la funzione non legge il testo e non applica `casefold`.
     """
     righe = ordina_per_grafico(frequenze)
     parole = [parola for parola, _ in righe]
     conteggi = [conteggio for _, conteggio in righe]
 
+    maggiore = max(conteggi, default=0)
+    if massimo_y is None:
+        massimo_y = maggiore + 1
+    if isinstance(massimo_y, bool) or not isinstance(massimo_y, int):
+        raise TypeError("massimo_y: atteso un intero")
+    if massimo_y <= 0 or massimo_y < maggiore:
+        raise ValueError("massimo_y: deve essere positivo e contenere tutte le barre")
+
     figura, assi = plt.subplots(figsize=(8, 4.5))
-    assi.bar(parole, conteggi, color="#0e6b85")
-    assi.set_title(titolo)
-    assi.set_xlabel("parola (normalizzazione: casefold)")
-    assi.set_ylabel("occorrenze")
-    assi.set_ylim(bottom=0)
+    barre = assi.bar(parole, conteggi, color="#0e6b85", width=0.6)
+    assi.bar_label(barre, padding=6, fontsize=14)
+    assi.set_title(titolo, fontsize=16, fontweight="bold", pad=16)
+    assi.set_xlabel("Parola", fontsize=13, labelpad=10)
+    assi.set_ylabel("Numero di occorrenze", fontsize=13, labelpad=10)
+    assi.set_ylim(0, massimo_y)
+    # I conteggi sono interi: non si etichetta l'asse con mezze occorrenze.
+    assi.yaxis.set_major_locator(MaxNLocator(integer=True))
+    assi.tick_params(labelsize=12)
+    assi.set_axisbelow(True)
+    assi.grid(axis="y", color="#d6e0e7", linewidth=0.8)
+    assi.spines["top"].set_visible(False)
+    assi.spines["right"].set_visible(False)
     figura.tight_layout()
-    figura.savefig(percorso_png, dpi=120)
-    plt.close(figura)
+    try:
+        figura.savefig(percorso_png, dpi=160)
+    finally:
+        plt.close(figura)
     return percorso_png
 
 
@@ -74,18 +99,19 @@ if __name__ == "__main__":
     from pathlib import Path
 
     FREQUENZE_CANONICHE = {"sole": 3, "luna": 2, "mare": 1}
-    FREQUENZE_CON_PAREGGIO = {"luna": 2, "sole": 2, "mare": 1}
+    # sole è inserito prima di luna: il pareggio verifica il secondo criterio.
+    FREQUENZE_CON_PAREGGIO = {"sole": 2, "luna": 2, "mare": 1}
 
     uscita = Path(__file__).with_name("output")
     uscita.mkdir(exist_ok=True)
 
-    for nome, frequenze in (
-        ("frequenze-canoniche.png", FREQUENZE_CANONICHE),
-        ("frequenze-pareggio.png", FREQUENZE_CON_PAREGGIO),
+    for nome, titolo, frequenze in (
+        ("frequenze-canoniche.png", "A. Frequenze diverse", FREQUENZE_CANONICHE),
+        ("frequenze-pareggio.png", "B. Parità: parola crescente", FREQUENZE_CON_PAREGGIO),
     ):
-        percorso = costruisci_grafico(frequenze, uscita / nome)
+        # Stessa scala 0-4 per rendere confrontabili le altezze dei due PNG.
+        percorso = costruisci_grafico(frequenze, uscita / nome, titolo, massimo_y=4)
         print(f"grafico salvato in {percorso}")
-
-    print("tabella equivalente del dataset canonico:")
-    for riga in tabella_equivalente(ordina_per_grafico(FREQUENZE_CANONICHE)):
-        print(" ", riga)
+        print(f"tabella equivalente - {titolo}:")
+        for riga in tabella_equivalente(ordina_per_grafico(frequenze)):
+            print(" ", riga)

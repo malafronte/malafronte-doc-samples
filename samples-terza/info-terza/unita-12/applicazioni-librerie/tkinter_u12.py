@@ -1,7 +1,7 @@
 """Interfaccia grafica con tkinter: calcolo noto separato dalla finestra.
 
 Applicazione della libreria `tkinter` dell'Unità 12 - **Approfondimento**: il
-calcolo e la sua validazione restano funzioni pure della libreria standard,
+calcolo e la sua validazione restano funzioni pure definite in questo modulo,
 l'interfaccia si limita a leggere i campi, invocare il calcolo e mostrare il
 risultato o il messaggio d'errore. Nessuna classe definita da noi: la finestra
 è costruita in modo procedurale con `tkinter.ttk` e il ciclo degli eventi è
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     finestra = tk.Tk()
     finestra.title("LAB-PY-U12 - valore dell'inventario")
 
-    etichetta_quantita = ttk.Label(finestra, text="quantita")
+    etichetta_quantita = ttk.Label(finestra, text="quantità")
     campo_quantita = ttk.Entry(finestra, width=12)
     campo_quantita.insert(0, "4")
     etichetta_prezzo = ttk.Label(finestra, text="prezzo in centesimi")

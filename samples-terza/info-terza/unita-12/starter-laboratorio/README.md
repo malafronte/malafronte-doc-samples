@@ -58,7 +58,7 @@ Ordine di copia:
 
 1. Creare `dati/unita-12/ingresso/`, `dati/unita-12/lavoro/` e `documentazione/unita-12/` nell'editor o nel file system, perché nessun programma le crea al posto dello studente.
 2. Copiare i quattro file di `programmi/` e le cinque fixture in `ingresso/`.
-3. Eseguire subito la suite e registrare il primo esito atteso: 33 fallimenti per `NotImplementedError` e 2 superati, con i corpi forniti.
+3. Eseguire subito la suite e registrare il primo esito atteso: 51 fallimenti per `NotImplementedError` e 2 superati, con i corpi forniti. La suite comprende 18 prove di EOF nei campi e nelle conferme, con e senza modifiche pendenti.
 4. Non copiare i file di `riferimento-laboratorio/` durante la sessione: il riferimento si legge dopo le fasi L2-L3, come confronto formativo.
 
 Non eseguire `uv init` né `git init` dentro `programmi/`: l'ambiente è quello della raccolta, con la `.venv` e `uv` già adottati. Le firme, i contratti e i casi pubblici non vanno modificati: la suite descrive comportamenti attesi e si estende soltanto con il caso L12. `riepilogo_archivio`, `_valida_intestazione`, `_valida_raccolta`, `mostra_menu`, `riga_materiale`, `righe_situazione` e `normalizza_conferma` sono forniti completi e verificati: si usano, non si riscrivono. Gli `import` già dichiarati nei moduli incompleti sono quelli necessari ai corpi da completare.

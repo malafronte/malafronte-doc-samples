@@ -108,104 +108,105 @@ def main(argv):
         return 1
 
     modificato = False
-    while True:
-        print()
-        print(mostra_menu())
-        try:
+    try:
+        while True:
+            print()
+            print(mostra_menu())
             scelta = input("scelta> ").strip()
-        except EOFError:
-            print("sessione interrotta: fine dell'input")
-            if modificato:
-                print("avviso: restano modifiche non salvate in memoria")
-            return 1
-
-        if scelta == "1":
-            for riga in righe_situazione(materiali):
-                print(riga)
-        elif scelta == "2":
-            codice = input("codice da cercare> ").strip()
-            indice = cerca_materiale(materiali, codice)
-            if indice is None:
-                print(f"materiale {codice!r} assente")
-            else:
-                print(f"materiale {codice!r} in posizione {indice}: {riga_materiale(materiali[indice])}")
-        elif scelta == "3":
-            codice = input("codice> ").strip()
-            descrizione = input("descrizione> ")
-            quantita_testo = input("quantita> ").strip()
-            try:
-                quantita = int(quantita_testo)
-            except ValueError:
-                print(f"quantita non valida: {quantita_testo!r} non è un intero")
-                continue
-            try:
-                inserisci_materiale(
-                    materiali,
-                    {"codice": codice, "descrizione": descrizione, "quantita": quantita},
-                )
-            except ValueError as errore:
-                print(f"inserimento rifiutato: {errore}")
-            else:
-                modificato = True
-                print(f"materiale {codice!r} inserito")
-        elif scelta == "4":
-            codice = input("codice da aggiornare> ").strip()
-            if cerca_materiale(materiali, codice) is None:
-                print(f"materiale {codice!r} assente")
-                continue
-            descrizione = input("nuova descrizione> ")
-            quantita_testo = input("nuova quantita> ").strip()
-            try:
-                quantita = int(quantita_testo)
-            except ValueError:
-                print(f"quantita non valida: {quantita_testo!r} non è un intero")
-                continue
-            try:
-                aggiornato = modifica_materiale(materiali, codice, descrizione, quantita)
-            except ValueError as errore:
-                print(f"aggiornamento rifiutato: {errore}")
-                print("il record precedente è rimasto invariato")
-            else:
-                if aggiornato:
-                    modificato = True
-                    print(f"materiale {codice!r} aggiornato")
-                else:
-                    print(f"materiale {codice!r} assente")
-        elif scelta == "5":
-            codice = input("codice da eliminare> ").strip()
-            if cerca_materiale(materiali, codice) is None:
-                print(f"materiale {codice!r} assente")
-                continue
-            conferma = normalizza_conferma(input("conferma eliminazione (s/n)> "))
-            if conferma != "s":
-                print("eliminazione annullata")
-                continue
-            if elimina_materiale(materiali, codice):
-                modificato = True
-                print(f"materiale {codice!r} eliminato")
-        elif scelta == "6":
-            try:
-                salva_materiali(percorso, materiali)
-            except (OSError, ValueError, csv.Error) as errore:
-                print(f"salvataggio non riuscito: {errore}")
-                print("dati e modifiche pendenti restano in memoria")
-            else:
-                modificato = False
-                print(f"archivio salvato in {percorso}")
-        elif scelta == "0":
-            if modificato:
-                try:
-                    salva_materiali(percorso, materiali)
-                except (OSError, ValueError, csv.Error) as errore:
-                    print(f"salvataggio non riuscito: {errore}")
-                    print("si resta nel menu con i dati ancora in memoria")
-                    continue
-                modificato = False
-                print(f"archivio salvato in {percorso}")
-            print("sessione terminata")
-            return 0
-        else:
-            print(f"comando sconosciuto: {scelta!r}")
+            match scelta:
+                case "1":
+                    for riga in righe_situazione(materiali):
+                        print(riga)
+                case "2":
+                    codice = input("codice da cercare> ").strip()
+                    indice = cerca_materiale(materiali, codice)
+                    if indice is None:
+                        print(f"materiale {codice!r} assente")
+                    else:
+                        print(f"materiale {codice!r} in posizione {indice}: {riga_materiale(materiali[indice])}")
+                case "3":
+                    codice = input("codice> ").strip()
+                    descrizione = input("descrizione> ")
+                    quantita_testo = input("quantita> ").strip()
+                    try:
+                        quantita = int(quantita_testo)
+                    except ValueError:
+                        print(f"quantita non valida: {quantita_testo!r} non è un intero")
+                        continue
+                    try:
+                        inserisci_materiale(
+                            materiali,
+                            {"codice": codice, "descrizione": descrizione, "quantita": quantita},
+                        )
+                    except ValueError as errore:
+                        print(f"inserimento rifiutato: {errore}")
+                    else:
+                        modificato = True
+                        print(f"materiale {codice!r} inserito")
+                case "4":
+                    codice = input("codice da aggiornare> ").strip()
+                    if cerca_materiale(materiali, codice) is None:
+                        print(f"materiale {codice!r} assente")
+                        continue
+                    descrizione = input("nuova descrizione> ")
+                    quantita_testo = input("nuova quantita> ").strip()
+                    try:
+                        quantita = int(quantita_testo)
+                    except ValueError:
+                        print(f"quantita non valida: {quantita_testo!r} non è un intero")
+                        continue
+                    try:
+                        aggiornato = modifica_materiale(materiali, codice, descrizione, quantita)
+                    except ValueError as errore:
+                        print(f"aggiornamento rifiutato: {errore}")
+                        print("il record precedente è rimasto invariato")
+                    else:
+                        if aggiornato:
+                            modificato = True
+                            print(f"materiale {codice!r} aggiornato")
+                        else:
+                            print(f"materiale {codice!r} assente")
+                case "5":
+                    codice = input("codice da eliminare> ").strip()
+                    if cerca_materiale(materiali, codice) is None:
+                        print(f"materiale {codice!r} assente")
+                        continue
+                    conferma = normalizza_conferma(input("conferma eliminazione (s/n)> "))
+                    if conferma != "s":
+                        print("eliminazione annullata")
+                        continue
+                    if elimina_materiale(materiali, codice):
+                        modificato = True
+                        print(f"materiale {codice!r} eliminato")
+                case "6":
+                    try:
+                        salva_materiali(percorso, materiali)
+                    except (OSError, ValueError, csv.Error) as errore:
+                        print(f"salvataggio non riuscito: {errore}")
+                        print("dati e modifiche pendenti restano in memoria")
+                    else:
+                        modificato = False
+                        print(f"archivio salvato in {percorso}")
+                case "0":
+                    if modificato:
+                        try:
+                            salva_materiali(percorso, materiali)
+                        except (OSError, ValueError, csv.Error) as errore:
+                            print(f"salvataggio non riuscito: {errore}")
+                            print("si resta nel menu con i dati ancora in memoria")
+                            continue
+                        modificato = False
+                        print(f"archivio salvato in {percorso}")
+                    print("sessione terminata")
+                    return 0
+                case _:
+                    print(f"comando sconosciuto: {scelta!r}")
+    except EOFError:
+        # L'interruzione riguarda l'intera sessione, anche i campi e le conferme.
+        print("sessione interrotta: fine dell'input")
+        if modificato:
+            print("avviso: restano modifiche non salvate in memoria")
+        return 1
 
 
 if __name__ == "__main__":
