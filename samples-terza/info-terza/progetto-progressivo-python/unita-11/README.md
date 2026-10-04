@@ -58,15 +58,15 @@ Esecuzione verificata su Windows 11, CPython 3.14.7, uv 0.12.15, pytest 9.1.1,
 matplotlib 3.11. Suite cumulativa:
 
 ```text
-> uv run pytest -q
-........................................................................ [ 75%]
-........................                                                 [100%]
-96 passed in 0.12s
+> uv run --frozen pytest -q
+........................................................................ [ 72%]
+...........................                                              [100%]
+99 passed in 0.21s
 ```
 
-**96 test**: 86 delle tappe U5-U10 più 10 della tappa U11 — i casi
+**99 test**: 89 delle tappe U5-U10 più 10 della tappa U11 — i casi
 PU11-01-PU11-08 e due casi propri sulla fusione stabile e sul primo indice.
-L'esperimento produce, fra le altre, queste mediane in millisecondi:
+L'esperimento produce, fra le altre, queste mediane in secondi:
 
 ```text
 famiglia              n procedimento      mediana s
@@ -116,7 +116,7 @@ lettura dei risultati, le tabelle complete e la scelta motivata sono nella
 | PU11-07-PU11-08 | stesso comando | `007` e `7` distinti; stesso risultato di `sorted` |
 | Casi propri PR-1, PR-2 | stesso comando | Fusione stabile e input invariati; primo indice su totali tutti uguali |
 | Parità fra strategie | `confronto_ordinamenti_u11.py` | Stesso ordine dei marcatori per inserimento, fusione e `sorted` |
-| Regressione U5-U10 | `uv run pytest -q` | 96 test complessivi superati |
+| Regressione U5-U10 | `uv run pytest -q` | 99 test complessivi superati |
 
 ## Collegamenti
 

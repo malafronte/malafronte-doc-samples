@@ -44,13 +44,29 @@ guasto e controllano che il temporaneo non resti sulla cartella.
 
 ## Modifiche pendenti, uscita e EOF
 
+- La sessione nasce **non inizializzata** (`registro = None`), non come
+  archivio vuoto. Prima di consultare, modificare, salvare o esportare si
+  esegue `carica`: un archivio valido inizializza il registro; un file
+  assente inizializza una lista vuota senza scrivere; un primo caricamento invalido
+  lascia la sessione non inizializzata e il file invariato. Così `salva`
+  prima del caricamento non può cancellare un archivio già presente.
+- Un ricaricamento invalido conserva il registro già inizializzato: nessun
+  risultato parziale sostituisce i dati in memoria.
 - Ogni inserimento, aggiornamento ed eliminazione **riuscito** rende pendente
   il salvataggio; un'operazione rifiutata non lo rende pendente.
+- `carica` con modifiche pendenti viene **rifiutato**, senza perdere i record
+  né azzerare l'avviso. Si può salvare e poi ricaricare, oppure uscire
+  confermando la perdita. Un salvataggio fallito mantiene questa protezione.
 - `esci` con modifiche pendenti chiede conferma e **non salva in silenzio**;
   con `n` la sessione prosegue.
 - La fine dell'input (EOF) — su qualunque punto di lettura — termina la
   sessione con un messaggio esplicito e nessun salvataggio automatico: le
   modifiche non salvate restano solo in memoria.
+
+I dieci test `test_cli_*` di `test_persistenza_u12.py` verificano le sessioni
+complete con input predisposti, le domande e i byte dei file: inizializzazione,
+rifiuti, ricaricamento, salvataggio fallito, EOF e svuotamento intenzionale
+dopo il caricamento. Si affiancano ai test delle API di dominio e persistenza.
 
 ## Riavvio e ripristino
 

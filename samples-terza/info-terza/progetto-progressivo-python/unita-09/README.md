@@ -59,13 +59,13 @@ Esecuzione verificata su Windows 11, CPython 3.14.7, uv 0.12.15, pytest 9.1.1,
 matplotlib 3.11. Suite cumulativa:
 
 ```text
-> uv run pytest -q
-........................................................................ [ 96%]
-...                                                                      [100%]
-75 passed in 0.09s
+> uv run --frozen pytest -q
+........................................................................ [ 92%]
+......                                                                   [100%]
+78 passed in 0.18s
 ```
 
-**75 test**: 66 delle tappe U5-U8 più 9 della tappa U9 — i casi PU9-01-PU9-08 e
+**78 test**: 69 delle tappe U5-U8 più 9 della tappa U9 — i casi PU9-01-PU9-08 e
 il controllo della mediana. La campagna di misura produce:
 
 ```text
@@ -123,7 +123,7 @@ tabella e la lettura critica sono nel
 | PU9-03-PU9-04 | stesso comando | Confronti 1/3/3 per `007`, `009`, assente; `7` distinto da `007` |
 | PU9-05-PU9-07 | stesso comando | Stessa lunghezza con posizioni diverse; correttezza prima dei tempi; ripetizioni stabili |
 | PU9-08 | stesso comando e `dossier-analisi.md` | Formule del modello verificate; nessuna deduzione asintotica dai soli tempi |
-| Regressione U5-U8 | `uv run pytest -q` | 75 test complessivi superati |
+| Regressione U5-U8 | `uv run pytest -q` | 78 test complessivi superati |
 | Campioni e grafico | `analisi_costi_u9.py` e `grafico_costi_u9.py` | JSON e PNG rigenerabili, tabella equivalente nel dossier |
 
 ## Collegamenti

@@ -27,6 +27,15 @@ esegue **una sola volta**, quando la coppia viene costruita.
 | `preventivi_sopra_media(preventivi) -> list` | Riceve coppie già normalizzate. Restituisce una lista **nuova**, in ordine originale, con le coppie il cui totale è strettamente sopra la media dei totali, **senza arrotondamento**; conserva duplicati e input; vuoto → `[]`. Le tuple selezionate possono essere condivise, perché i loro elementi sono immutabili. |
 | `matrice_riepilogo(preventivi) -> tuple[list, list]` | Riceve coppie già normalizzate. Restituisce `(conteggi, somme_cent)`: due liste nuove e distinte, due elementi ciascuna, nell'ordine fisso `locale`, `nazionale`; vuoto → `([0, 0], [0, 0])`. L'input resta conservato. |
 
+### Confronto esatto del sopra-media
+
+Il sopra-media confronta soltanto interi: per una lista non vuota, con
+`numero` elementi e totale `somma`, `totale_cent > somma / numero` equivale
+a `totale_cent * numero > somma`, perché `numero` è positivo. Non si
+calcola una media in `float`: anche importi oltre `2**53` restano esatti.
+Tre test di regressione verificano totali grandi uguali, due importi distanti
+un centesimo e interi oltre il limite di rappresentazione dei `float`.
+
 ## Funzione di preparazione
 
 `prepara_coppie(dati_spedizione) -> list` riceve le terne

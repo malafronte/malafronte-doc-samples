@@ -1,6 +1,7 @@
 """Suite di verifica di persistenza, errori e riproducibilità (tappa U12).
 
-Casi pubblici PU12-01-PU12-10 e tre casi propri. I guasti di scrittura e
+Casi pubblici PU12-01-PU12-10, tre casi propri e dieci regressioni CLI.
+I guasti di scrittura e
 sostituzione sono provocati in modo deterministico intercettando le operazioni
 interne del modulo di persistenza: non si usano i permessi della cartella.
 Dati soltanto sintetici.
@@ -11,6 +12,7 @@ Si esegue dalla root del progetto con:
 from pathlib import Path
 
 import registro_persistenza
+import registro_cli
 from registro_dominio import (
     aggiorna_record,
     crea_record,
@@ -271,3 +273,167 @@ def test_proprio_3_esportazione_csv_di_consultazione(tmp_path):
     assert righe[2] == "012,nazionale,0"
     assert righe[3] == "003,locale,1200"
     assert not percorso_csv.read_bytes().startswith(b"\xef\xbb\xbf")
+
+
+# --- Regressioni della sessione CLI: inizializzazione e modifiche pendenti ---
+
+
+def esegui_sessione_cli(monkeypatch, capsys, percorso_archivio, comandi):
+    """Esegue una sessione con input predisposti; None rappresenta EOF.
+
+    Le domande restano nell'output, così si controlla anche la conferma di
+    uscita. Una lettura inattesa esaurisce l'iteratore e fa fallire il test.
+    """
+    risposte = iter(comandi)
+
+    def leggi(prompt):
+        print(prompt, end="")
+        risposta = next(risposte)
+        if risposta is None:
+            raise EOFError
+        return risposta
+
+    monkeypatch.setattr(registro_cli, "PERCORSO_PREDEFINITO", percorso_archivio)
+    monkeypatch.setattr(registro_cli, "PERCORSO_CSV", percorso_archivio.with_suffix(".csv"))
+    monkeypatch.setattr("builtins.input", leggi)
+    registro_cli.main()
+    assert list(risposte) == []
+    return capsys.readouterr().out
+
+
+def test_cli_salva_prima_di_caricare_preserva_archivio(tmp_path, monkeypatch, capsys):
+    archivio = tmp_path / "archivio.json"
+    byte_prima = percorso("archivio_canonico.json").read_bytes()
+    archivio.write_bytes(byte_prima)
+    output = esegui_sessione_cli(monkeypatch, capsys, archivio, ["salva", "esci"])
+    assert archivio.read_bytes() == byte_prima
+    assert "Registro non inizializzato" in output
+    assert "Archivio salvato." not in output
+
+
+def test_cli_operazioni_prima_di_caricare_senza_effetti(tmp_path, monkeypatch, capsys):
+    archivio = tmp_path / "archivio.json"
+    output = esegui_sessione_cli(
+        monkeypatch, capsys, archivio,
+        ["elenco", "cerca", "inserisci", "aggiorna", "elimina", "esporta", "salva", "esci"],
+    )
+    assert output.count("Registro non inizializzato") == 7
+    assert not archivio.exists()
+    assert not archivio.with_suffix(".csv").exists()
+
+
+def test_cli_archivio_assente_inizializzato_da_carica(tmp_path, monkeypatch, capsys):
+    archivio = tmp_path / "archivio.json"
+    output = esegui_sessione_cli(monkeypatch, capsys, archivio, ["carica", "salva", "esci"])
+    assert "Archivio assente: nuovo registro vuoto." in output
+    assert "Archivio salvato." in output
+    registro, esito, dettaglio = carica_archivio(archivio)
+    assert esito == ""
+    assert registro == []
+
+
+def test_cli_caricamento_invalido_non_autorizza_salvataggio(tmp_path, monkeypatch, capsys):
+    for nome in (
+        "archivio_sintassi_corrotta.json",
+        "archivio_struttura_invalida.json",
+        "archivio_dominio_invalido.json",
+    ):
+        archivio = tmp_path / "archivio.json"
+        byte_prima = percorso(nome).read_bytes()
+        archivio.write_bytes(byte_prima)
+        output = esegui_sessione_cli(monkeypatch, capsys, archivio, ["carica", "salva", "esci"])
+        assert "Caricamento non riuscito" in output
+        assert "Registro non inizializzato" in output
+        assert "Archivio salvato." not in output
+        assert archivio.read_bytes() == byte_prima
+
+
+def test_cli_ricaricamento_pendente_conserva_record_e_avviso(tmp_path, monkeypatch, capsys):
+    archivio = tmp_path / "archivio.json"
+    assert salva_archivio(archivio, registro_canonico()) is True
+    output = esegui_sessione_cli(
+        monkeypatch, capsys, archivio,
+        ["carica", "inserisci", "020", "nazionale", "75", "carica",
+         "cerca", "020", "esci", "n", "salva", "esci"],
+    )
+    assert "Caricamento rifiutato: ci sono modifiche non salvate." in output
+    assert "020 | nazionale | 0,75 euro (75 centesimi)" in output
+    assert "Ci sono modifiche non salvate. Uscire comunque?" in output
+    assert "Uscita annullata." in output
+    registro, esito, dettaglio = carica_archivio(archivio)
+    assert esito == ""
+    assert registro[-1] == crea_record("020", "nazionale", 75)
+
+
+def test_cli_ricaricamento_dopo_salvataggio_ammesso(tmp_path, monkeypatch, capsys):
+    archivio = tmp_path / "archivio.json"
+    assert salva_archivio(archivio, registro_canonico()) is True
+    output = esegui_sessione_cli(
+        monkeypatch, capsys, archivio,
+        ["carica", "inserisci", "020", "nazionale", "75", "salva",
+         "carica", "cerca", "020", "esci"],
+    )
+    assert "Archivio caricato: 4 record." in output
+    assert "Caricamento rifiutato" not in output
+    assert "020 | nazionale | 0,75 euro (75 centesimi)" in output
+    assert "Ci sono modifiche non salvate. Uscire comunque?" not in output
+
+
+def test_cli_guasto_salvataggio_conserva_modifiche_pendenti(tmp_path, monkeypatch, capsys):
+    archivio = tmp_path / "archivio.json"
+    assert salva_archivio(archivio, registro_canonico()) is True
+    byte_prima = archivio.read_bytes()
+
+    def scrittura_fallita(percorso_temporaneo, testo):
+        raise OSError("guasto simulato durante la scrittura")
+
+    monkeypatch.setattr(registro_persistenza, "_scrivi_temporaneo", scrittura_fallita)
+    output = esegui_sessione_cli(
+        monkeypatch, capsys, archivio,
+        ["carica", "inserisci", "020", "nazionale", "75", "salva",
+         "carica", "cerca", "020", "esci", "s"],
+    )
+    assert "Salvataggio non riuscito" in output
+    assert "Archivio salvato." not in output
+    assert "Caricamento rifiutato" in output
+    assert "020 | nazionale | 0,75 euro (75 centesimi)" in output
+    assert "Ci sono modifiche non salvate. Uscire comunque?" in output
+    assert archivio.read_bytes() == byte_prima
+    assert not archivio.with_name("archivio.json.tmp").exists()
+
+
+def test_cli_eof_prima_di_caricare_non_scrive(tmp_path, monkeypatch, capsys):
+    archivio = tmp_path / "archivio.json"
+    byte_prima = percorso("archivio_canonico.json").read_bytes()
+    archivio.write_bytes(byte_prima)
+    output = esegui_sessione_cli(monkeypatch, capsys, archivio, [None])
+    assert "Input terminato" in output
+    assert archivio.read_bytes() == byte_prima
+
+
+def test_cli_eof_con_modifiche_non_salva(tmp_path, monkeypatch, capsys):
+    archivio = tmp_path / "archivio.json"
+    assert salva_archivio(archivio, registro_canonico()) is True
+    byte_prima = archivio.read_bytes()
+    output = esegui_sessione_cli(
+        monkeypatch, capsys, archivio,
+        ["carica", "inserisci", "020", "nazionale", "75", None],
+    )
+    assert "Record inserito." in output
+    assert "Input terminato" in output
+    assert "Archivio salvato." not in output
+    assert archivio.read_bytes() == byte_prima
+
+
+def test_cli_eliminazione_completa_salva_vuoto_intenzionale(tmp_path, monkeypatch, capsys):
+    archivio = tmp_path / "archivio.json"
+    assert salva_archivio(archivio, registro_canonico()) is True
+    output = esegui_sessione_cli(
+        monkeypatch, capsys, archivio,
+        ["carica", "elimina", "007", "elimina", "012", "elimina", "003", "salva", "esci"],
+    )
+    assert output.count("Record eliminato.") == 3
+    assert "Archivio salvato." in output
+    registro, esito, dettaglio = carica_archivio(archivio)
+    assert esito == ""
+    assert registro == []

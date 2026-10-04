@@ -122,5 +122,6 @@ La scelta dipende da input e uso, non da una graduatoria:
 ## Verifiche di regressione
 
 La suite U5-U10 è stata rieseguita senza modifiche ai contratti:
-`uv run pytest -q` riporta 96 test superati, dei quali 10 di questa tappa.
+Nella fotografia U11, `uv run pytest -q` riporta 99 test superati, dei quali
+10 di questa tappa.
 Ordinamenti, viste e consultazioni delle tappe precedenti sono invariati.

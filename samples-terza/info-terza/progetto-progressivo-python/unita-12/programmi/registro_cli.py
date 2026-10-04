@@ -8,9 +8,12 @@ direzione, dall'interazione verso il dominio e la persistenza.
 Comandi: `carica`, `elenco`, `cerca`, `inserisci`, `aggiorna`, `elimina`,
 `salva`, `esporta`, `esci`. Comportamenti dichiarati:
 
+- **inizializzazione**: prima di consultare, modificare, salvare o esportare
+  si esegue `carica`; un archivio assente inizializza un registro vuoto,
+  mentre un primo caricamento invalido lascia la sessione non inizializzata;
 - **modifiche pendenti**: ogni inserimento, aggiornamento ed eliminazione
-  rende pendente il salvataggio; `esci` con modifiche pendenti chiede
-  conferma e non salva in silenzio;
+  rende pendente il salvataggio; `carica` le preserva rifiutando il
+  ricaricamento, `esci` chiede conferma e non salva in silenzio;
 - **salvataggio esplicito**: il messaggio di successo compare solo quando il
   file è stato sostituito; un guasto lascia il file precedente invariato;
 - **EOF**: la fine dell'input termina la sessione con un messaggio, senza
@@ -110,7 +113,8 @@ def leggi_riga(prompt: str):
 
 def main() -> None:
     """Sessione di interazione sul registro, con salvataggio esplicito."""
-    registro = []
+    # None distingue una sessione non inizializzata da un registro vuoto valido.
+    registro = None
     percorso_archivio = PERCORSO_PREDEFINITO
     modifiche_pendenti = False
 
@@ -122,8 +126,22 @@ def main() -> None:
             return
         comando = comando.strip()
 
+        if registro is None and comando in (
+            "elenco", "cerca", "inserisci", "aggiorna", "elimina", "salva", "esporta"
+        ):
+            print("Registro non inizializzato: eseguire carica prima di usare il registro.")
+            continue
+
         if comando == "carica":
+            if modifiche_pendenti:
+                print("Caricamento rifiutato: ci sono modifiche non salvate.")
+                print("Salvare le modifiche oppure uscire confermandone la perdita.")
+                continue
             caricato, esito, dettaglio = carica_archivio(percorso_archivio)
+            if esito == "assente":
+                registro = []
+                print("Archivio assente: nuovo registro vuoto.")
+                continue
             if esito != "":
                 print(f"Caricamento non riuscito ({esito}): {dettaglio}")
                 continue

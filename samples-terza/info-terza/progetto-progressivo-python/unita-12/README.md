@@ -71,14 +71,15 @@ Esecuzione verificata su Windows 11, CPython 3.14.7, uv 0.12.15, pytest 9.1.1.
 Suite cumulativa:
 
 ```text
-> uv run pytest -q
-........................................................................ [ 65%]
-......................................                                   [100%]
-110 passed in 0.20s
+> uv run --frozen pytest -q
+........................................................................ [ 58%]
+...................................................                      [100%]
+123 passed in 0.37s
 ```
 
-**110 test**: 96 delle tappe U5-U11 più 14 della tappa U12 — i casi
-PU12-01-PU12-10 (compreso il secondo guasto) e tre casi propri. Sessione CLI
+**123 test**: 99 delle tappe U5-U11 più 24 della tappa U12 — i casi
+PU12-01-PU12-10 (compreso il secondo guasto), tre casi propri e dieci
+regressioni della sessione CLI. Sessione CLI
 reale, da `carica` a `esci`:
 
 ```text
@@ -114,13 +115,21 @@ salvate restano solo in memoria.`; `esci` con modifiche pendenti chiede
 conferma e con `n` prosegue; un'operazione rifiutata non rende pendente il
 salvataggio.
 
+La sessione inizia **non inizializzata**: prima di consultare, modificare,
+salvare o esportare occorre eseguire `carica`. Un archivio assente avvia un
+registro vuoto, senza scrivere; un primo caricamento invalido lascia la
+sessione non inizializzata e non autorizza il salvataggio. Con modifiche
+pendenti, `carica` rifiuta il ricaricamento: i record restano in memoria e
+l'uscita continua a richiedere conferma. Dopo un salvataggio riuscito si può
+ricaricare; dopo un guasto la protezione resta attiva.
+
 ## Differenze rispetto alla tappa precedente
 
 - nuovi `programmi/registro_dominio.py`, `registro_persistenza.py` e
   `registro_cli.py`: dominio, persistenza e interazione con responsabilità
   distinte e dipendenze in una sola direzione;
-- nuovo `programmi/test_persistenza_u12.py` con 14 test, compresi i guasti
-  deterministici di scrittura e sostituzione e i riavvii;
+- nuovo `programmi/test_persistenza_u12.py` con 24 test, compresi i guasti
+  deterministici di scrittura e sostituzione, i riavvii e le sessioni CLI;
 - nuova cartella `dati/unita-12/` con le fixture sintetiche discriminanti;
 - nuova `documentazione/unita-12/` con schema, errori e riproducibilità;
 - `.gitignore` esclude i file di lavoro della sessione CLI.
@@ -151,9 +160,10 @@ della regressione U5-U11.
 | PU12-06-PU12-07 | stesso comando | Sintassi con posizione distinta da struttura |
 | PU12-08 | stesso comando | Guasti di scrittura e sostituzione: byte invariati, temporaneo eliminato |
 | PU12-09 | stesso comando | Riavvio equivalente dopo salvataggio riuscito |
-| PU12-10 | `uv run pytest -q` | Aggregati e viste coerenti; 110 test complessivi superati |
+| PU12-10 | `uv run pytest -q` | Aggregati e viste coerenti; 123 test complessivi superati |
 | Casi propri PR-1, PR-2, PR-3 | stesso comando | Versione booleana rifiutata, campo extra rifiutato, CSV senza BOM |
 | Sessione CLI | `uv run python programmi/registro_cli.py` | Comandi, modifiche pendenti, conferma di uscita ed EOF come documentato |
+| Regressioni CLI | `uv run pytest -q programmi/test_persistenza_u12.py -k cli` | Dieci test su inizializzazione, ricaricamento, guasti, EOF e vuoto intenzionale |
 
 ## Collegamenti
 

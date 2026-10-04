@@ -126,6 +126,7 @@ codici di lunghezza diversa da `L = 6`.
 ## Regressione
 
 La suite U5-U8 è stata rieseguita dopo l'analisi senza modifiche ai contratti:
-`uv run pytest -q` riporta 75 test superati, dei quali 9 di questa tappa. Le
+Nella fotografia U9, `uv run pytest -q` riporta 78 test superati, dei quali
+9 di questa tappa. Le
 funzioni di produzione sono invariate e i risultati sono controllati prima dei
 tempi, come richiesto dalla milestone M38.

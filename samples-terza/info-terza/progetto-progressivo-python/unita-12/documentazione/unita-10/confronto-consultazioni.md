@@ -11,13 +11,20 @@ del capitolo sulla complessità.
 | Voce | Procedimento | Operazione contata | Costo teorico | Conteggio esatto |
 |---|---|---|---|---|
 | Preparazione di una vista | ordinamento per inserimento su una copia della lista | confronti fra chiavi e spostamenti | da Θ(n) a Θ(n²) secondo l'ordine iniziale | confronti: `n-1` con lista già ordinata, `n(n-1)/2` con lista in ordine inverso |
-| Consultazione per codice | ricerca dicotomica sulla vista ordinata | confronti fra codici | Θ(log n) | al massimo `⌊log₂ n⌋ + 1` confronti |
+| Consultazione per codice | ricerca dicotomica sulla vista ordinata | confronti fra codici (`==` e `<`) | Θ(log n) | per `n >= 1`, al massimo `2 * (⌊log₂ n⌋ + 1)` confronti; per `n = 0`, zero |
 | `q` consultazioni | ripetizione della ricerca | confronti | Θ(q · log n) | somma dei confronti delle singole ricerche |
 | Aggiornamento | ricostruzione della vista dopo una modifica ai dati | come la preparazione | come la preparazione | come la preparazione |
 
 Ipotesi: i codici sono stringhe di lunghezza limitata e il costo di un
 confronto si considera costante; i record sono condivisi fra registro e vista,
 quindi la copia riguarda la sola lista di riferimenti, non i record.
+
+Il limite `⌊log₂ n⌋ + 1` conta le **iterazioni**, non i singoli confronti
+del sorgente: ogni iterazione esegue `==` e, se il codice non coincide,
+anche `<`. Con una ricerca assente i confronti sono quindi due per
+iterazione; con una ricerca riuscita l'ultima iterazione esegue soltanto
+`==`. Per esempio, cercare `"999999"` nella vista con codici `"000000"`,
+`"000001"`, `"000002"` richiede due iterazioni e quattro confronti.
 
 ## Scelta del procedimento
 
@@ -35,7 +42,8 @@ richieste, che implementano il procedimento scelto.
 
 La preparazione costa molto più di una consultazione singola: per `n = 1000`
 l'ordinamento per inserimento nell'ordine peggiore esegue circa 500.000
-confronti, mentre una ricerca dicotomica ne esegue al massimo 10. Con poche
+confronti, mentre una ricerca dicotomica esegue al massimo 10 iterazioni e
+20 confronti fra codici. Con poche
 consultazioni conviene quindi guardare al costo della preparazione; con molte
 consultazioni ripetute lo stesso costo si distribuisce su `q` ricerche e la
 vista diventa conveniente.

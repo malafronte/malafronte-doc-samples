@@ -50,13 +50,14 @@ uv run pytest -q        # suite cumulativa U5+U6+U7
 Esecuzione verificata su Windows 11 con CPython 3.14.7 e pytest 9.1.1:
 
 ```text
-> uv run pytest -q
-......................................................                   [100%]
-54 passed in 0.08s
+> uv run --frozen pytest -q
+.........................................................                [100%]
+57 passed in 0.08s
 ```
 
-La suite cumulativa scopre **54 test**: 30 U5, 12 U6 e 12 U7 — i casi
-PU01-PU09 più tre casi propri. Il raccordo canonico della tappa è verificato
+La suite cumulativa scopre **57 test**: 30 U5, 12 U6 e 15 U7 — i casi
+PU01-PU09, tre casi propri e tre regressioni sul confronto esatto fra interi.
+Il raccordo canonico della tappa è verificato
 da `test_pu02_preparazione_e_analisi_del_canonico` e
 `test_pu07_raccordo_u5_u6_u7`: importi U5 `[3, 9, 5]`, coppie U7
 `[("locale", 300), ("nazionale", 900), ("locale", 500)]`, sopra-media
@@ -68,7 +69,7 @@ da `test_pu02_preparazione_e_analisi_del_canonico` e
 - `programmi/spedizione_u5.py` acquisisce la sezione «Coppie e tabelle di
   sintesi»: `normalizza_destinazione`, `prepara_coppie`,
   `preventivi_sopra_media` e `matrice_riepilogo`;
-- nuovo `programmi/test_sintesi_u7.py` con 12 test, di cui due di raccordo;
+- nuovo `programmi/test_sintesi_u7.py` con 15 test, di cui due di raccordo;
 - nuova `documentazione/unita-07/progetto/contratti.md` con la mappa delle
   rappresentazioni e le regole sulle unità.
 
@@ -91,8 +92,9 @@ alla preparazione U7 e non modifica il contratto della CLI.
 | PU01-PU06 | `uv run pytest -q programmi/test_sintesi_u7.py` | Analisi esatte su vuoto, media, duplicati e alias |
 | PU07 raccordo | stesso comando | 1700 centesimi = 17 euro × 100, conversione una sola volta |
 | PU08 normalizzazione | stesso comando | `" nazionale "` e `"NAZIONALE"` → `"nazionale"`, originali conservati |
-| PU09 regressione | `uv run pytest -q` | 54 test complessivi superati, `estero` rifiutato dal validatore |
+| PU09 regressione | `uv run pytest -q` | 57 test complessivi superati, `estero` rifiutato dal validatore |
 | Casi propri PR-1, PR-2, PR-3 | stesso comando | Indipendenza dei risultati, duplicati, conversione singola |
+| Regressioni del sopra-media | `uv run pytest -q programmi/test_sintesi_u7.py` | Confronto esatto con totali grandi, duplicati e scarti di un centesimo |
 
 ## Collegamenti
 

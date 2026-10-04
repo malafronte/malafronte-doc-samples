@@ -189,10 +189,12 @@ def preventivi_sopra_media(preventivi: list) -> list:
     somma = 0
     for destinazione, totale_cent in preventivi:
         somma = somma + totale_cent
-    media = somma / len(preventivi)
+    numero = len(preventivi)
     sopra = []
     for coppia in preventivi:
-        if coppia[1] > media:
+        # totale > somma / numero equivale a totale * numero > somma.
+        # Il confronto fra interi evita l'arrotondamento della divisione.
+        if coppia[1] * numero > somma:
             sopra.append(coppia)
     return sopra
 

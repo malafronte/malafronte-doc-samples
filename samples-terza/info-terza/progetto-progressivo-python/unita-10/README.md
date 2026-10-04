@@ -51,13 +51,13 @@ uv run pytest -q        # suite cumulativa U5-U10
 Esecuzione verificata su Windows 11 con CPython 3.14.7 e pytest 9.1.1:
 
 ```text
-> uv run pytest -q
-........................................................................ [ 83%]
-..............                                                           [100%]
-86 passed in 0.10s
+> uv run --frozen pytest -q
+........................................................................ [ 80%]
+.................                                                        [100%]
+89 passed in 0.18s
 ```
 
-**86 test**: 75 delle tappe U5-U9 più 11 della tappa U10 — i casi
+**89 test**: 78 delle tappe U5-U9 più 11 della tappa U10 — i casi
 PU10-01-PU10-08, il confronto con `sorted` come oracolo e due casi propri. Il
 dataset di riferimento ha codici `["007", "009", "012", "003", "011"]` e
 totali `450, 1200, 450, 200, 450` centesimi: la vista per totale restituisce
@@ -96,7 +96,7 @@ ingresso — e la vista per codice `["003", "007", "009", "011", "012"]`.
 | PU10-07-PU10-08 | stesso comando | Sorgente invariata; vista non aggiornata dopo l'aggiunta di un record |
 | Oracolo `sorted` | stesso comando | Stessi ordini sui due criteri |
 | Casi propri PR-1, PR-2 | stesso comando | Chiavi tutte uguali; mutazione del record condiviso |
-| Regressione U5-U9 | `uv run pytest -q` | 86 test complessivi superati |
+| Regressione U5-U9 | `uv run pytest -q` | 89 test complessivi superati |
 
 ## Collegamenti
 

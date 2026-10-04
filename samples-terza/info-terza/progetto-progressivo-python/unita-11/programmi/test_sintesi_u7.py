@@ -183,3 +183,31 @@ def test_proprio_3_conversione_euro_centesimi_eseguita_una_sola_volta():
     for destinazione, totale_cent in coppie:
         somma_cent = somma_cent + totale_cent
     assert somma_cent == 500
+
+
+# --- Regressioni: confronto esatto anche oltre la precisione dei float ---
+
+
+def test_sopra_media_totali_grandi_uguali():
+    """Totali uguali non sono sopra la media, anche oltre 2**53."""
+    preventivi = [("locale", 9007199254740993), ("nazionale", 9007199254740993)]
+    risultato = preventivi_sopra_media(preventivi)
+    assert risultato == []
+    assert risultato is not preventivi
+    assert preventivi == [("locale", 9007199254740993), ("nazionale", 9007199254740993)]
+
+
+def test_sopra_media_totali_grandi_distanti_un_centesimo():
+    """La media fra due interi consecutivi non va arrotondata al maggiore."""
+    preventivi = [("locale", 9007199254740993), ("nazionale", 9007199254740994)]
+    assert preventivi_sopra_media(preventivi) == [("nazionale", 9007199254740994)]
+
+
+def test_sopra_media_interi_non_convertibili_in_float():
+    """Il dominio degli interi non impone il limite di rappresentazione dei float."""
+    totale_cent = 10**400
+    preventivi = [("locale", 0), ("nazionale", totale_cent), ("nazionale", totale_cent)]
+    assert preventivi_sopra_media(preventivi) == [
+        ("nazionale", totale_cent),
+        ("nazionale", totale_cent),
+    ]

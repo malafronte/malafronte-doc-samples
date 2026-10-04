@@ -51,12 +51,12 @@ uv run pytest -q        # suite cumulativa U5-U8
 Esecuzione verificata su Windows 11 con CPython 3.14.7 e pytest 9.1.1:
 
 ```text
-> uv run pytest -q
-..................................................................       [100%]
-66 passed in 0.10s
+> uv run --frozen pytest -q
+.....................................................................    [100%]
+69 passed in 0.13s
 ```
 
-La suite cumulativa scopre **66 test**: 30 U5, 12 U6, 12 U7 e 12 U8 — i casi
+La suite cumulativa scopre **69 test**: 30 U5, 12 U6, 15 U7 e 12 U8 — i casi
 PU8-01-PU8-09 più tre casi propri. Il dataset canonico della tappa è codici
 `["007", "008", "009"]` e coppie `[("locale", 300), ("nazionale", 900),
 ("locale", 500)]`: il riepilogo restituisce `locale` con conteggio 2 e totale
@@ -89,7 +89,7 @@ PU8-01-PU8-09 più tre casi propri. Il dataset canonico della tappa è codici
 | PU8-05-PU8-06 | stesso comando | Ricerca `007`/`009`/`7`/`X99`, totali uguali e zero lecito |
 | PU8-07-PU8-08 | stesso comando | Record e gruppi indipendenti; alias della ricerca su fixture separata |
 | PU8-09 raccordo | stesso comando | Euro `[3, 9, 5]`, centesimi `[300, 900, 500]`, coerenza con U6 e U7 |
-| Regressione U5-U7 | `uv run pytest -q` | 66 test complessivi superati |
+| Regressione U5-U7 | `uv run pytest -q` | 69 test complessivi superati, comprese le tre regressioni del sopra-media |
 
 ## Collegamenti
 
