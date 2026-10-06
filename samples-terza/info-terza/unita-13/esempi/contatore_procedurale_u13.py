@@ -1,10 +1,10 @@
 """Contatore di eventi in forma procedurale: record e funzioni (OOP-01).
 
-Questo modulo contiene la **buona soluzione procedurale** da cui parte il
+Questo modulo contiene la **buona soluzione procedurale** confrontata nel
 capitolo OOP-01: un record-dizionario con un solo campo e quattro funzioni che
 lo leggono e lo aggiornano secondo un contratto esplicito. Non è una soluzione
-"sbagliata": è una soluzione corretta, utile a osservare dove nasce la
-pressione che porta a introdurre una classe.
+"sbagliata": è una soluzione corretta, utile per confrontare funzioni su
+record e operazioni associate alle istanze di una classe.
 
 Dominio del contatore di eventi: una **quantità intera non negativa** che
 conta gli eventi registrati. Operazioni ammesse: incremento di una quantità
@@ -96,7 +96,7 @@ def descrivi(contatore):
 
 
 if __name__ == "__main__":
-    # Trascrizione della traccia del capitolo OOP-01, sez. A: due record
+    # Trascrizione della traccia del capitolo OOP-01, sez. B: due record
     # distinti, incrementi intercalati e azzeramento.
     primo = nuovo_contatore(0)
     secondo = nuovo_contatore(0)
