@@ -1,0 +1,25 @@
+[project]
+name = "esempi-unita-13"
+version = "0.1.0"
+description = "Sorgenti d'esempio dell'Unità 13: dalla soluzione procedurale agli oggetti."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.16",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+pythonpath = ["esempi", "esercizi"]
+python_functions = ["test_*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
