@@ -1,6 +1,7 @@
-"""Contatore di eventi in forma procedurale: record e funzioni (OOP-01).
+"""Contatore di eventi procedurale: materiale storico su record e funzioni.
 
-Questo modulo contiene la **buona soluzione procedurale** confrontata nel
+OOP-01 usa ora `orologio_procedurale_u13.py` come esempio introduttivo.
+Questo modulo conserva la **buona soluzione procedurale** confrontata nel
 capitolo OOP-01: un record-dizionario con un solo campo e quattro funzioni che
 lo leggono e lo aggiornano secondo un contratto esplicito. Non è una soluzione
 "sbagliata": è una soluzione corretta, utile per confrontare funzioni su

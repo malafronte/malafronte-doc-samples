@@ -2,7 +2,7 @@
 
 Raccoglie il codice delle schede che richiedono una realizzazione completa:
 PY-U13-T01 (`Serbatoio`), PY-U13-T02 (`Scontrino`), PY-U13-T04 (`Iscrizione`),
-PY-U13-T06 (conversioni testuali di `Articolo`), PY-U13-X02 (`Contatore` con i
+PY-U13-T06 (conversioni testuali di `Articolo`), PY-U13-X02 (`OrologioTreMetodi` con i
 tre metodi a confronto) e PY-U13-X03 (`Orario` con le conversioni).
 
 Ogni sezione è autonoma e dichiara il proprio contratto. Le schede
@@ -154,22 +154,24 @@ def riga_a_articolo(riga, riferimento_riga):
 # --- PY-U13-X02: mutazione, riassegnamento e nuova istanza -----------------
 
 
-class ContatoreTreMetodi:
-    """Contatore con tre metodi che agiscono in modo diverso sul chiamante."""
+class OrologioTreMetodi:
+    """Dati validi assunti; mutazione, riassegnamento e nuova istanza."""
 
-    def __init__(self, valore):
-        self.valore = valore
+    def __init__(self, ore, minuti):
+        self.ore = ore
+        self.minuti = minuti
 
-    def muta(self, nuovo):
-        self.valore = nuovo
-        return self.valore
+    def muta(self, ore, minuti):
+        self.ore = ore
+        self.minuti = minuti
+        return self.ore, self.minuti
 
-    def riassegna(self, nuovo):
-        self = ContatoreTreMetodi(nuovo)
-        return self.valore
+    def riassegna(self, ore, minuti):
+        self = OrologioTreMetodi(ore, minuti)
+        return self.ore, self.minuti
 
-    def ricostruisce(self, nuovo):
-        return ContatoreTreMetodi(nuovo)
+    def ricostruisce(self, ore, minuti):
+        return OrologioTreMetodi(ore, minuti)
 
 
 # --- PY-U13-X03: Orario e le sue conversioni -------------------------------
@@ -229,10 +231,11 @@ if __name__ == "__main__":
     riga = articolo_a_riga(Articolo("007", "Vite, lunga", 4, 25))
     print("Articolo riga:", riga)
     print("Articolo ricostruito:", riga_a_articolo(riga, "record 1").dati())
-    c = ContatoreTreMetodi(1)
+    c = OrologioTreMetodi(8, 15)
     alias = c
-    print("X02 muta:", c.muta(5), c.valore, alias.valore)
-    print("X02 riassegna:", c.riassegna(9), c.valore)
-    print("X02 ricostruisce:", c.ricostruisce(7).valore, c.valore)
+    print("X02 muta:", c.muta(9, 5), (c.ore, c.minuti), (alias.ore, alias.minuti))
+    print("X02 riassegna:", c.riassegna(12, 30), (c.ore, c.minuti))
+    nuovo = c.ricostruisce(18, 45)
+    print("X02 ricostruisce:", (nuovo.ore, nuovo.minuti), (c.ore, c.minuti))
     orario = Orario(720)
     print("Orario round-trip:", campi_a_orario(orario_a_campi(orario), "r1").dati())

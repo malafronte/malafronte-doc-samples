@@ -1,7 +1,8 @@
 # Unità 13 — sorgenti Python d'esempio (cap. OOP-01 e OOP-02)
 
 Sorgenti d'esempio dell'**Unità 13** del corso di informatica della terza:
-dalla soluzione procedurale agli oggetti. Contengono la prima classe del corso,
+dalla soluzione procedurale agli oggetti attraverso un orologio digitale.
+Contengono la prima classe del corso,
 gli attributi e `self`, le istanze indipendenti e gli alias, gli invarianti con
 rifiuto ed errore, il contatore con capacità, la classe `Articolo` e la variante
 a oggetti del magazzino persistente del cap. PY-20.
@@ -14,17 +15,22 @@ repository.
 
 ### `esempi/`
 
-- `esempi_concettuali_u13.py` — **esempi concettuali autonomi**, in quattro
-  sezioni indipendenti: convertitore centimetri → millimetri (OOP-01, sez. D–F),
-  classe `Contatore` (OOP-02, sez. A–F), classe `Limiti` con invariante e
+- `orologio_procedurale_u13.py` — **orologio su record** (OOP-01 B): ore 0–23 e
+  minuti 0–59, interi non booleani; `imposta`, `avanza`, `leggi` e `testo`.
+  Nessuna data né avanzamento automatico. Le modifiche validate restituiscono
+  `None`; gli argomenti invalidi producono `ValueError` senza modificare campi.
+- `orologio_digitale_u13.py` — **prima classe e versione validata**: `Orologio`
+  per OOP-02 A–F (attributi pubblici, dati validi assunti, avanzamento che
+  restituisce la coppia); `OrologioDigitale` per G (stesso contratto validato
+  della versione procedurale), più varianti su locali, `self` e X02.
+- `esempi_concettuali_u13.py` — **esempi concettuali autonomi**: convertitore
+  centimetri → millimetri (OOP-01 D/E/G), classe `Limiti` con invariante e
   aggiornamento coerente (OOP-02, sez. G), classe `Misura` con proiezione dei
   dati e round-trip CSV/JSON (OOP-02, sez. J).
-- `contatore_procedurale_u13.py` — **contatore di eventi** in forma procedurale:
-  record e funzioni con invariante `valore >= 0` (OOP-01, sez. A–B e G).
-- `istanze_alias_self_u13.py` — **varianti didattiche complete** su attributi,
-  nomi locali, `self`, alias e copie (OOP-02, sez. C–F): chiamata legata ed
-  esplicita, metodo difettoso che aggiorna un locale, metodo che riassegna
-  `self`, alias e copia di lista.
+- **Materiale storico conservato:** `contatore_procedurale_u13.py`,
+  `istanze_alias_self_u13.py` e la sezione `Contatore` di
+  `esempi_concettuali_u13.py`. Restano eseguibili e coperti dai test esistenti,
+  ma non sono i riferimenti del percorso introduttivo attuale.
 - `contatore_capacita_u13.py` — **contatore con capacità**: versione procedurale,
   classe `ContatoreCapacita` e sequenza canonica verificata su entrambe
   (OOP-02, sez. H).
@@ -45,6 +51,8 @@ repository.
 Suite `pytest` che deriva gli attesi dalle specifiche: `CONC-01…CONC-08` sugli
 esempi concettuali, `OGG-01…OGG-12` sul contatore con capacità, `ART-01…ART-05`
 su `Articolo`, `MAGO-01…MAGO-12` sul magazzino e sulle conversioni.
+`test_orologio_u13.py` verifica anche i 1440 orari con durate discriminanti,
+confini, errori senza aggiornamenti parziali, risultati, alias e varianti.
 
 ### `dati/`
 
@@ -73,6 +81,8 @@ CPython 3.14 sul computer, da questa directory.
 uv sync --group dev
 uv run pytest -q
 uv run ruff check .
+uv run python esempi/orologio_procedurale_u13.py
+uv run python esempi/orologio_digitale_u13.py
 uv run python esempi/esempi_concettuali_u13.py
 ```
 
@@ -93,15 +103,15 @@ un **processo separato**, dalla sua directory:
 
 ```powershell
 cd laboratorio/starter
-python dimostrazione_depositi.py
+uv run python dimostrazione_depositi.py
 ```
 
 ## Note di lettura
 
 - Gli esempi concettuali non importano dalle applicazioni complete: ciascuno è
   eseguibile con le sole definizioni del proprio punto della lezione.
-- Le varianti **deliberatamente difettose** vivono soltanto in
-  `istanze_alias_self_u13.py` e nei frammenti marcati dei test: non fanno parte
+- Le varianti **deliberatamente difettose** sono marcate in
+  `orologio_digitale_u13.py`, nel materiale storico e nei test: non fanno parte
   dei programmi validi.
 - `modifica_articolo` **muta l'istanza esistente**, mentre la versione U12
   sostituiva il record nella lista: la differenza di aliasing è dichiarata nel
