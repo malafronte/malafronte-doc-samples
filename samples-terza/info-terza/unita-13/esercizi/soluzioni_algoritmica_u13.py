@@ -18,6 +18,11 @@ def _valida_intero(valore, nome, minimo):
         raise ValueError(f"{nome}: atteso un valore >= {minimo}, ricevuto {valore}")
 
 
+def _valida_identificatore(identificatore):
+    if not isinstance(identificatore, str) or identificatore.strip() == "":
+        raise ValueError("identificatore: atteso testo non vuoto")
+
+
 # --- PY-U13-T07: Deposito con capacità ------------------------------------
 
 
@@ -74,8 +79,7 @@ class Risorsa:
         self._prenotazioni = {}
 
     def prenota(self, identificatore, quantita):
-        if not isinstance(identificatore, str) or identificatore.strip() == "":
-            raise ValueError("identificatore: atteso testo non vuoto")
+        _valida_identificatore(identificatore)
         _valida_intero(quantita, "quantita", 1)
         if identificatore in self._prenotazioni:
             return "duplicato"
@@ -86,6 +90,7 @@ class Risorsa:
         return "accettata"
 
     def annulla(self, identificatore):
+        _valida_identificatore(identificatore)
         if identificatore not in self._prenotazioni:
             return "assente"
         self._occupato = self._occupato - self._prenotazioni.pop(identificatore)
@@ -109,18 +114,25 @@ def elabora(risorsa, richieste):
     """Applica le richieste nell'ordine e restituisce il riepilogo.
 
     Politica sequenziale: ogni richiesta è valutata sullo stato prodotto dalle
-    precedenti. I rifiuti sono locali e non interrompono la sequenza.
+    precedenti. I rifiuti sono locali e non interrompono la sequenza. Ogni
+    richiesta è una coppia `(identificatore, quantita)` — prenotazione — oppure
+    una tupla `(identificatore,)` — annullamento.
     """
     esiti = []
     accettate = 0
     rifiutate = 0
     for richiesta in richieste:
-        if richiesta[0] == "prenota":
-            _, identificatore, quantita = richiesta
+        if len(richiesta) == 2:
+            identificatore, quantita = richiesta
             esito = risorsa.prenota(identificatore, quantita)
-        else:
-            _, identificatore = richiesta
+        elif len(richiesta) == 1:
+            (identificatore,) = richiesta
             esito = risorsa.annulla(identificatore)
+        else:
+            raise ValueError(
+                f"richiesta: attesa una coppia (identificatore, quantita) "
+                f"o una tupla (identificatore,), ricevuta {richiesta!r}"
+            )
         if esito == "accettata":
             accettate = accettate + 1
         else:
@@ -150,7 +162,9 @@ def elabora_movimenti(inventario, movimenti):
     """Applica movimenti firmati a una copia dell'inventario.
 
     Errore di formato e rifiuto per indisponibilità sono distinti. I dati
-    ricevuti non vengono modificati.
+    ricevuti non vengono modificati. Il risultato comprende il riepilogo per
+    articolo — coppie `(codice, quantita)` ordinate per codice — e il totale
+    complessivo delle quantità.
     """
     lavoro = [dict(articolo) for articolo in inventario]
     esiti = []
@@ -168,7 +182,18 @@ def elabora_movimenti(inventario, movimenti):
             continue
         lavoro[indice]["quantita"] = nuovo
         esiti.append((codice, variazione, "accettato"))
-    return {"articoli": lavoro, "esiti": esiti}
+    per_articolo = []
+    totale_quantita = 0
+    for articolo in lavoro:
+        per_articolo.append((articolo["codice"], articolo["quantita"]))
+        totale_quantita = totale_quantita + articolo["quantita"]
+    riepilogo = sorted(per_articolo)
+    return {
+        "articoli": lavoro,
+        "esiti": esiti,
+        "riepilogo": riepilogo,
+        "totale_quantita": totale_quantita,
+    }
 
 
 # --- PY-U13-T11: statistiche incrementali ---------------------------------
@@ -257,12 +282,14 @@ def da_riordinare(articoli, soglia):
 def trasferisci(sorgente, destinazione, unita):
     """Trasferisce unità da un deposito all'altro. `True` se applicato.
 
-    Tutte le condizioni sono controllate prima di ogni modifica. Sorgente e
-    destinazione coincidenti sono rifiutate: il contratto parla di due entità.
+    Tutte le condizioni sono controllate prima di ogni modifica. L'argomento è
+    validato per primo, anche quando i due depositi coincidono: un argomento non
+    ammesso è un errore in ogni situazione. Sorgente e destinazione coincidenti
+    sono invece rifiutate: il contratto parla di due entità.
     """
+    _valida_intero(unita, "unita", 0)
     if sorgente is destinazione:
         return False
-    _valida_intero(unita, "unita", 0)
     if unita > sorgente.stato()["contenuto"]:
         return False
     if unita > destinazione.spazio_libero():
@@ -284,21 +311,23 @@ def confronta(sequenza, esegui_procedurale, esegui_oggetti):
     """Restituisce il primo passo divergente oppure `None`.
 
     Il confronto usa le proiezioni dei dati, non gli oggetti: le due versioni
-    sono di tipi diversi e non condividono né `==` né `is`.
+    sono di tipi diversi e non condividono né `==` né `is`. Copre fino al passo
+    più lungo, così una traccia troncata non risulta equivalente a una completa.
     """
     traccia_a = traccia(sequenza, esegui_procedurale)
     traccia_b = traccia(sequenza, esegui_oggetti)
-    if len(traccia_a) != len(traccia_b):
-        return {
-            "passo": min(len(traccia_a), len(traccia_b)) + 1,
-            "procedurale": "lunghezza diversa",
-            "oggetti": "lunghezza diversa",
-        }
-    for posizione, (passo_a, passo_b) in enumerate(
-        zip(traccia_a, traccia_b, strict=False), start=1
-    ):
+    passi = max(len(traccia_a), len(traccia_b))
+    for posizione in range(passi):
+        if posizione < len(traccia_a):
+            passo_a = traccia_a[posizione]
+        else:
+            passo_a = "passo mancante"
+        if posizione < len(traccia_b):
+            passo_b = traccia_b[posizione]
+        else:
+            passo_b = "passo mancante"
         if passo_a != passo_b:
-            return {"passo": posizione, "procedurale": passo_a, "oggetti": passo_b}
+            return {"passo": posizione + 1, "procedurale": passo_a, "oggetti": passo_b}
     return None
 
 
@@ -307,9 +336,11 @@ if __name__ == "__main__":
     print("T07 carica(3):", deposito.carica(3), deposito.stato())
     risorsa = Risorsa(4)
     print("T08 prenota:", risorsa.prenota("A", 3), risorsa.stato())
-    print("T09 elabora:", elabora(risorsa, [("prenota", "B", 2)])["rifiutate"])
+    print("T09 elabora:", elabora(risorsa, [("B", 2)])["rifiutate"])
     inventario = [{"codice": "A", "descrizione": "x", "quantita": 5}]
-    print("T10 movimenti:", elabora_movimenti(inventario, [("A", -6)])["esiti"])
+    movimenti = elabora_movimenti(inventario, [("A", -6)])
+    print("T10 movimenti:", movimenti["esiti"])
+    print("T10 riepilogo:", movimenti["riepilogo"], "totale", movimenti["totale_quantita"])
     statistiche = Statistiche()
     statistiche.acquisisci(2)
     statistiche.acquisisci(8)
