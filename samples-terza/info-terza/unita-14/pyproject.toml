@@ -1,0 +1,25 @@
+[project]
+name = "esempi-unita-14"
+version = "0.1.0"
+description = "Sorgenti d'esempio dell'Unità 14: oggetti robusti, composizione e modello dati."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.16",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["esempi", "soluzioni"]
+python_functions = ["test_*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
