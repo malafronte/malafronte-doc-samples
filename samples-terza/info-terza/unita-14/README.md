@@ -31,7 +31,7 @@ questo repository.
 - `eccezioni_dominio_u14.py` - **prima eccezione di dominio** (OOP-03 J):
   `DisponibilitaInsufficiente` e la funzione pura `richiedi_unita`, con il
   chiamante che conserva il valore dopo il rifiuto.
-- `intervalli_u14.py` - **l'intervallo semiaperto** (OOP-03 H, OOP-04 D):
+- `intervalli_u14.py` - **l'intervallo semiaperto** (OOP-04 D):
   valore frozen con `durata_min` derivata e `sovrapposto_a` derivato per
   casi.
 - `prenotazioni_u14.py` - **il registro delle prenotazioni** (OOP-04 E):
@@ -66,6 +66,9 @@ Suite `pytest` che deriva gli attesi dai contratti pubblicati:
 concettuali, `PREN-01`…`PREN-14` sul registro e sulla persistenza, la
 regressione funzionale del magazzino contro i valori storici U12/U13, il
 controllore simulato e i casi discriminanti delle soluzioni formative.
+`test_revisione_contratti_u14.py` aggiunge controlli su factory ore/minuti,
+`str` conservato nella dataclass, valore `Soglia`, quoting CSV, indipendenza
+degli inventari, ripristino del lotto e politiche di esposizione dei dati.
 
 ### `dati/`
 

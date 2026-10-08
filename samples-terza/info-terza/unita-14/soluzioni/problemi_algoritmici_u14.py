@@ -177,8 +177,11 @@ def sposta_lotto(registro, codici, spostamento_min):
     prenotazioni **non** spostate e le versioni spostate del lotto (stessi
     codici, stesse aule, stessi partecipanti, intervalli traslati). Un
     superamento della giornata viene rifiutato dalla costruzione dell'
-    `Intervallo`; i conflitti interni al lotto e con le prenotazioni rimaste
-    vengono rifiutati da `registra`. Il registro originale non viene mai
+    `Intervallo`; i conflitti con le prenotazioni rimaste vengono rifiutati
+    da `registra`. Una traslazione comune preserva la non sovrapposizione
+    interna del lotto già valido. Codici distinti ed esistenti sono una
+    precondizione; l'ordine finale è non spostate, poi spostate, ciascun
+    gruppo nell'ordine originale. Il registro originale non viene mai
     toccato: adottare il risultato è il singolo assegnamento del chiamante,
     quindi non esistono stati intermedi.
     """

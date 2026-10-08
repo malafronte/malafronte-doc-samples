@@ -148,7 +148,7 @@ def test_t04_str_repr_con_unita_e_zeri():
 def test_t05_dataclass_stesso_contratto():
     assert PesoDataclass("007", 12) == PesoDataclass("007", 12)
     assert PesoDataclass("007", 12) is not PesoDataclass("007", 12)
-    assert str(PesoDataclass("007", 12)) != str(Peso("007", 12)) or True
+    assert str(PesoDataclass("007", 12)) == str(Peso("007", 12))
     with pytest.raises(ValueError):
         PesoDataclass("", 12)
 

@@ -19,7 +19,7 @@ from articolo_proprieta_u14 import Articolo as ArticoloProprieta
 from articolo_proprieta_u14 import DatiArticolo
 from intervalli_u14 import Intervallo
 from persistenza_magazzino_u14 import dati_a_riga, riga_a_dati
-from prenotazioni_u14 import Prenotazione, RegistroPrenotazioni
+from prenotazioni_u14 import CodiceDuplicato, Prenotazione, RegistroPrenotazioni
 
 # --- PY-U14-E01: il setter che riassegna alla proprietà stessa -------------
 
@@ -287,7 +287,7 @@ class Finestra:
 
 
 class Segmento:
-    """PY-U14-T02: `sposta` sostituisce la coppia interamente o non la tocca."""
+    """PY-U14-T02: `imposta` sostituisce la coppia interamente o non la tocca."""
 
     def __init__(self, inizio, fine):
         self.imposta(inizio, fine)
@@ -334,6 +334,16 @@ class DurataT3:
             raise ValueError(f"campo 'minuti': intero non negativo atteso, ricevuto {minuti!r}")
         return cls(minuti * 60)
 
+    @classmethod
+    def da_ore_e_minuti(cls, ore, minuti):
+        """Costruisce dai due componenti, con minuti nel dominio 0–59."""
+        for valore, nome in ((ore, "ore"), (minuti, "minuti")):
+            if isinstance(valore, bool) or not isinstance(valore, int) or valore < 0:
+                raise ValueError(f"campo '{nome}': intero non negativo atteso, ricevuto {valore!r}")
+        if minuti > 59:
+            raise ValueError(f"campo 'minuti': atteso un valore fra 0 e 59, ricevuto {minuti}")
+        return cls(ore * 3600 + minuti * 60)
+
     @staticmethod
     def secondi_validi(secondi):
         """Regola del tipo, senza istanza né classe: per questo sta qui."""
@@ -366,7 +376,7 @@ class Peso:
 
 @dataclass(frozen=True)
 class PesoDataclass:
-    """PY-U14-T05: stesso contratto di `Peso`, con eq e repr generati."""
+    """PY-U14-T05: conserva validazione e str; aggiunge eq di valore e frozen."""
 
     codice: str
     grammi: int
@@ -382,6 +392,9 @@ class PesoDataclass:
             raise ValueError(
                 f"campo 'grammi': intero non negativo atteso, ricevuto {self.grammi!r}"
             )
+
+    def __str__(self):
+        return f"{self.codice}: {self.grammi} g"
 
 
 # --- PY-U14-T06: dataclass con contenitore per istanza ---------------------
@@ -454,6 +467,19 @@ class Accumulatori:
 
 
 @dataclass(frozen=True)
+class Soglia:
+    """PY-U14-X01: valore intero non booleano non negativo, senza lista interna."""
+
+    valore: int
+
+    def __post_init__(self):
+        if isinstance(self.valore, bool) or not isinstance(self.valore, int) or self.valore < 0:
+            raise ValueError(
+                f"campo 'valore': intero non negativo atteso, ricevuto {self.valore!r}"
+            )
+
+
+@dataclass(frozen=True)
 class SquadraFrozen:
     """PY-U14-X01: frozen **con** lista interna: gli assegnamenti sono bloccati,
     le mutazioni dei contenuti no."""
@@ -502,17 +528,52 @@ def registro_per_confronto():
 
 
 def tre_snapshot(registro):
-    """PY-U14-X03: lista interna (qui simulata), copia superficiale, nuovi record.
+    """PY-U14-X03: confronto diagnostico di tre politiche di esposizione.
 
-    Restituisce `(lista_riferimenti, copia_superficiale, record_primitivi)`:
-    la prima espone gli **elementi** del registro (mutarli cambia lo stato
-    quando sono mutabili), la seconda condivide gli elementi ma ha un
-    contenitore proprio, la terza non tocca il registro in alcun modo.
+    DELIBERATAMENTE NON ADATTA AL CODICE APPLICATIVO: la prima politica
+    accede al campo interno e ne restituisce la lista, per mostrare come
+    un chiamante possa aggirare i controlli. La seconda crea un contenitore
+    nuovo con gli stessi valori frozen; la terza produce record primitivi.
     """
-    valori = list(registro.prenotazioni())
+    valori = registro._prenotazioni
     copia_superficiale = list(valori)
     record_primitivi = [dict(record) for record in registro.riepilogo()["prenotazioni"]]
     return (valori, copia_superficiale, record_primitivi)
+
+
+def tre_snapshot_magazzino(magazzino):
+    """PY-U14-X03: stesso confronto diagnostico, ma con elementi mutabili.
+
+    DELIBERATAMENTE NON ADATTA AL CODICE APPLICATIVO: mostra l'esposizione
+    degli articoli interni che l'interfaccia reale del magazzino evita.
+    """
+    valori = magazzino._articoli
+    copia = list(valori)
+    record = []
+    for articolo in valori:
+        dati = articolo.dati()
+        record.append(
+            {
+                "codice": dati.codice,
+                "descrizione": dati.descrizione,
+                "quantita": dati.quantita,
+                "prezzo_centesimi": dati.prezzo_centesimi,
+            }
+        )
+    return valori, copia, record
+
+
+def registra_socio(registro, codice):
+    """PY-U14-E06: confine CLI, gestione specifica e successo solo nel ramo else."""
+    try:
+        registro.registra(codice)
+    except ValueError as errore:
+        print(f"codice non valido: {errore}")
+    except CodiceDuplicato as errore:
+        print(f"registrazione rifiutata: {errore}")
+    else:
+        print("registrazione riuscita")
+    return None
 
 
 # --- PY-U14-X04: controllore con memoria delle decisioni -------------------
