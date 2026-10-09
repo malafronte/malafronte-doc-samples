@@ -16,15 +16,33 @@ questo repository.
 
 ### `esempi/`
 
-- `limiti_proprieta_u14.py` - **proprietà e invarianti** (OOP-03 B e C):
+- `volume_audio_base_u14.py` - **proprietà e dati derivati** (OOP-03 B):
+  `VolumeAudio` a un campo, livello intero 0–100 e silenzio calcolato.
+- `volume_audio_u14.py` - **invariante su più campi** (OOP-03 C):
+  livello e limite con `0 <= livello <= limite_massimo <= 100`;
+  `configura` valida tutta la coppia prima delle scritture.
+- `colori_espliciti_u14.py` - **metodi e modello dati esplicito** (OOP-03 E–G):
+  `ColoreRGB` con factory nero/bianco, proiezione in tupla, regola statica,
+  `str`, `repr` e confronto di tutte le componenti fra istanze dello stesso tipo.
+- `colori_modello_dati_u14.py` - **dataclass e valori** (OOP-03 H–I):
+  `ColoreRGBDataclass` mutabile e `ColoreRGB` frozen; `SchedaColori`
+  con default indipendente e `DiarioFrozen` con contenuto mutabile.
+- `palette_composizione_u14.py` - **relazioni e delega** (OOP-04 A–C):
+  `Palette` copia il contenitore, condivide colori frozen e cerca per valore;
+  `PannelloAudio` compone un volume proprio e aggrega una palette esterna.
+
+I moduli seguenti restano disponibili per le attività autonome e i confronti
+storici. Non sono prerequisiti nascosti dei nuovi esempi introduttivi:
+
+- `limiti_proprieta_u14.py` - **applicazione alternativa di proprietà e invarianti**:
   `Limiti` con lettura, scrittura controllata, `ampiezza` derivata e
   l'operazione completa `imposta`; ogni rifiuto lascia lo stato intatto.
-- `attributi_metodi_u14.py` - **classe/istanza e metodi** (OOP-03 D ed E):
+- `attributi_metodi_u14.py` - **classe/istanza e applicazione alle durate**:
   `Scheda` con dato di classe e la `SchedaCondivisa` difettosa, `Durata`
   con factory `da_minuti` e validatore statico confrontato con la funzione
   di modulo.
-- `misure_modello_dati_u14.py` - **modello dati della misura** (OOP-03
-  F-I): `MisuraEsplicita` con `__str__`/`__repr__`/`__eq__`,
+- `misure_modello_dati_u14.py` - **applicazione alle misure**, compreso il
+  problema algoritmico T10: `MisuraEsplicita` con `__str__`/`__repr__`/`__eq__`,
   `MisuraDataclass` con `__post_init__`, `MisuraFrozen`, la
   `SchedaMisurazioni` con `default_factory`, il `DiarioFrozen` che mostra
   il limite di `frozen` e la `MisuraCheStampa` difettosa.
@@ -69,6 +87,10 @@ controllore simulato e i casi discriminanti delle soluzioni formative.
 `test_revisione_contratti_u14.py` aggiunge controlli su factory ore/minuti,
 `str` conservato nella dataclass, valore `Soglia`, quoting CSV, indipendenza
 degli inventari, ripristino del lotto e politiche di esposizione dei dati.
+`test_volume_colori_palette_u14.py` verifica i nuovi contratti: confini,
+booleani e tipi estranei, candidato completo, mutazione e alias,
+uguaglianza su ogni componente, default, frozen e copie, ricerca in
+posizione zero, volumi indipendenti e delega ai collaboratori.
 
 ### `dati/`
 
@@ -103,6 +125,11 @@ uv run pytest -q
 uv run ruff check .
 uv run ruff format --check .
 uv run python esempi/prenotazioni_u14.py
+uv run python esempi/volume_audio_base_u14.py
+uv run python esempi/volume_audio_u14.py
+uv run python esempi/colori_espliciti_u14.py
+uv run python esempi/colori_modello_dati_u14.py
+uv run python esempi/palette_composizione_u14.py
 uv run python esempi/cli_prenotazioni_u14.py
 ```
 

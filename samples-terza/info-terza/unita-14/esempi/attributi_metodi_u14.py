@@ -1,4 +1,7 @@
-"""Attributi di classe e di istanza; metodi di classe e statici (OOP-03, sez. D ed E).
+"""Attributi condivisi e applicazione alternativa dei metodi alle durate (U14).
+
+OOP-03 D usa le schede; la sezione E usa ora ColoreRGB. Le durate restano
+un confronto autonomo per distinguere factory, metodo statico e funzione.
 
 Il modulo contiene tre esempi autonomi:
 

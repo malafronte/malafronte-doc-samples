@@ -1,4 +1,7 @@
-"""Proprietà, valori derivati e invarianti su più campi (OOP-03, sez. B e C).
+"""Applicazione alternativa di proprietà e invarianti su più campi (U14).
+
+La trattazione principale di OOP-03 B–C usa ora VolumeAudio. Questo
+modulo conserva il dominio dei limiti come esempio autonomo di confronto.
 
 La classe `Limiti` conserva un intervallo numerico chiuso descritto da due
 estremi interi. L'esempio mostra i tre strumenti del capitolo:

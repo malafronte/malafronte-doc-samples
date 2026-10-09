@@ -237,7 +237,7 @@ class Punto:
 
 
 class Finestra:
-    """PY-U14-T01: come i `Limiti` del capitolo, in un dominio proprio."""
+    """PY-U14-T01: proprietà e relazione fra due estremi di una finestra."""
 
     def __init__(self, inizio, fine):
         self.imposta(inizio, fine)
