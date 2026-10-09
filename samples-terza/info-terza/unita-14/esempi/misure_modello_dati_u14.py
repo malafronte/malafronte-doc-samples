@@ -75,8 +75,9 @@ class MisuraEsplicita:
     `__str__` restituisce il testo per chi legge; `__repr__` il testo
     diagnostico con tipo e campi. `__eq__` confronta tutti i campi e
     restituisce `NotImplemented` quando l'altro operando è di un tipo per il
-    quale il confronto non è definito: sarà Python a produrre `False`
-    nell'operatore `==`.
+    quale il confronto non è definito. Python può allora richiedere il
+    confronto all'altro operando; se entrambi restituiscono `NotImplemented`,
+    il ripiego di `==` è l'identità.
     """
 
     def __init__(self, codice, valore_cm):

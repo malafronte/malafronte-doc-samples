@@ -76,12 +76,12 @@ def righe_situazione(magazzino):
 
 
 def leggi_articolo_da_tastiera(codice):
-    """Legge i tre campi modificabili e restituisce i dati del candidato.
+    """Legge i tre campi modificabili e restituisce i quattro dati del candidato.
 
-    Usa `riga_a_dati` per conversione e validazione, con il riferimento
-    "dati inseriti": la CLI mostra le stesse diagnosi del caricamento dal
-    file. Un dato non valido solleva `ValueError` prima che l'operazione
-    venga tentata.
+    Usa `riga_a_dati` per le conversioni numeriche, con il riferimento
+    "dati inseriti": la CLI mostra le stesse diagnosi di conversione del
+    caricamento dal file. Il magazzino controlla i domini prima di
+    modificare lo stato; la tupla comprende anche il codice ricevuto.
     """
     descrizione = input("descrizione> ")
     quantita = input("quantita> ")
@@ -138,7 +138,7 @@ def main(argv=None):
                 case "3":
                     codice = input("codice> ").strip()
                     try:
-                        descrizione, quantita, prezzo = leggi_articolo_da_tastiera(codice)
+                        codice, descrizione, quantita, prezzo = leggi_articolo_da_tastiera(codice)
                         magazzino.inserisci(codice, descrizione, quantita, prezzo)
                     except ValueError as errore:
                         print(f"inserimento rifiutato: {errore}")
@@ -148,7 +148,7 @@ def main(argv=None):
                 case "4":
                     codice = input("codice> ").strip()
                     try:
-                        descrizione, quantita, prezzo = leggi_articolo_da_tastiera(codice)
+                        codice, descrizione, quantita, prezzo = leggi_articolo_da_tastiera(codice)
                         applicato = magazzino.modifica(codice, descrizione, quantita, prezzo)
                     except ValueError as errore:
                         print(f"aggiornamento rifiutato: {errore}")

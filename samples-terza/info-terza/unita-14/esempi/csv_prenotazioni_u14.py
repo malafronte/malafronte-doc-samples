@@ -39,6 +39,7 @@ dal registro.
 
 import csv
 import os
+import tempfile
 from pathlib import Path
 
 from intervalli_u14 import Intervallo
@@ -110,12 +111,13 @@ def prenotazione_a_riga(prenotazione):
 def leggi_candidati(percorso):
     """Legge il file e restituisce la lista dei candidati `Prenotazione`.
 
-    Solleva `FileNotFoundError` se il file non esiste e `ValueError` per
-    intestazione, conversioni o domini invalidi, con il riferimento della
-    riga. Nessuna scrittura, nessuna modifica al registro.
+    Solleva `FileNotFoundError` se il file non esiste, `csv.Error` per una
+    struttura CSV malformata e `ValueError` per intestazione, conversioni
+    o domini invalidi, con il riferimento della riga. Nessuna scrittura,
+    nessuna modifica al registro.
     """
     with open(percorso, encoding="utf-8-sig", newline="") as flusso:
-        lettore = csv.reader(flusso)
+        lettore = csv.reader(flusso, strict=True)
         try:
             intestazione = next(lettore)
         except StopIteration:
@@ -145,33 +147,42 @@ def importa_lotto(percorso, registro):
 def esporta_registro(percorso, registro):
     """Scrive il registro su file CSV con la sostituzione protetta.
 
-    Prima scrive un temporaneo nella stessa directory del destino, lo
-    chiude e solo allora lo sostituisce: se la scrittura fallisce, il file
-    precedente resta integro, il temporaneo viene rimosso e l'errore sale
-    al chiamante. Il registro non apre file e non conosce percorsi: è
-    questo componente a proiettare i valori con `prenotazione_a_riga`.
+    Prima crea un temporaneo univoco nella stessa directory del destino,
+    lo scrive, lo chiude e solo allora lo sostituisce: se la scrittura
+    fallisce, il file precedente resta integro e viene rimosso solo il
+    temporaneo creato da questa operazione. L'errore sale al chiamante.
+    Il registro non apre file e non conosce percorsi: è questo componente
+    a proiettare i valori con `prenotazione_a_riga`.
     """
     percorso = Path(percorso)
-    temporaneo = percorso.with_name(percorso.name + ".tmp")
+    temporaneo = None
     try:
-        with open(temporaneo, "w", encoding="utf-8", newline="") as flusso:
+        with tempfile.NamedTemporaryFile(
+            "w",
+            encoding="utf-8",
+            newline="",
+            delete=False,
+            dir=percorso.parent,
+            prefix=percorso.name + ".",
+            suffix=".tmp",
+        ) as flusso:
+            temporaneo = Path(flusso.name)
             scrittore = csv.writer(flusso)
             scrittore.writerow(CAMPI_PRENOTAZIONE)
             for prenotazione in registro.prenotazioni():
                 scrittore.writerow(prenotazione_a_riga(prenotazione))
         os.replace(temporaneo, percorso)
     except Exception as errore:
-        try:
-            temporaneo.unlink()
-        except OSError:
-            errore.add_note(f"temporaneo non rimosso: {temporaneo}")
+        if temporaneo is not None:
+            try:
+                temporaneo.unlink()
+            except OSError:
+                errore.add_note(f"temporaneo non rimosso: {temporaneo}")
         raise
     return None
 
 
 if __name__ == "__main__":
-    import tempfile
-
     registro = RegistroPrenotazioni()
     registro.registra(Prenotazione("PR-01", "Lab A", Intervallo(540, 600), 20))
     registro.registra(Prenotazione("PR-02", "Lab A", Intervallo(600, 660), 18))
