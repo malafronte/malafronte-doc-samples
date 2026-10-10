@@ -1,4 +1,4 @@
-"""Coordinamento del caso d'uso e doppio di test in memoria."""
+"""Coordinamento del caso d'uso e test double in memoria."""
 
 from pathlib import Path
 
