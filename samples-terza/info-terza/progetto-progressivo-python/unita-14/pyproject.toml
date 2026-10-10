@@ -1,0 +1,14 @@
+[project]
+name = "raccolta-programmi"
+version = "0.1.0"
+description = "Raccolta progressiva di programmi Python del progetto del corso (fotografia U14)."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "matplotlib>=3.11",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]

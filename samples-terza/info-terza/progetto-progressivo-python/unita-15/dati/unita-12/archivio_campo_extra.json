@@ -1,0 +1,11 @@
+{
+  "versione_schema": 1,
+  "preventivi": [
+    {
+      "codice": "007",
+      "destinazione": "locale",
+      "totale_cent": 450,
+      "nota": "campo oltre lo schema"
+    }
+  ]
+}

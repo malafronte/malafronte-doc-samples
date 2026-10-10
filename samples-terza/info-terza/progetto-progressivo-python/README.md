@@ -2,7 +2,7 @@
 
 Raccolta delle **versioni complete di riferimento** della
 [Raccolta progressiva di programmi](https://github.com/malafronte/info-terza/blob/main/src/content/docs/progetti/progetto-progressivo-python.mdx)
-del sito info-terza, per le tappe U1-U12. Ogni cartella `unita-NN/` è la
+del sito info-terza, per le tappe U1-U15. Ogni cartella `unita-NN/` è la
 **fotografia completa** della raccolta dello studente al termine di quella
 unità: contiene tutti i programmi raggiunti fino a lì, la documentazione, la
 configurazione dell'ambiente e le prove.
@@ -34,10 +34,14 @@ le prove sommative mantengono il proprio regime di soluzioni.
 | [10](unita-10/) | Viste ordinate | M40-M42 | Inserimento stabile, ricerca dicotomica | `spedizione_u5.py`, `test_viste_u10.py` | PU10-01-PU10-08 + 2 propri |
 | [11](unita-11/) | Strategie a confronto | M43-M45 | MergeSort, primo indice, esperimento | `confronto_ordinamenti_u11.py`, `test_ordinamenti_u11.py` | PU11-01-PU11-08 + 2 propri |
 | [12](unita-12/) | Persistenza ed errori | M46-M48 | Moduli, JSON, guasti, riavvii | `registro_dominio.py`, `registro_persistenza.py`, `registro_cli.py`, `test_persistenza_u12.py` | PU12-01-PU12-10 + 3 propri |
+| [13](unita-13/) | Dalla soluzione procedurale agli oggetti | M49-M51 | Classe di sessione, conversioni esplicite, snapshot protetti | `registro_oggetti_u13.py`, `registro_cli_u13.py`, `test_oggetti_u13.py` | PU13-01-PU13-08 + 2 propri |
+| [14](unita-14/) | Oggetti robusti e modello dati | M52-M54 | Valore frozen, raccolta responsabile, eccezioni di dominio | `registro_modello_u14.py`, `registro_cli_u14.py`, `test_modello_u14.py` | PU14-01-PU14-08 + 2 propri |
+| [15](unita-15/) | Componenti intercambiabili | M55-M57 | Criteri di consultazione, client stabile, variante breve | `registro_consultazione_u15.py`, `consultazione_cli_u15.py`, `test_consultazione_u15.py` | PU15-01-PU15-08 + 3 propri |
 
 I numeri di milestone corrispondono a quelli della pagina del progetto: U1-M0-M5,
 U2-M6-M10, U3-M11-M15, U4-M16-M20, U5-M21-M27, U6-M28-M30, U7-M31-M33,
-U8-M34-M36, U9-M37-M39, U10-M40-M42, U11-M43-M45, U12-M46-M48.
+U8-M34-M36, U9-M37-M39, U10-M40-M42, U11-M43-M45, U12-M46-M48, U13-M49-M51,
+U14-M52-M54, U15-M55-M57.
 
 ## Come si leggono le fotografie
 
@@ -55,7 +59,7 @@ U8-M34-M36, U9-M37-M39, U10-M40-M42, U11-M43-M45, U12-M46-M48.
 
 I programmi di laboratorio citati dagli alberi del progetto non sono duplicati
 qui: i materiali canonici degli starter e dei laboratori restano nelle cartelle
-`unita-01` … `unita-12` di `samples-terza/info-terza/` e vengono collegati dalle
+`unita-01` … `unita-15` di `samples-terza/info-terza/` e vengono collegati dalle
 pagine del sito.
 
 ## Convenzioni

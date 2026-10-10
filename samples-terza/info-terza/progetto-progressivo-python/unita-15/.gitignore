@@ -1,0 +1,11 @@
+# Ambienti e cache: non si versionano
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# File di lavoro della sessione CLI U12: rigenerabili, non fixture
+dati/unita-12/archivio.json
+dati/unita-12/archivio.json.tmp
+dati/unita-12/esportazione.csv
