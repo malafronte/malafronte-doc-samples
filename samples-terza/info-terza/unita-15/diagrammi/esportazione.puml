@@ -1,0 +1,32 @@
+@startuml
+title Relazioni e molteplicità nel diagramma UML delle classi
+skinparam classAttributeIconSize 0
+class ServizioRapporto {
+  - _esportatore : Esportatore
+  + genera(rilevazioni, percorso) : int
+}
+interface Esportatore {
+  + esporta(rilevazioni, percorso) : None
+}
+class EsportatoreCSV {
+  + esporta(rilevazioni, percorso) : None
+}
+class EsportatoreJSON {
+  + esporta(rilevazioni, percorso) : None
+}
+class EsportatoreMemoria {
+  + esporta(rilevazioni, percorso) : None
+}
+ServizioRapporto "0..*" -- "1" Esportatore : conserva
+EsportatoreCSV ..|> Esportatore
+EsportatoreJSON ..|> Esportatore
+EsportatoreMemoria ..|> Esportatore
+note bottom of Esportatore
+  Contratto strutturale: la realizzazione UML
+  non richiede derivazione Python esplicita.
+end note
+note bottom of EsportatoreMemoria
+  Simula il salvataggio e osserva le deleghe;
+  le prove di file appartengono a CSV/JSON.
+end note
+@enduml

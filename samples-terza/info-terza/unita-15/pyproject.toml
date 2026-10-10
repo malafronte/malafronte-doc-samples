@@ -1,0 +1,24 @@
+[project]
+name = "esempi-unita-15"
+version = "0.1.0"
+description = "Ereditarietà, politiche, esportatori e controllori verificati dell'Unità 15."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
+
+[dependency-groups]
+dev = ["pytest>=9.1.1", "ruff>=0.16"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["esempi", "soluzioni", "laboratorio/starter"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["*_u15", "componenti_starter"]
