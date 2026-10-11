@@ -68,13 +68,13 @@ Suite cumulativa:
 
 ```text
 > uv run --frozen pytest -q
-........................................................................ [ 45%]
-........................................................................ [ 90%]
-...............                                                          [100%]
-159 passed in 0.46s
+........................................................................ [ 43%]
+........................................................................ [ 87%]
+....................                                                     [100%]
+164 passed in 0.85s
 ```
 
-**159 test**: 145 delle tappe U5-U14 più 14 della tappa U15 — le promesse
+**164 test**: 150 delle tappe U5-U14 più 14 della tappa U15 — le promesse
 comuni e il vuoto su entrambe le implementazioni, i casi PU15-01-PU15-08
 verificabili sul dominio, i tre casi propri motivati e la variante breve. Le
 consultazioni reali con il dataset pubblicato:
@@ -110,6 +110,11 @@ presenta la guida e termina senza effetti.
   persistenza, CLI storiche e funzioni U5-U12 restano invariati e la suite
   cumulativa prova la regressione U5-U14.
 
+La variante U13 conservata in questa fotografia comprende il controllo
+strutturale della conversione in ingresso e le cinque regressioni aggiunte
+a `test_oggetti_u13.py`. Le copie delle fotografie U13, U14 e U15 coincidono;
+i conteggi cumulativi includono queste prove.
+
 ## Limiti del riferimento
 
 - La famiglia adottata è quella delle politiche di consultazione: gli
@@ -136,7 +141,8 @@ presenta la guida e termina senza effetti.
 | PU15-07 | stesso comando | guasto in scansione: stato conservato, nessun successo |
 | PU15-08 | stesso comando | nuova implementazione dal solo contratto |
 | Casi propri | stesso comando | confine incluso/escluso, difetti di tipo, ripetibilità |
-| PU15-09 | `uv run pytest -q` | 159 test cumulativi superati, regressione U5-U14 |
+| Regressione della conversione U13 | `uv run pytest -q programmi/test_oggetti_u13.py -k regressione` | cinque test sul controllo strutturale, copia, round-trip e stato conservato |
+| PU15-09 | `uv run pytest -q` | 164 test cumulativi superati, regressione U5-U14 |
 | Consultazioni | `uv run python programmi/consultazione_cli_u15.py ...` | attesi PU15-04 e guida senza argomenti |
 
 ## Collegamenti

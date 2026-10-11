@@ -206,3 +206,78 @@ def test_modifica_breve_totale_complessivo():
     sessione = sessione_canonica()
     assert sessione.totale_complessivo_cent() == 1650
     assert sessione.numero() == 3
+
+
+# --- Regressione: struttura, dominio e copia delle conversioni in ingresso ---
+
+
+def test_regressione_struttura_rifiutata_senza_effetti():
+    sessione = sessione_canonica()
+    prima = sessione.per_lista()
+    invalidi = [None, {}, (), "registro", [None], [[]], [()], ["record"], [{}]]
+    for registro in invalidi:
+        assert sessione.sostituisci_da_lista(registro) is False
+        assert sessione.per_lista() == prima
+
+
+def test_regressione_ultimo_record_fuori_schema():
+    sessione = sessione_canonica()
+    prima = sessione.per_lista()
+    valido = crea_record("020", "nazionale", 75)
+    for campo in ("codice", "destinazione", "totale_cent"):
+        incompleto = crea_record("021", "locale", 1)
+        del incompleto[campo]
+        assert sessione.sostituisci_da_lista([valido, incompleto]) is False
+        assert sessione.per_lista() == prima
+    extra = crea_record("021", "locale", 1)
+    extra["note"] = "campo fuori schema"
+    assert sessione.sostituisci_da_lista([valido, extra]) is False
+    assert sessione.per_lista() == prima
+
+
+def test_regressione_campo_extra_mutabile_e_round_trip(tmp_path):
+    sessione = sessione_canonica()
+    prima = sessione.per_lista()
+    archivio = tmp_path / "archivio.json"
+    assert salva_archivio(archivio, prima) is True
+    byte_prima = archivio.read_bytes()
+
+    candidato = crea_record("020", "nazionale", 75)
+    candidato["note"] = []
+    assert sessione.sostituisci_da_lista([candidato]) is False
+    candidato["note"].append("mutazione esterna")
+    assert sessione.per_lista() == prima
+    snapshot = sessione.per_lista()
+    snapshot[0]["totale_cent"] = 999
+    assert sessione.per_lista() == prima
+
+    assert salva_archivio(archivio, sessione.per_lista()) is True
+    assert archivio.read_bytes() == byte_prima
+    caricato, esito, dettaglio = carica_archivio(archivio)
+    assert esito == ""
+    assert dettaglio == ""
+    assert caricato == prima
+
+
+def test_regressione_domini_e_duplicati_rifiutati():
+    sessione = sessione_canonica()
+    prima = sessione.per_lista()
+    valido = crea_record("020", "nazionale", 75)
+    invalidi = [
+        crea_record("", "locale", 1),
+        crea_record("021", "estera", 1),
+        crea_record("021", "locale", -1),
+        crea_record("021", "locale", True),
+        crea_record("021", "locale", 1.5),
+        crea_record("020", "locale", 1),
+    ]
+    for record in invalidi:
+        assert sessione.sostituisci_da_lista([valido, record]) is False
+        assert sessione.per_lista() == prima
+
+
+def test_regressione_sostituzione_con_vuoto_valido():
+    sessione = sessione_canonica()
+    assert sessione.sostituisci_da_lista([]) is True
+    assert sessione.numero() == 0
+    assert sessione.per_lista() == []

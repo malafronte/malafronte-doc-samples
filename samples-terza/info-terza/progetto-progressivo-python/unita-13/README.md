@@ -33,7 +33,7 @@ unita-13/
 │   ├── ... programmi U1-U12 invariati ...
 │   ├── registro_oggetti_u13.py     # classe di sessione del registro
 │   ├── registro_cli_u13.py         # CLI della variante a oggetti
-│   └── test_oggetti_u13.py         # suite della tappa (11 test)
+│   └── test_oggetti_u13.py         # suite della tappa (16 test)
 ├── dati/unita-12/ (fixture invariate)
 ├── risultati/ (unita-09, unita-11 invariati)
 ├── documentazione/
@@ -64,14 +64,15 @@ Suite cumulativa:
 
 ```text
 > uv run --frozen pytest -q
-........................................................................ [ 53%]
-..............................................................           [100%]
-134 passed in 0.72s
+........................................................................ [ 51%]
+...................................................................      [100%]
+139 passed in 0.70s
 ```
 
-**134 test**: 123 delle tappe U5-U12 più 11 della tappa U13 — i casi
-PU13-01-PU13-08, i due casi propri PR-13-1 e PR-13-2 e la prova della modifica
-breve. Sessione CLI reale, da `carica` a `esci`:
+**139 test**: 123 delle tappe U5-U12 più 16 della tappa U13 — i casi
+PU13-01-PU13-08, i due casi propri PR-13-1 e PR-13-2, la prova della modifica
+breve e cinque regressioni sulla conversione in ingresso. Sessione CLI
+reale, da `carica` a `esci`:
 
 ```text
 > uv run python programmi/registro_cli_u13.py
@@ -107,10 +108,15 @@ in più il totale complessivo, aggiunto dalla modifica breve della tappa.
 
 - nuovi `programmi/registro_oggetti_u13.py`, `registro_cli_u13.py` e
   `test_oggetti_u13.py`: la classe di sessione, il suo raccordo con CLI e
-  persistenza e la suite con 11 test;
+  persistenza e la suite con 16 test;
 - nuova `documentazione/unita-13/` con modello, confronto e prove;
 - nessun programma delle tappe precedenti è cambiato: `registro_dominio.py`
   resta la sede degli algoritmi e la suite cumulativa prova la regressione.
+
+La conversione in ingresso controlla struttura, dominio e unicità prima di
+ogni effetto: campi extra o mancanti e contenitori errati producono `False`
+conservando lo stato. Le cinque nuove regressioni verificano anche copia e
+round-trip; la stessa correzione è riportata nelle fotografie U14 e U15.
 
 ## Limiti del riferimento
 
@@ -136,7 +142,8 @@ in più il totale complessivo, aggiunto dalla modifica breve della tappa.
 | PU13-08 | stesso comando | snapshot e record consultati protetti dalle mutazioni esterne |
 | PR-13-1, PR-13-2 | stesso comando | politica di copia verificata su ingresso e uscita |
 | Modifica breve | stesso comando | `totale_complessivo_cent` derivato e senza effetti |
-| Regressione | `uv run pytest -q` | 134 test complessivi superati |
+| Regressione della conversione | `uv run pytest -q programmi/test_oggetti_u13.py -k regressione` | cinque test su struttura, ultimo record, campo extra mutabile, dominio/duplicati e vuoto valido |
+| Regressione | `uv run pytest -q` | 139 test complessivi superati |
 | Sessione CLI | `uv run python programmi/registro_cli_u13.py` | comandi e presentazione come documentato, totale complessivo in elenco |
 
 ## Collegamenti

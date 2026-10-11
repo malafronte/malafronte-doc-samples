@@ -59,6 +59,37 @@ osservazioni. Il difetto insegna che la politica di copia va verificata su
 entrambi i confini della rappresentazione — ingresso e uscita — e non solo su
 quello più visibile.
 
+## Regressione della validazione strutturale in ingresso
+
+**Sintomo.** Un record con i tre campi validi e un campo extra `note: []`
+veniva accettato da `sostituisci_da_lista`. La lista extra restava condivisa
+con il chiamante e con gli snapshot. Il salvataggio riusciva, ma il
+caricamento dello stesso archivio produceva l'esito `struttura`.
+
+**Causa.** `valida_registro` verifica dominio e unicità, assumendo che la
+struttura sia già stata controllata. La copia superficiale di un record è
+indipendente quando i suoi tre campi contengono i valori scalari dello
+schema; un contenitore mutabile extra viola questa condizione.
+
+**Modifica minima.** Verificare prima la lista e i campi esatti tramite
+`valida_struttura_documento`, riusando la versione dello schema U12. Un
+rifiuto restituisce `False` prima di copiare o sostituire lo stato. Il
+successivo controllo di dominio e duplicati resta invariato.
+
+**Nuove prove.** La suite U13 comprende 16 test, di cui cinque regressioni:
+
+| Test | Atteso |
+|---|---|
+| `test_regressione_struttura_rifiutata_senza_effetti` | contenitori e record di tipo errato rifiutati, stato conservato |
+| `test_regressione_ultimo_record_fuori_schema` | campo extra o mancante nell'ultimo record rifiuta l'intera lista |
+| `test_regressione_campo_extra_mutabile_e_round_trip` | campo extra mutabile rifiutato; copie indipendenti e archivio ricaricabile, con byte invariati |
+| `test_regressione_domini_e_duplicati_rifiutati` | controlli su valori e unicità ancora applicati senza effetti parziali |
+| `test_regressione_sostituzione_con_vuoto_valido` | una lista vuota valida sostituisce correttamente una sessione popolata |
+
+Le prime tre regressioni falliscono sulla versione senza il controllo
+strutturale. La correzione e le prove sono presenti anche nelle copie della
+variante U13 conservate nelle fotografie U14 e U15.
+
 ## Modifica breve del requisito
 
 **Requisito aggiunto.** «La sessione deve poter indicare il totale complessivo

@@ -23,12 +23,14 @@ chiamante raggiunge i contenitori interni della sessione.
 Nessuna lettura, nessuna scrittura, nessuna stampa: l'import non ha effetti.
 """
 from registro_dominio import (
+    VERSIONE_SCHEMA,
     aggiorna_record,
     cerca_preventivo,
     elimina_record,
     inserisci_record,
     riepilogo_per_destinazione,
     valida_registro,
+    valida_struttura_documento,
 )
 
 
@@ -99,11 +101,15 @@ class RegistroPreventivi:
     def sostituisci_da_lista(self, registro):
         """Sostituisce lo stato con la lista ricevuta; False se non valida.
 
-        Controlla l'intera lista prima di ogni effetto: con un solo record non
-        ammesso la sessione resta quella precedente. I record ricevuti vengono
-        copiati, quindi la lista del chiamante e la sessione restano
-        indipendenti anche dopo la sostituzione.
+        Controlla struttura, dominio e unicità prima di ogni effetto: richiede
+        una lista di dizionari con esattamente i tre campi dello schema. Con
+        un solo record non ammesso la sessione resta quella precedente.
+        I record ricevuti vengono copiati, quindi la lista del chiamante e
+        la sessione restano indipendenti anche dopo la sostituzione.
         """
+        documento = {"versione_schema": VERSIONE_SCHEMA, "preventivi": registro}
+        if valida_struttura_documento(documento) != "":
+            return False
         if valida_registro(registro) != "":
             return False
         nuova = []

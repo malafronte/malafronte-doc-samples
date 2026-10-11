@@ -23,9 +23,11 @@ La variante non cambia né i dati né gli esiti già accertati:
 ## Stato della sessione e invarianti
 
 Lo **stato** di una sessione è la lista dei preventivi inseriti o caricati
-durante la sessione stessa. L'**invariante** è quello già verificato da
-`valida_registro`: ogni record è nel dominio e i codici sono unici con
-confronto esatto, quindi `"007"` e `"7"` restano due preventivi distinti.
+durante la sessione stessa. Ogni record è un dizionario con esattamente i
+campi `codice`, `destinazione` e `totale_cent`. La conversione in ingresso
+verifica prima questa struttura con `valida_struttura_documento`, poi il
+dominio e l'unicità con `valida_registro`. Il confronto dei codici è esatto,
+quindi `"007"` e `"7"` restano due preventivi distinti.
 
 Gli invarianti si conservano perché ogni modifica passa dalle operazioni di
 `registro_dominio.py`, che validano il candidato completo prima di ogni
@@ -55,7 +57,7 @@ classe e persistenza, nessun modulo importa la CLI.
 | `elimina(codice)` | `True` se rimuove il record; `False` se il codice è assente |
 | `cerca(codice)` | copia del record del codice, oppure `None`; la copia è indipendente dallo stato |
 | `per_lista()` | lista nuova di record nuovi, nell'ordine della sessione: conversione esplicita verso persistenza e funzioni storiche |
-| `sostituisci_da_lista(registro)` | `True` sostituendo l'intero stato con una lista valida; `False` senza effetti se anche un solo record non è ammesso |
+| `sostituisci_da_lista(registro)` | `True` sostituendo l'intero stato con una lista valida; controlla struttura, dominio e unicità prima della copia; `False` senza effetti per contenitori errati, campi extra o mancanti, valori non ammessi o duplicati |
 | `riepilogo_per_destinazione()` | contratto storico del riepilogo, applicato allo stato senza esporlo |
 | `totale_complessivo_cent()` | somma dei totali in centesimi, derivata dai record (modifica breve) |
 

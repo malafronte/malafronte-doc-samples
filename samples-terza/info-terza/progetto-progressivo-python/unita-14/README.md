@@ -68,13 +68,13 @@ Suite cumulativa:
 
 ```text
 > uv run --frozen pytest -q
-........................................................................ [ 49%]
-........................................................................ [ 99%]
-.                                                                        [100%]
-145 passed in 0.49s
+........................................................................ [ 48%]
+........................................................................ [ 96%]
+......                                                                   [100%]
+150 passed in 0.77s
 ```
 
-**145 test**: 134 delle tappe U5-U13 più 11 della tappa U14 — i casi
+**150 test**: 139 delle tappe U5-U13 più 11 della tappa U14 — i casi
 PU14-01-PU14-08, i due casi propri PR-14-1 e PR-14-2 e la prova della modifica
 breve. Sessione CLI reale sui rifiuti di dominio:
 
@@ -119,6 +119,11 @@ raccolta dal dominio del valore, come richiesto dai contratti.
   resta disponibile per il confronto fra i due modelli e la suite cumulativa
   prova la regressione.
 
+La variante U13 conservata in questa fotografia comprende il controllo
+strutturale della conversione in ingresso e le cinque regressioni aggiunte
+a `test_oggetti_u13.py`. La copia coincide con quella della fotografia U13
+corretta: i conteggi cumulativi includono queste prove.
+
 ## Limiti del riferimento
 
 - La rappresentazione interna resta una lista: non sono introdotte strutture
@@ -143,7 +148,8 @@ raccolta dal dominio del valore, come richiesto dai contratti.
 | PU14-08 | stesso comando | riepilogo e viste uguali alla versione procedurale |
 | PR-14-1, PR-14-2 | stesso comando | sostituzione atomica e dati derivati aggiornati |
 | Modifica breve | stesso comando | `per_destinazione` validata, ordinata e protetta |
-| Regressione | `uv run pytest -q` | 145 test complessivi superati |
+| Regressione della conversione U13 | `uv run pytest -q programmi/test_oggetti_u13.py -k regressione` | cinque test sul controllo strutturale, copia, round-trip e stato conservato |
+| Regressione | `uv run pytest -q` | 150 test complessivi superati |
 | Sessione CLI | `uv run python programmi/registro_cli_u14.py` | diagnosi distinte per valore e raccolta; rifiuti non pendenti |
 
 ## Collegamenti

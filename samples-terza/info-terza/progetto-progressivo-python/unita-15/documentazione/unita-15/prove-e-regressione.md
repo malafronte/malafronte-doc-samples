@@ -39,7 +39,7 @@ rendono i componenti sostituibili, gli attesi specifici distinguono le regole.
 | PU15-06 | `test_pu15_06_configurazione_invalida` | `ErroreConfigurazione` prima di ogni effetto sul registro |
 | PU15-07 | `test_pu15_07_guasto_senza_successo` | guasto in scansione: stato conservato, nessun risultato parziale, nessun successo |
 | PU15-08 | `test_pu15_08_nuova_implementazione` | nuova implementazione integrata dallo stesso client, modifiche circoscritte |
-| PU15-09 | `uv run pytest -q` | regressione U5-U14: 159 test cumulativi superati |
+| PU15-09 | `uv run pytest -q` | regressione U5-U14: 164 test cumulativi superati |
 | PU15-10 | intera suite | dominio provabile senza CLI né file; UML in `diagramma.puml` |
 
 ## Casi propri motivati
@@ -105,3 +105,9 @@ conservati — schema, tariffe, riepiloghi, viste, persistenza — hanno i propr
 test storici, che non sono stati toccati. Gli adattamenti interni della tappa
 sono nulli: la consultazione è aggiuntiva e lavora sulle proiezioni già
 verificate del modello U14.
+
+La variante U13 conservata nella fotografia comprende inoltre cinque
+regressioni sulla conversione in ingresso: struttura rifiutata senza effetti,
+ultimo record fuori schema, campo extra mutabile e round-trip, dominio e
+duplicati, sostituzione con vuoto valido. La correzione coincide con quella
+delle fotografie U13 e U14.
