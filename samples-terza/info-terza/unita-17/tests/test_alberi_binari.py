@@ -1,13 +1,14 @@
 """Prove sugli alberi binari rappresentati con oggetti — Unità 17, cap. PY-32.
 
 Casi semantici del piano §15.1: vuoto, nodo unico, un figlio, D1 e un
-albero binario generico con valori fuori ordine; tre visite, conteggi e
-altezza.
+albero binario generico con valori fuori ordine; quattro visite,
+conteggi e altezza.
 """
 
 from alberi_binari_u17 import (
     Nodo,
     altezza,
+    ampiezza,
     conta_foglie,
     conta_nodi,
     costruisci_albero_d1,
@@ -35,6 +36,7 @@ def test_vuoto_e_nodo_unico():
     assert preordine(VUOTO) == []
     assert inordine(VUOTO) == []
     assert postordine(VUOTO) == []
+    assert ampiezza(VUOTO) == []
 
     assert conta_nodi(NODO_UNICO) == 1
     assert conta_foglie(NODO_UNICO) == 1
@@ -42,6 +44,7 @@ def test_vuoto_e_nodo_unico():
     assert preordine(NODO_UNICO) == [40]
     assert inordine(NODO_UNICO) == [40]
     assert postordine(NODO_UNICO) == [40]
+    assert ampiezza(NODO_UNICO) == [40]
 
 
 def test_nodo_con_un_solo_figlio_non_e_foglia():
@@ -66,6 +69,19 @@ def test_d1_visite_conteggi_e_altezza():
     assert preordine(albero) == [40, 20, 10, 30, 25, 35, 60, 50, 55, 70]
     assert inordine(albero) == [10, 20, 25, 30, 35, 40, 50, 55, 60, 70]
     assert postordine(albero) == [10, 25, 35, 30, 20, 55, 50, 70, 60, 40]
+    assert ampiezza(albero) == [40, 20, 60, 10, 30, 50, 70, 25, 35, 55]
+
+
+def test_ampiezza_ordine_di_livello_da_sinistra_a_destra():
+    tre_nodi = Nodo(20, Nodo(10), Nodo(30))
+    assert ampiezza(tre_nodi) == [20, 10, 30]
+    catena = Nodo(1, Nodo(2, Nodo(3)))
+    assert ampiezza(catena) == [1, 2, 3]
+    # Il figlio sinistro entra in coda prima del destro: l'ordine
+    # interno al livello è da sinistra a destra.
+    asimmetrico = Nodo(1, Nodo(2, None, Nodo(4)), Nodo(3))
+    assert ampiezza(asimmetrico) == [1, 2, 3, 4]
+    assert ampiezza(albero_generico()) == ["m", "z", "q", "a", "b"]
 
 
 def test_d1_profondita_dei_nodi_foglia():

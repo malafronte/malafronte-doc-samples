@@ -2,13 +2,17 @@
 
 Il modulo contiene la classe `Nodo` e le funzioni didattiche usate dal
 capitolo: costruzione di un albero a mano, altezza in archi, visite
-preordine, inordine e postordine, conteggio dei nodi e delle foglie.
+preordine, inordine e postordine, visita in ampiezza per livelli,
+valutazione di espressioni e misure su gerarchie sintetiche di file,
+conteggio dei nodi e delle foglie.
 
 Ambiente: CPython sul computer. Il modulo non esegue alcuna operazione
 all'importazione: ogni funzione è autonoma e dimostrabile a sé.
 """
 
 from __future__ import annotations
+
+from collections import deque
 
 
 class Nodo:
@@ -101,6 +105,111 @@ def postordine(nodo, risultato=None):
     postordine(nodo.destro, risultato)
     risultato.append(nodo.valore)
     return risultato
+
+
+def ampiezza(nodo):
+    """Restituisce i valori del sottoalbero in ordine di livello.
+
+    La visita procede per livelli, da sinistra a destra: una coda
+    conserva i nodi in attesa e l'uscita dal fronte preserva l'ordine
+    di arrivo. Sull'albero vuoto restituisce la lista vuota.
+    """
+    risultato = []
+    if nodo is None:
+        return risultato
+    coda = deque([nodo])
+    while coda:
+        corrente = coda.popleft()
+        risultato.append(corrente.valore)
+        if corrente.sinistro is not None:
+            coda.append(corrente.sinistro)
+        if corrente.destro is not None:
+            coda.append(corrente.destro)
+    return risultato
+
+
+def valuta(nodo):
+    """Restituisce il valore dell'espressione rappresentata dall'albero.
+
+    Una foglia conserva un operando intero; un nodo interno conserva un
+    operatore fra '+', '-' e '*' con due sottoalberi. La valutazione
+    segue l'ordine postordine: prima gli operandi, poi l'operazione.
+    Un albero vuoto, un operando non intero e un operatore sconosciuto
+    o con un solo figlio sollevano `ValueError`.
+    """
+    if nodo is None:
+        raise ValueError("espressione vuota: nessun nodo da valutare")
+    if nodo.sinistro is None and nodo.destro is None:
+        if isinstance(nodo.valore, bool) or not isinstance(nodo.valore, int):
+            raise ValueError(f"operando non intero: {nodo.valore!r}")
+        return nodo.valore
+    if nodo.sinistro is None or nodo.destro is None:
+        raise ValueError(f"operatore con un solo figlio: {nodo.valore!r}")
+    sinistro = valuta(nodo.sinistro)
+    destro = valuta(nodo.destro)
+    if nodo.valore == "+":
+        return sinistro + destro
+    if nodo.valore == "-":
+        return sinistro - destro
+    if nodo.valore == "*":
+        return sinistro * destro
+    raise ValueError(f"operatore sconosciuto: {nodo.valore!r}")
+
+
+def infissa(nodo):
+    """Restituisce l'espressione in notazione infissa con parentesi.
+
+    Una foglia produce il proprio operando; un nodo interno racchiude
+    fra parentesi la forma infissa dei figli con l'operatore nel mezzo.
+    Le parentesi rendono visibile la struttura che la sola sequenza
+    inordine non conserva. Un albero vuoto solleva `ValueError`.
+    """
+    if nodo is None:
+        raise ValueError("espressione vuota: nessun nodo da rappresentare")
+    if nodo.sinistro is None and nodo.destro is None:
+        return str(nodo.valore)
+    return f"({infissa(nodo.sinistro)} {nodo.valore} {infissa(nodo.destro)})"
+
+
+def trova(nodo, nome):
+    """Restituisce il percorso dei nomi fino a `nome`, oppure None.
+
+    Il valore di ogni nodo è la coppia `(nome, byte)`, con `byte`
+    pari a None per le directory. La ricerca segue l'ordine preordine
+    e si arresta alla prima corrispondenza, senza visitare il resto.
+    """
+    if nodo is None:
+        return None
+    attuale, _byte = nodo.valore
+    if attuale == nome:
+        return [attuale]
+    for figlio in (nodo.sinistro, nodo.destro):
+        percorso = trova(figlio, nome)
+        if percorso is not None:
+            return [attuale, *percorso]
+    return None
+
+
+def dimensione_totale(nodo):
+    """Restituisce i byte conservati nel sottoalbero radicato in `nodo`.
+
+    Il valore di ogni nodo è la coppia `(nome, byte)`: un file
+    contribuisce con i propri byte, una directory con la somma dei
+    figli. Il calcolo segue l'ordine postordine: prima i contenuti,
+    poi la somma che li raccoglie. Un sottoalbero vuoto contribuisce
+    con 0 byte.
+    """
+    if nodo is None:
+        return 0
+    _nome, byte = nodo.valore
+    if byte is not None:
+        return byte
+    totale = 0
+    if nodo.sinistro is not None:
+        totale += dimensione_totale(nodo.sinistro)
+    if nodo.destro is not None:
+        totale += dimensione_totale(nodo.destro)
+    return totale
 
 
 def costruisci_albero_d1():
