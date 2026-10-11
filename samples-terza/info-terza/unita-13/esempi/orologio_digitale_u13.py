@@ -1,9 +1,9 @@
 """Orologi dell'Unità 13: prima classe, varianti e interfaccia validata.
 
-Orologio (OOP-02 A–F): attributi pubblici ore/minuti; dati validi forniti
+Orologio (PY-24 A–F): attributi pubblici ore/minuti; dati validi forniti
 dal chiamante, nessuna validazione. avanza restituisce la nuova coppia.
-OrologioDigitale (OOP-02 G): dati interni e interfaccia validata equivalente
-alle operazioni procedurali di OOP-01; avanza e imposta restituiscono None.
+OrologioDigitale (PY-24 G): dati interni e interfaccia validata equivalente
+alle operazioni procedurali di PY-23; avanza e imposta restituiscono None.
 Entrambi sono modelli a 24 ore senza data né avanzamento automatico.
 Le varianti didattiche illustrano difetti e confronti, non sono API da riusare.
 Ambiente: CPython sul computer, nessuna dipendenza esterna.

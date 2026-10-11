@@ -1,4 +1,4 @@
-"""Dataclass mutabile e valore RGB frozen (OOP-03 H–I, OOP-04 A–C).
+"""Dataclass mutabile e valore RGB frozen (PY-25 H–I, PY-26 A–C).
 
 Le due versioni conservano lo stesso dominio della classe esplicita;
 validazione e regola delle componenti sono importate dal modulo precedente.

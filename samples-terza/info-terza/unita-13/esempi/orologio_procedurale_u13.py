@@ -1,4 +1,4 @@
-"""Orologio digitale procedurale (OOP-01): stato, operazioni e controlli.
+"""Orologio digitale procedurale (PY-23): stato, operazioni e controlli.
 
 Modello software di un orologio a 24 ore con precisione al minuto.
 Non legge l'ora del computer e non avanza da solo: il chiamante fornisce

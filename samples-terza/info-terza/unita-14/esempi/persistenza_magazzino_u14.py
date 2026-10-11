@@ -1,4 +1,4 @@
-"""Persistenza del magazzino composto: CSV e JSON con le politiche storiche (OOP-04).
+"""Persistenza del magazzino composto: CSV e JSON con le politiche storiche (PY-26).
 
 Raccordo fra il `Magazzino` U14 e i file. Le politiche sono quelle già
 verificate in U12 e U13, **identiche**: CSV con intestazione esatta

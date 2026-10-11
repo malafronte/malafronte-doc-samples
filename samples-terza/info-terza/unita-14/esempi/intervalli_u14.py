@@ -1,4 +1,4 @@
-"""L'intervallo di tempo come valore frozen (OOP-03, sez. H; OOP-04, sez. D).
+"""L'intervallo di tempo come valore frozen (PY-25, sez. H; PY-26, sez. D).
 
 Una giornata inizia a mezzanotte e ogni istante è rappresentato dai **minuti
 trascorsi da mezzanotte**: le 9:00 sono 540, le 10:30 sono 630, la fine
@@ -20,7 +20,7 @@ Contratto del valore:
 | `durata_min` | proprietà derivata `fine_min - inizio_min`, non memorizzata |
 
 `sovrapposto_a` decide se due intervalli condividono almeno un minuto. La
-condizione si ricava per casi (OOP-04, sez. D): gli intervalli `[a, b)` e
+condizione si ricava per casi (PY-26, sez. D): gli intervalli `[a, b)` e
 `[c, d)` sono separati quando `b <= c` oppure `d <= a`; negando i due casi
 si ottiene la forma compatta `a < d and c < b`, simmetrica nei due operandi.
 

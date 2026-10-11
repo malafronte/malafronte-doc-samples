@@ -1,6 +1,6 @@
-"""Prenotazioni di aule: valori, registro ed eccezioni di dominio (OOP-04, sez. E).
+"""Prenotazioni di aule: valori, registro ed eccezioni di dominio (PY-26, sez. E).
 
-Questo modulo realizza il modello introdotto concettualmente in OOP-01, sez.
+Questo modulo realizza il modello introdotto concettualmente in PY-23, sez.
 E: i cinque dati di quella scheda — `codice`, `aula`, `inizio`, `fine`,
 `partecipanti` — trovano qui la loro rappresentazione. Inizio e fine non
 sono due campi piatti: si raccolgono nel valore composito `Intervallo`

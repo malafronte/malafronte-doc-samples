@@ -2,15 +2,15 @@
 
 Ogni sezione è **autonoma**: definisce ciò che usa e non importa dalle
 applicazioni successive dell'unità (contatore con capacità, Articolo,
-magazzino). Il file accompagna i capitoli OOP-01 e OOP-02 nell'ordine in cui
+magazzino). Il file accompagna i capitoli PY-23 e PY-24 nell'ordine in cui
 i concetti vengono spiegati, salvo il Contatore conservato come materiale storico.
 
 1. `millimetri_da_centimetri` — funzione pura e responsabilità separate
-   (OOP-01, sez. D/E/G);
-2. `Contatore` — prima classe storica; nel percorso attuale OOP-02 A–F
+   (PY-23, sez. D/E/G);
+2. `Contatore` — prima classe storica; nel percorso attuale PY-24 A–F
    l'esempio è `Orologio` in `orologio_digitale_u13.py`;
-3. `Limiti` — invariante, guardie e aggiornamento coerente (OOP-02, sez. G);
-4. `Misura` — proiezione dei dati e ricostruzione (OOP-02, sez. J).
+3. `Limiti` — invariante, guardie e aggiornamento coerente (PY-24, sez. G);
+4. `Misura` — proiezione dei dati e ricostruzione (PY-24, sez. J).
 
 Ambiente: CPython sul computer. Dipende soltanto dal linguaggio.
 """
@@ -18,7 +18,7 @@ Ambiente: CPython sul computer. Dipende soltanto dal linguaggio.
 import json
 
 # ---------------------------------------------------------------------------
-# 1. Convertitore centimetri -> millimetri (OOP-01, sez. D–F)
+# 1. Convertitore centimetri -> millimetri (PY-23, sez. D–F)
 # ---------------------------------------------------------------------------
 
 # Formula di dominio: un centimetro vale dieci millimetri. Il calcolo non
@@ -57,7 +57,7 @@ def converti_misura(lunghezza_cm, formulazione="risultato"):
 
 
 # ---------------------------------------------------------------------------
-# 2. Contatore (materiale storico, non il riferimento attuale di OOP-02)
+# 2. Contatore (materiale storico, non il riferimento attuale di PY-24)
 # ---------------------------------------------------------------------------
 
 
@@ -90,7 +90,7 @@ class Contatore:
 
 
 # ---------------------------------------------------------------------------
-# 3. Limiti (OOP-02, sez. G)
+# 3. Limiti (PY-24, sez. G)
 # ---------------------------------------------------------------------------
 
 # Confini del dominio di Limiti: due interi non booleani con
@@ -193,7 +193,7 @@ class Limiti:
 
 
 # ---------------------------------------------------------------------------
-# 4. Misura (OOP-02, sez. J — prima parte)
+# 4. Misura (PY-24, sez. J — prima parte)
 # ---------------------------------------------------------------------------
 
 

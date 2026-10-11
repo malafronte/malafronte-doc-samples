@@ -156,5 +156,5 @@ corretta: i conteggi cumulativi includono queste prove.
 
 - Pagina del progetto: [Raccolta progressiva di programmi](https://github.com/malafronte/info-terza/blob/main/src/content/docs/progetti/progetto-progressivo-python.mdx)
   - sezione *Unità 14 — Oggetti robusti e modello dati del registro*.
-- Teoria di riferimento: OOP-03 - *Oggetti robusti e modello dati*, OOP-04 -
+- Teoria di riferimento: PY-25 - *Oggetti robusti e modello dati*, PY-26 -
   *Composizione e delega*; laboratorio LAB-PY-U14.

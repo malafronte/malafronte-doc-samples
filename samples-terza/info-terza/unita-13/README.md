@@ -1,4 +1,4 @@
-# Unità 13 — sorgenti Python d'esempio (cap. OOP-01 e OOP-02)
+# Unità 13 — sorgenti Python d'esempio (cap. PY-23 e PY-24)
 
 Sorgenti d'esempio dell'**Unità 13** del corso di informatica della terza:
 dalla soluzione procedurale agli oggetti attraverso un orologio digitale.
@@ -15,27 +15,27 @@ repository.
 
 ### `esempi/`
 
-- `orologio_procedurale_u13.py` — **orologio su record** (OOP-01 B): ore 0–23 e
+- `orologio_procedurale_u13.py` — **orologio su record** (PY-23 B): ore 0–23 e
   minuti 0–59, interi non booleani; `imposta`, `avanza`, `leggi` e `testo`.
   Nessuna data né avanzamento automatico. Le modifiche validate restituiscono
   `None`; gli argomenti invalidi producono `ValueError` senza modificare campi.
 - `orologio_digitale_u13.py` — **prima classe e versione validata**: `Orologio`
-  per OOP-02 A–F (attributi pubblici, dati validi assunti, avanzamento che
+  per PY-24 A–F (attributi pubblici, dati validi assunti, avanzamento che
   restituisce la coppia); `OrologioDigitale` per G (stesso contratto validato
   della versione procedurale), più varianti su locali, `self` e X02.
 - `esempi_concettuali_u13.py` — **esempi concettuali autonomi**: convertitore
-  centimetri → millimetri (OOP-01 D/E/G), classe `Limiti` con invariante e
-  aggiornamento coerente (OOP-02, sez. G), classe `Misura` con proiezione dei
-  dati e round-trip CSV/JSON (OOP-02, sez. J).
+  centimetri → millimetri (PY-23 D/E/G), classe `Limiti` con invariante e
+  aggiornamento coerente (PY-24, sez. G), classe `Misura` con proiezione dei
+  dati e round-trip CSV/JSON (PY-24, sez. J).
 - **Materiale storico conservato:** `contatore_procedurale_u13.py`,
   `istanze_alias_self_u13.py` e la sezione `Contatore` di
   `esempi_concettuali_u13.py`. Restano eseguibili e coperti dai test esistenti,
   ma non sono i riferimenti del percorso introduttivo attuale.
 - `contatore_capacita_u13.py` — **contatore con capacità**: versione procedurale,
   classe `ContatoreCapacita` e sequenza canonica verificata su entrambe
-  (OOP-02, sez. H).
+  (PY-24, sez. H).
 - `articolo_u13.py` — classe `Articolo` e validazione condivisa dello schema
-  (OOP-02, sez. J).
+  (PY-24, sez. J).
 - `dominio_magazzino_u13.py` — operazioni esterne su una lista di `Articolo`:
   ricerca, inserimento, aggiornamento, eliminazione, riepilogo e conversioni
   testuali.

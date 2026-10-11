@@ -150,5 +150,5 @@ round-trip; la stessa correzione è riportata nelle fotografie U14 e U15.
 
 - Pagina del progetto: [Raccolta progressiva di programmi](https://github.com/malafronte/info-terza/blob/main/src/content/docs/progetti/progetto-progressivo-python.mdx)
   - sezione *Unità 13 - Dalla soluzione procedurale agli oggetti*.
-- Teoria di riferimento: OOP-01 - *Perché gli oggetti*, OOP-02 - *Classi,
+- Teoria di riferimento: PY-23 - *Perché gli oggetti*, PY-24 - *Classi,
   istanze e invarianti*; laboratorio LAB-PY-U13.

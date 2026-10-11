@@ -1,4 +1,4 @@
-"""Persistenza CSV delle prenotazioni: schema, conversioni e import/export (OOP-04, sez. G).
+"""Persistenza CSV delle prenotazioni: schema, conversioni e import/export (PY-26, sez. G).
 
 Il file è la fotografia di un registro: una riga per prenotazione, con i
 cinque dati separati da virgole. Lo schema è dichiarato, non scoperto:

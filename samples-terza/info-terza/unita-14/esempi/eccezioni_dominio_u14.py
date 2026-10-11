@@ -1,4 +1,4 @@
-"""Eccezione di dominio per una richiesta impossibile (OOP-03, sez. J).
+"""Eccezione di dominio per una richiesta impossibile (PY-25, sez. J).
 
 Esempio autonomo su soli scalari già noti: la funzione pura
 `richiedi_unita` distingue tre esiti:

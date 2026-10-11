@@ -149,6 +149,6 @@ i conteggi cumulativi includono queste prove.
 
 - Pagina del progetto: [Raccolta progressiva di programmi](https://github.com/malafronte/info-terza/blob/main/src/content/docs/progetti/progetto-progressivo-python.mdx)
   - sezione *Unità 15 — Componenti intercambiabili nel registro*.
-- Teoria di riferimento: OOP-05 - *Ereditarietà e sostituibilità*, OOP-06 -
-  *Polimorfismo, duck typing e contratti*, OOP-07 - *Architettura e
+- Teoria di riferimento: PY-27 - *Ereditarietà e sostituibilità*, PY-28 -
+  *Polimorfismo, duck typing e contratti*, PY-29 - *Architettura e
   progettazione dei componenti*; laboratorio LAB-PY-U15.

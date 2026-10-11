@@ -1,7 +1,7 @@
 """Regressione funzionale del magazzino U14 rispetto ai valori U12/U13 (U14).
 
 I moduli U13 vivono in `unita-13/` e non vengono importati: la regressione
-esegue le **stesse sequenze pubblicate** nella sezione J di OOP-02 e nel
+esegue le **stesse sequenze pubblicate** nella sezione J di PY-24 e nel
 cap. PY-20 sul nuovo `Magazzino` e confronta proiezioni, esiti e stati con
 gli attesi storici (dataset 007/012, riepilogo 2/6/800, politiche CSV e
 JSON, alias dell'istanza aggiornata).
@@ -22,7 +22,7 @@ def magazzino_canonico():
 
 
 def test_riepilogo_canonico_storico():
-    # OOP-02 J: {'articoli': 2, 'quantita_totale': 6, 'valore_centesimi': 800}
+    # PY-24 J: {'articoli': 2, 'quantita_totale': 6, 'valore_centesimi': 800}
     assert magazzino_canonico().riepilogo() == {
         "articoli": 2,
         "quantita_totale": 6,

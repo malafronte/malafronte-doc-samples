@@ -1,4 +1,4 @@
-"""Annullamento di aggiornamenti con una pila di stati precedenti - Unità 16 (PY-24).
+"""Annullamento di aggiornamenti con una pila di stati precedenti - Unità 16 (PY-31).
 
 Problema svolto: un contatore sintetico parte da 5; ogni aggiornamento valido
 conserva sulla pila il valore precedente e cambia il contatore. Con +3 e +4 lo

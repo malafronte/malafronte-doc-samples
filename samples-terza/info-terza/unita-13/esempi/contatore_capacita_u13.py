@@ -1,4 +1,4 @@
-"""Contatore con capacità: versione procedurale e classe (OOP-02, sez. H).
+"""Contatore con capacità: versione procedurale e classe (PY-24, sez. H).
 
 Il contatore con capacità rappresenta una **quantità di unità occupate** in un
 contenitore che ne ammette un numero massimo fissato all'inizializzazione. Lo

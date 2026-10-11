@@ -1,4 +1,4 @@
-"""Prove di contratto di pile e code - Unità 16 (PY-24).
+"""Prove di contratto di pile e code - Unità 16 (PY-31).
 
 Le stesse prove di contratto si applicano alle due pile e alle due code:
 risultati, ordine, dimensione e stato dopo un errore. I casi specifici della

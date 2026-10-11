@@ -1,4 +1,4 @@
-"""CLI del magazzino composto: stesso menu funzionale, nuova delega (OOP-04).
+"""CLI del magazzino composto: stesso menu funzionale, nuova delega (PY-26).
 
 Il menu, i messaggi e le politiche di salvataggio sono **gli stessi della
 versione U13**: `"1"` elenco e riepilogo, `"2"` ricerca per codice, `"3"`

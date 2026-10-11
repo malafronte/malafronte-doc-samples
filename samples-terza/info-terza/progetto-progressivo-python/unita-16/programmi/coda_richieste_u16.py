@@ -97,7 +97,7 @@ class CodaConcatenataU16:
 
     Il contenitore mantiene `testa`, `coda` e `dimensione`: il fronte è la
     testa della catena e ogni accodamento è locale grazie al riferimento alla
-    coda, come nel capitolo PY-23 dell'Unità 16.
+    coda, come nel capitolo PY-30 dell'Unità 16.
     """
 
     def __init__(self):

@@ -1,6 +1,6 @@
 # Unità 15 — Componenti intercambiabili
 
-Riferimenti didattici CPython 3.14 per OOP-05, OOP-06, OOP-07.
+Riferimenti didattici CPython 3.14 per PY-27, PY-28, PY-29.
 Sono distinti dal progetto autonomo dei preventivi: nessuna soluzione di M55–M57.
 
 ## Ambiente ed esecuzione
@@ -24,13 +24,13 @@ nel manifest, senza alterazioni di `sys.path`. I file non aprono interazioni all
 
 | File/cartella | Ruolo e pagina |
 |---|---|
-| `esempi/orologi_base_u15.py`, `orologi_derivati_u15.py`, `client_orologi_u15.py` | OOP-05 A–D, F–H: stato, specializzazioni, client |
-| `esempi/mro_cooperativa_u15.py`, `factory_ereditata_u15.py` | OOP-05 E: esempi autonomi |
-| `esempi/politiche_duck_u15.py`, `politiche_abc_u15.py`, `politiche_protocol_u15.py` | OOP-06 A–G: tre organizzazioni dello stesso contratto |
-| `esempi/soglia_algoritmi_u15.py` | OOP-06 H: scansione e confine dicotomico |
-| `esempi/rilevazioni_u15.py`, `contratti_esportazione_u15.py` | OOP-07 A–C: modello e interfaccia |
-| `esempi/esportatori_u15.py`, `servizio_rapporto_u15.py`, `cli_rapporto_u15.py` | OOP-07 C–E: salvataggio e punto di avvio |
-| `esempi/controllore_adattatori_u15.py` | OOP-07 H, ESP-07: sola simulazione CPython |
+| `esempi/orologi_base_u15.py`, `orologi_derivati_u15.py`, `client_orologi_u15.py` | PY-27 A–D, F–H: stato, specializzazioni, client |
+| `esempi/mro_cooperativa_u15.py`, `factory_ereditata_u15.py` | PY-27 E: esempi autonomi |
+| `esempi/politiche_duck_u15.py`, `politiche_abc_u15.py`, `politiche_protocol_u15.py` | PY-28 A–G: tre organizzazioni dello stesso contratto |
+| `esempi/soglia_algoritmi_u15.py` | PY-28 H: scansione e confine dicotomico |
+| `esempi/rilevazioni_u15.py`, `contratti_esportazione_u15.py` | PY-29 A–C: modello e interfaccia |
+| `esempi/esportatori_u15.py`, `servizio_rapporto_u15.py`, `cli_rapporto_u15.py` | PY-29 C–E: salvataggio e punto di avvio |
+| `esempi/controllore_adattatori_u15.py` | PY-29 H, ESP-07: sola simulazione CPython |
 | `tests/` | Contratti, round-trip, guasti deterministici; simulazioni, non prove hardware |
 | `soluzioni/` | Soluzioni formative delle due raccolte U15 |
 | `dati/` | Fixture sintetiche; `007` identifica una fonte, duplicati ammessi |
@@ -45,8 +45,8 @@ Le directory mancanti causano OSError; non sono create implicitamente.
 ## Dataset e casi invalidi
 
 `dati/rilevazioni.csv` e `dati/rilevazioni.json` contengono lo stesso dataset
-sintetico di OOP-07 A: quattro letture, ordine e duplicati conservati. I parser
-sono spiegati in OOP-07 D. `dati/casi-invalidi/valore-testuale.csv` produce
+sintetico di PY-29 A: quattro letture, ordine e duplicati conservati. I parser
+sono spiegati in PY-29 D. `dati/casi-invalidi/valore-testuale.csv` produce
 ValueError nella conversione numerica; `valore-booleano.json` produce ValueError
 nella validazione del modello, perché il bool è escluso dal dominio.
 

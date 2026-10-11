@@ -1,4 +1,4 @@
-"""Articolo del magazzino: la classe e la validazione condivisa (OOP-02, sez. J).
+"""Articolo del magazzino: la classe e la validazione condivisa (PY-24, sez. J).
 
 La classe `Articolo` sostituisce il record-dizionario del magazzino del
 cap. PY-20. Lo **schema esterno non cambia**: i quattro campi restano

@@ -1,4 +1,4 @@
-"""Sensore, attuatore e controllore simulati su CPython (OOP-04, sez. H; raccordo U14–U15).
+"""Sensore, attuatore e controllore simulati su CPython (PY-26, sez. H; raccordo U14–U15).
 
 Tre componenti **concreti e semplici**, senza ereditarietà applicativa e
 senza Protocol: la collaborazione si legge dai costruttori e dalle chiamate.

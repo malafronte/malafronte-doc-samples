@@ -1,4 +1,4 @@
-"""Regressione dei contratti dei nuovi esempi OOP-03 e OOP-04."""
+"""Regressione dei contratti dei nuovi esempi PY-25 e PY-26."""
 
 from dataclasses import FrozenInstanceError, fields
 

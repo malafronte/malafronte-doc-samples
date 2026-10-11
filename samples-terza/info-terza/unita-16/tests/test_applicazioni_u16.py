@@ -1,4 +1,4 @@
-"""Prove delle applicazioni - Unità 16 (PY-23 C e PY-24 E-F).
+"""Prove delle applicazioni - Unità 16 (PY-30 C e PY-31 E-F).
 
 Il modulo verifica il modello a raddoppio dell'array dinamico, il servizio di
 annullamento e l'elaborazione FIFO delle richieste, con i dataset canonici dei

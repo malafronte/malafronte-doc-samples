@@ -1,4 +1,4 @@
-"""Contenimento, condivisione e delega con volume e colori (OOP-04 A–C).
+"""Contenimento, condivisione e delega con volume e colori (PY-26 A–C).
 
 Palette compone la propria lista e condivide i valori RGB frozen.
 PannelloAudio crea il proprio volume e aggrega una palette già esistente.

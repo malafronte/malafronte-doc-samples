@@ -1,4 +1,4 @@
-"""Il magazzino composto: la raccolta con le regole dell'insieme (OOP-03, sez. K; OOP-04).
+"""Il magazzino composto: la raccolta con le regole dell'insieme (PY-25, sez. K; PY-26).
 
 Confronto circoscritto con la versione U13: lì ricerca, unicità e
 operazioni erano **funzioni esterne** che ricevevano la lista; qui la

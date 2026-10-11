@@ -1,4 +1,4 @@
-"""Pile LIFO e code FIFO con quattro rappresentazioni - Unità 16 (PY-24).
+"""Pile LIFO e code FIFO con quattro rappresentazioni - Unità 16 (PY-31).
 
 Le classi `PilaLista`, `PilaConcatenata`, `CodaDeque` e `CodaConcatenata`
 espongono lo stesso contratto didattico:

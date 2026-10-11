@@ -1,4 +1,4 @@
-"""Valori, nodi e collegamenti - primo esempio autonomo dell'Unità 16 (PY-23).
+"""Valori, nodi e collegamenti - primo esempio autonomo dell'Unità 16 (PY-30).
 
 Il modulo costruisce a mano una piccola catena di nodi e la attraversa, senza
 ancora introdurre il contenitore `ListaConcatenata`. Il nodo qui si chiama

@@ -1,8 +1,8 @@
 """Applicazione alternativa del modello dati alle misure (U14, problema T10).
 
-La misura amplia quella della sezione J di OOP-02: il record ha **due**
+La misura amplia quella della sezione J di PY-24: il record ha **due**
 campi, `codice` e `valore_cm`, per confrontare scelte di rappresentazione.
-OOP-03 F–I usa ora ColoreRGB; questo modulo resta disponibile per le
+PY-25 F–I usa ora ColoreRGB; questo modulo resta disponibile per le
 attività sulle misure, compreso il riepilogo algoritmico PY-U14-T10.
 
 Schema della misura:

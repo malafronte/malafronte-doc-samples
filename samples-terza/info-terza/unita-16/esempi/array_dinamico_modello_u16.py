@@ -1,4 +1,4 @@
-"""Array dinamico nel modello a raddoppio - Unità 16 (PY-23), sezioni B-C.
+"""Array dinamico nel modello a raddoppio - Unità 16 (PY-30), sezioni B-C.
 
 Il modulo simula un array dinamico di riferimenti con la politica didattica
 dichiarata: capacità iniziale 2, raddoppio quando lo spazio è completo, copia

@@ -1,4 +1,4 @@
-"""Articolo con proprietà e DatiArticolo frozen (OOP-03, sez. K; OOP-04, richiami).
+"""Articolo con proprietà e DatiArticolo frozen (PY-25, sez. K; PY-26, richiami).
 
 Confronto circoscritto con la versione U13 (`articolo_u13.py`): lo **schema
 esterno non cambia** — quattro campi `codice`, `descrizione`, `quantita`,

@@ -1,4 +1,4 @@
-"""Prima versione di VolumeAudio: un campo controllato (OOP-03 A e B).
+"""Prima versione di VolumeAudio: un campo controllato (PY-25 A e B).
 
 Il livello è un'impostazione intera da 0 a 100, non una misura in decibel.
 La classe non riproduce suoni. Il silenzio è derivato dal livello zero.

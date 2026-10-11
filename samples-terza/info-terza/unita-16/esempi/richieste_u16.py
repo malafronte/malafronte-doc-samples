@@ -1,4 +1,4 @@
-"""Elaborazione di richieste in ordine di arrivo - Unità 16 (PY-24).
+"""Elaborazione di richieste in ordine di arrivo - Unità 16 (PY-31).
 
 Problema svolto: richieste sintetiche con `codice` e durata intera in unità
 convenzionali vengono elaborate in ordine FIFO da un servizio sequenziale. La

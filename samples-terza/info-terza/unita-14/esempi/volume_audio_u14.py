@@ -1,4 +1,4 @@
-"""VolumeAudio esteso con limite e candidato completo (OOP-03 C, OOP-04 B–C).
+"""VolumeAudio esteso con limite e candidato completo (PY-25 C, PY-26 B–C).
 
 Invariante: 0 <= livello <= limite_massimo <= 100, con interi non booleani.
 Ogni setter valida il nuovo stato; configura valuta l'intera coppia prima

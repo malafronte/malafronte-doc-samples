@@ -1,8 +1,8 @@
 """Contatore di eventi procedurale: materiale storico su record e funzioni.
 
-OOP-01 usa ora `orologio_procedurale_u13.py` come esempio introduttivo.
+PY-23 usa ora `orologio_procedurale_u13.py` come esempio introduttivo.
 Questo modulo conserva la **buona soluzione procedurale** confrontata nel
-capitolo OOP-01: un record-dizionario con un solo campo e quattro funzioni che
+capitolo PY-23: un record-dizionario con un solo campo e quattro funzioni che
 lo leggono e lo aggiornano secondo un contratto esplicito. Non è una soluzione
 "sbagliata": è una soluzione corretta, utile per confrontare funzioni su
 record e operazioni associate alle istanze di una classe.
@@ -97,7 +97,7 @@ def descrivi(contatore):
 
 
 if __name__ == "__main__":
-    # Trascrizione della traccia del capitolo OOP-01, sez. B: due record
+    # Trascrizione della traccia del capitolo PY-23, sez. B: due record
     # distinti, incrementi intercalati e azzeramento.
     primo = nuovo_contatore(0)
     secondo = nuovo_contatore(0)

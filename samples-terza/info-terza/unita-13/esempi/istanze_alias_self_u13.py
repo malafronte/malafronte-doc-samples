@@ -1,7 +1,7 @@
 """Istanze, alias e `self`: varianti storiche complete sul contatore.
 
 Il percorso attuale usa gli orologi di `orologio_digitale_u13.py`.
-Questo modulo conserva le **varianti** originarie di OOP-02 per rendere
+Questo modulo conserva le **varianti** originarie di PY-24 per rendere
 osservabili i meccanismi di attributi, nomi locali, `self`, alias e copie.
 Ogni variante è una definizione completa ed eseguibile: nessun frammento
 isolato e nessun programma che contiene omissioni.

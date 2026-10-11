@@ -1,4 +1,4 @@
-# Unità 14 - sorgenti Python d'esempio (cap. OOP-03 e OOP-04)
+# Unità 14 - sorgenti Python d'esempio (cap. PY-25 e PY-26)
 
 Sorgenti d'esempio dell'**Unità 14** del corso di informatica della terza:
 oggetti robusti, composizione e modello dati. Contengono proprietà e
@@ -16,18 +16,18 @@ questo repository.
 
 ### `esempi/`
 
-- `volume_audio_base_u14.py` - **proprietà e dati derivati** (OOP-03 B):
+- `volume_audio_base_u14.py` - **proprietà e dati derivati** (PY-25 B):
   `VolumeAudio` a un campo, livello intero 0–100 e silenzio calcolato.
-- `volume_audio_u14.py` - **invariante su più campi** (OOP-03 C):
+- `volume_audio_u14.py` - **invariante su più campi** (PY-25 C):
   livello e limite con `0 <= livello <= limite_massimo <= 100`;
   `configura` valida tutta la coppia prima delle scritture.
-- `colori_espliciti_u14.py` - **metodi e modello dati esplicito** (OOP-03 E–G):
+- `colori_espliciti_u14.py` - **metodi e modello dati esplicito** (PY-25 E–G):
   `ColoreRGB` con factory nero/bianco, proiezione in tupla, regola statica,
   `str`, `repr` e confronto di tutte le componenti fra istanze dello stesso tipo.
-- `colori_modello_dati_u14.py` - **dataclass e valori** (OOP-03 H–I):
+- `colori_modello_dati_u14.py` - **dataclass e valori** (PY-25 H–I):
   `ColoreRGBDataclass` mutabile e `ColoreRGB` frozen; `SchedaColori`
   con default indipendente e `DiarioFrozen` con contenuto mutabile.
-- `palette_composizione_u14.py` - **relazioni e delega** (OOP-04 A–C):
+- `palette_composizione_u14.py` - **relazioni e delega** (PY-26 A–C):
   `Palette` copia il contenitore, condivide colori frozen e cerca per valore;
   `PannelloAudio` compone un volume proprio e aggrega una palette esterna.
 
@@ -46,26 +46,26 @@ storici. Non sono prerequisiti nascosti dei nuovi esempi introduttivi:
   `MisuraDataclass` con `__post_init__`, `MisuraFrozen`, la
   `SchedaMisurazioni` con `default_factory`, il `DiarioFrozen` che mostra
   il limite di `frozen` e la `MisuraCheStampa` difettosa.
-- `eccezioni_dominio_u14.py` - **prima eccezione di dominio** (OOP-03 J):
+- `eccezioni_dominio_u14.py` - **prima eccezione di dominio** (PY-25 J):
   `DisponibilitaInsufficiente` e la funzione pura `richiedi_unita`, con il
   chiamante che conserva il valore dopo il rifiuto.
-- `intervalli_u14.py` - **l'intervallo semiaperto** (OOP-04 D):
+- `intervalli_u14.py` - **l'intervallo semiaperto** (PY-26 D):
   valore frozen con `durata_min` derivata e `sovrapposto_a` derivato per
   casi.
-- `prenotazioni_u14.py` - **il registro delle prenotazioni** (OOP-04 E):
+- `prenotazioni_u14.py` - **il registro delle prenotazioni** (PY-26 E):
   `Prenotazione` frozen, `CodiceDuplicato`, `ConflittoPrenotazione` e
   `RegistroPrenotazioni` con registra, lotto, cerca, annulla, modifica,
   proiezioni e riepilogo.
-- `csv_prenotazioni_u14.py` - **persistenza delle prenotazioni** (OOP-04
+- `csv_prenotazioni_u14.py` - **persistenza delle prenotazioni** (PY-26
   G): schema dichiarato, conversioni con riferimenti di riga, importazione
   a lotto e esportazione con temporaneo.
-- `cli_prenotazioni_u14.py` - **menu in memoria** (OOP-04 G): riepilogo,
+- `cli_prenotazioni_u14.py` - **menu in memoria** (PY-26 G): riepilogo,
   registrazione, annullamento, modifica, import/export CSV e uscita che
   non afferma di salvare; orari `HH:MM` con `24:00` solo come confine.
 - `articolo_proprieta_u14.py` - **Articolo con proprietà e DatiArticolo**
-  (OOP-03 K): osservazione di sola lettura, valore derivato e snapshot
+  (PY-25 K): osservazione di sola lettura, valore derivato e snapshot
   frozen; la validazione resta `valida_dati_articolo`.
-- `magazzino_composto_u14.py` - **la raccolta composta** (OOP-04):
+- `magazzino_composto_u14.py` - **la raccolta composta** (PY-26):
   `Magazzino` con unicità, inserimento che ricostruisce, proiezioni
   protette e modifica che conserva l'identità.
 - `persistenza_magazzino_u14.py` - **raccordo CSV/JSON** con le politiche
@@ -74,7 +74,7 @@ storici. Non sono prerequisiti nascosti dei nuovi esempi introduttivi:
 - `cli_magazzino_u14.py` - **stesso menu funzionale U12/U13** con la nuova
   delega al `Magazzino`.
 - `controllore_simulato_u14.py` - **sensore, attuatore e controllore**
-  (OOP-04 H): sequenza deterministica 18/20/22, esaurimento e lettura
+  (PY-26 H): sequenza deterministica 18/20/22, esaurimento e lettura
   invalida senza aggiornamenti prematuri.
 
 ### `tests/`
@@ -166,5 +166,5 @@ uv run pytest test_kit_starter.py -q   # fallisce finché le fasi non sono svolt
   storico di `unita-13` (`test/`, `esercizi/`): la differenza è dichiarata
   qui per evitare ambiguità.
 - La regressione del magazzino non importa i moduli U13: confronta le
-  sequenze pubblicate in OOP-02 sez. J con i valori attesi storici, senza
+  sequenze pubblicate in PY-24 sez. J con i valori attesi storici, senza
   manipolare `sys.path` fra progetti diversi.

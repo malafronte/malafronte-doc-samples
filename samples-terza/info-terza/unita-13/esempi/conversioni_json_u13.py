@@ -1,4 +1,4 @@
-"""Conversioni JSON della variante a oggetti del magazzino (OOP-02, sez. J).
+"""Conversioni JSON della variante a oggetti del magazzino (PY-24, sez. J).
 
 Una classe **non** si serializza da sola: `json.dumps` non sa convertire un
 `Articolo` e restituisce un `TypeError`. Il passaggio fra oggetti e testo JSON

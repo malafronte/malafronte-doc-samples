@@ -65,8 +65,8 @@ verifica è affidata al contratto scritto e alle prove condivise.
 La **dichiarazione con `ABC` o `Protocol`** è la variante statica
 dell'organizzazione A: `ABC` aggiungerebbe il controllo di completezza alla
 costruzione, `Protocol` renderebbe esplicita la struttura al verificatore dei
-tipi senza derivazione. Sono strumenti già studiati nei capitoli OOP-05 e
-OOP-06; questa realizzazione li omette perché la famiglia è piccola, il
+tipi senza derivazione. Sono strumenti già studiati nei capitoli PY-27 e
+PY-28; questa realizzazione li omette perché la famiglia è piccola, il
 contratto è documentato e le prove condivise verificano il comportamento — la
 scelta è motivata dai requisiti, non da un divieto di usare quegli strumenti.
 

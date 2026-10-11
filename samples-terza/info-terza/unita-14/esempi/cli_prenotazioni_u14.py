@@ -1,4 +1,4 @@
-"""CLI delle prenotazioni: menu, acquisizione e presentazione (OOP-04, sez. G).
+"""CLI delle prenotazioni: menu, acquisizione e presentazione (PY-26, sez. G).
 
 Applicazione **circoscritta**: quattro moduli con dipendenze in una sola
 direzione — `intervalli_u14` (valore), `prenotazioni_u14` (dominio),

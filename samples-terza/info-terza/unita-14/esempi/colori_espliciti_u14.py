@@ -1,4 +1,4 @@
-"""ColoreRGB esplicito: metodi, rappresentazioni e uguaglianza (OOP-03 E–G).
+"""ColoreRGB esplicito: metodi, rappresentazioni e uguaglianza (PY-25 E–G).
 
 RGB usa tre componenti intere non booleane da 0 a 255: rosso, verde, blu.
 Il modulo rappresenta dati, senza finestre, immagini o conversioni cromatiche.

@@ -1,4 +1,4 @@
-"""Prove della lista concatenata - Unità 16 (PY-23).
+"""Prove della lista concatenata - Unità 16 (PY-30).
 
 Le prove verificano risultati, ordine, dimensione, estremi e invarianti dopo
 ogni mutazione significativa, usando la funzione autoriale

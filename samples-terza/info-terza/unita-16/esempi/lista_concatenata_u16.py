@@ -1,4 +1,4 @@
-"""Lista semplicemente concatenata - riferimento didattico dell'Unità 16 (PY-23).
+"""Lista semplicemente concatenata - riferimento didattico dell'Unità 16 (PY-30).
 
 Il modulo contiene il nodo interno `_Nodo`, il contenitore `ListaConcatenata`
 e la funzione autoriale `controlla_invarianti`, usata dalle prove per

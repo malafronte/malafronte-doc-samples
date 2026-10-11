@@ -100,4 +100,4 @@ i criteri U15 non cambiano firma né comportamento, e la suite U5-U15 supera per
 intero. I limiti dichiarati: le richieste pendenti sono stato in memoria, la
 persistenza della coda è un'estensione con schema separato, e la coda
 concatenata didattica duplica nel progetto i meccanismi già spiegati nel
-capitolo PY-23 per mantenere la fotografia autonoma.
+capitolo PY-30 per mantenere la fotografia autonoma.
