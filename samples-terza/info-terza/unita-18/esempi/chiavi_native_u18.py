@@ -4,8 +4,8 @@ Il modulo mostra con funzioni verificabili le condizioni che permettono di
 ritrovare un'associazione in `dict`: chiavi uguali producono lo stesso hash,
 l'hash seleziona i candidati e l'uguaglianza riconosce la chiave. Gli esempi
 usano interi, stringhe, tuple di elementi hashable e una chiave di valore
-immutabile definita localmente; un esempio deliberatamente difettoso mostra la
-perdita di una associazione dopo la mutazione della chiave.
+immutabile definita localmente; un esempio deliberatamente difettoso mostra
+come la mutazione della chiave compromette le ricerche per valore.
 
 Ambiente: CPython sul computer. Il modulo non esegue alcuna operazione
 all'importazione.
@@ -82,9 +82,12 @@ def tupla_con_elemento_mutabile():
 class _ChiaveMutabileDifettosa:
     """Chiave difettosa con hash legato a un campo mutabile.
 
-    La classe serve soltanto alla diagnosi: dopo la mutazione del campo che
-    partecipa a uguaglianza e hash, la ricerca non ritrova più l'associazione
-    costruita prima. La regola corretta precede l'esempio: i campi che
+    La classe serve soltanto alla diagnosi: la mutazione del campo che
+    partecipa a uguaglianza e hash rompe la condizione di stabilità richiesta
+    dal contenitore. La ricerca con la stessa istanza mutata può ancora
+    riuscire, secondo l'hash e il percorso interno di sondaggio; una chiave
+    distinta con il codice originario perde invece l'uguaglianza con quella
+    conservata. La regola corretta precede l'esempio: i campi che
     partecipano a uguaglianza e hash restano stabili durante la vita della
     chiave.
     """
@@ -100,10 +103,24 @@ class _ChiaveMutabileDifettosa:
 
 
 def diagnosi_chiave_mutata():
-    """Riproduce la perdita dell'associazione dopo la mutazione della chiave."""
+    """Confronta le ricerche dopo la mutazione di una chiave difettosa.
+
+    La ricerca per il codice originario usa un'istanza distinta, equivalente
+    prima della mutazione: questa prova ha un esito determinato. Il risultato
+    della ricerca con la stessa istanza mutata è invece un'osservazione del
+    processo corrente, che può variare con la randomizzazione dell'hash.
+    """
     chiave = _ChiaveMutabileDifettosa("007")
+    equivalente = _ChiaveMutabileDifettosa("007")
     registro = {chiave: "primo"}
     trovato_prima = registro.get(chiave)
+    equivalente_prima = registro.get(equivalente)
     chiave.codice = "012"
     trovato_dopo = registro.get(chiave)
-    return {"trovato_prima": trovato_prima, "trovato_dopo": trovato_dopo}
+    equivalente_dopo = registro.get(equivalente)
+    return {
+        "trovato_prima": trovato_prima,
+        "trovato_dopo": trovato_dopo,
+        "equivalente_prima": equivalente_prima,
+        "equivalente_dopo": equivalente_dopo,
+    }

@@ -127,4 +127,6 @@ def test_tupla_con_lista_non_hashable():
 def test_diagnosi_chiave_mutata():
     esito = diagnosi_chiave_mutata()
     assert esito["trovato_prima"] == "primo"
-    assert esito["trovato_dopo"] is None
+    assert esito["equivalente_prima"] == "primo"
+    assert esito["equivalente_dopo"] is None
+    assert esito["trovato_dopo"] in (None, "primo")

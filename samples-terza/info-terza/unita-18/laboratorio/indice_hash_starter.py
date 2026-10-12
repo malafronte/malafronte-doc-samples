@@ -123,6 +123,7 @@ class TabellaHashConcatenata:
         """Verifica capacità, appartenenza, unicità, termine e dimensione."""
         assert len(self._bucket) > 0, "capacità non positiva"
         visti = set()
+        chiavi = set()
         totale = 0
         for posizione, testa in enumerate(self._bucket):
             corrente = testa
@@ -130,6 +131,8 @@ class TabellaHashConcatenata:
                 assert id(corrente) not in visti, "nodo raggiunto due volte"
                 visti.add(id(corrente))
                 _valida_chiave(corrente.chiave)
+                assert corrente.chiave not in chiavi, "chiave ripetuta"
+                chiavi.add(corrente.chiave)
                 assert hash_didattico(corrente.chiave) % len(self._bucket) == posizione
                 totale += 1
                 corrente = corrente.successivo

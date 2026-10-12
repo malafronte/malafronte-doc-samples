@@ -124,10 +124,12 @@ def test_x05_scelte_motivate():
 
 
 def test_x06_conteggi():
-    distribuite = [(i, f"V{i}") for i in (1, 6, 11, 16)]
+    distribuite = [(i, f"V{i}") for i in (1, 2, 3, 4)]
     concentrate = [(2 + 5 * j, f"V{j}") for j in range(4)]
     esito = interpreta_conteggi(distribuite, concentrate, [2, 99], 5)
     assert esito["capacita"] == 5
+    for famiglia in ("distribuite", "concentrate"):
+        assert [r["trovato"] for r in esito[famiglia]] == [True, False]
     peggiore_conc = max(r["confronti"] for r in esito["concentrate"])
     peggiore_dist = max(r["confronti"] for r in esito["distribuite"])
-    assert peggiore_conc >= peggiore_dist
+    assert (peggiore_dist, peggiore_conc) == (1, 4)
