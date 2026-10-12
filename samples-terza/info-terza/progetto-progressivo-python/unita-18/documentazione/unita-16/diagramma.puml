@@ -1,0 +1,100 @@
+@startuml coda-richieste-u16
+' Diagramma delle classi - coda di richieste di consultazione (U16)
+' Organizzazione adottata: coda FIFO con due rappresentazioni intercambiabili,
+' richieste che descrivono un criterio e servizio che elabora nell'ordine di
+' arrivo. La scelta della rappresentazione vive nel punto di avvio.
+
+skinparam classAttributeIconSize 0
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontSize 13
+
+class RichiestaConsultazione {
+  + codice : str
+  + criterio : object
+}
+
+class EsitoConsultazione {
+  + codice : str
+  + criterio : str
+  + codici_ammessi : tuple
+}
+
+class "contratto coda\naccoda, estrai, fronte, vuota, len" as contratto_coda {
+}
+
+class CodaDequeU16 {
+  - _elementi : deque
+  + accoda(richiesta) -> None
+  + estrai() -> RichiestaConsultazione
+  + fronte() -> RichiestaConsultazione
+  + vuota() -> bool
+  + __len__() -> int
+}
+
+class CodaConcatenataU16 {
+  - _testa : _NodoCoda | None
+  - _coda : _NodoCoda | None
+  - _dimensione : int
+  + accoda(richiesta) -> None
+  + estrai() -> RichiestaConsultazione
+  + fronte() -> RichiestaConsultazione
+  + vuota() -> bool
+  + __len__() -> int
+  + per_lista() -> list
+}
+
+class _NodoCoda {
+  + richiesta : RichiestaConsultazione
+  + successivo : _NodoCoda | None
+}
+
+class ServizioConsultazione {
+  - _coda
+  - _elaborate : int
+  + accoda_richiesta(richiesta) -> None
+  + elabora_prossima(registro) -> EsitoConsultazione | None
+  + elabora_tutte(registro) -> list
+  + pendenti() -> list
+}
+
+class "seleziona_codici\n(registro, criterio)" as client {
+  + seleziona_codici(registro, criterio) -> list
+}
+
+class "coda_cli_u16" as avvio {
+  + costruisci_coda(scelta) -> coda | None
+  + costruisci_richiesta(numero, criterio, valore) -> RichiestaConsultazione | None
+  + main() -> None
+}
+
+' Composizione: la coda concatenata possiede i propri nodi.
+CodaConcatenataU16 "1" *-- "0..*" _NodoCoda : contiene
+
+' Le due rappresentazioni realizzano lo stesso contratto: compatibilità strutturale.
+contratto_coda <|.. CodaDequeU16 : realizza (duck typing)
+contratto_coda <|.. CodaConcatenataU16 : realizza (duck typing)
+
+' Il servizio usa il contratto della coda e il client di consultazione U15.
+ServizioConsultazione --> contratto_coda : usa il collaboratore
+ServizioConsultazione ..> RichiestaConsultazione : conserva e valida
+ServizioConsultazione ..> EsitoConsultazione : produce
+ServizioConsultazione ..> client : chiama il criterio sul registro
+RichiestaConsultazione ..> "contratto criterio\nammette, descrizione" as contratto : descrive
+
+' Il punto di avvio sceglie la rappresentazione della coda e accoda le richieste.
+avvio ..> CodaDequeU16 : sceglie e inietta
+avvio ..> CodaConcatenataU16 : sceglie e inietta
+avvio ..> RichiestaConsultazione : costruisce
+avvio ..> ServizioConsultazione : invoca
+
+legend right
+  <b>Legenda</b>
+  Linea continua con rombo pieno: composizione.
+  Linea continua con freccia: uso del tipo.
+  Linea tratteggiata: dipendenza - chiamata, scelta o iniezione.
+  Le code non derivano da una base comune: la compatibilità
+  è strutturale e dichiarata dal contratto scritto.
+  Sequenza di elaborazione: fronte, calcolo, estrazione.
+endlegend
+@enduml
