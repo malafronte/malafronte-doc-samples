@@ -1,0 +1,21 @@
+struttura,query,esito,atteso
+lista-ordinata,cerca 007,007/locale/450,007/locale/450
+scansione,cerca 007,007/locale/450,007/locale/450
+bst,cerca 007,007/locale/450,007/locale/450
+hash,cerca 007,007/locale/450,007/locale/450
+b-tree,cerca 007,007/locale/450,007/locale/450
+lista-ordinata,cerca 012,012/nazionale/0,012/nazionale/0
+scansione,cerca 012,012/nazionale/0,012/nazionale/0
+bst,cerca 012,012/nazionale/0,012/nazionale/0
+hash,cerca 012,012/nazionale/0,012/nazionale/0
+b-tree,cerca 012,012/nazionale/0,012/nazionale/0
+lista-ordinata,cerca 999,assente,assente
+scansione,cerca 999,assente,assente
+bst,cerca 999,assente,assente
+hash,cerca 999,assente,assente
+b-tree,cerca 999,assente,assente
+lista-ordinata,intervallo 003 012,"003,007,012","003,007,012"
+scansione,intervallo 003 012,"003,007,012","003,007,012"
+bst,intervallo 003 012,"003,007,012","003,007,012"
+hash,intervallo 003 012,"003,007,012","003,007,012"
+b-tree,intervallo 003 012,"003,007,012","003,007,012"

@@ -1,0 +1,15 @@
+{
+  "versione_schema": 1,
+  "preventivi": [
+    {
+      "codice": "007",
+      "destinazione": "locale",
+      "totale_cent": 450
+    },
+    {
+      "codice": "007",
+      "destinazione": "nazionale",
+      "totale_cent": 900
+    }
+  ]
+}

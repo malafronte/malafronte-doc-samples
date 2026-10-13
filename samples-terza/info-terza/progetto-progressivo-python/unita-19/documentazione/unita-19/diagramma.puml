@@ -1,0 +1,100 @@
+@startuml confronto-indici-u19
+' Diagramma delle classi - confronto delle consultazioni del registro (U19)
+' Organizzazione adottata: cinque indici costruiti sulla stessa fotografia
+' dei preventivi, adattatore B-tree a chiavi stringa con grado minimo 2,
+' validazione riusata dal modello del registro e punto di avvio di confronto
+' separato dalle strutture.
+
+skinparam classAttributeIconSize 0
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontSize 13
+
+class Preventivo {
+  + codice : str
+  + destinazione : str
+  + totale_cent : int
+}
+
+class RegistroPreventivi {
+  - _preventivi : list
+  + numero : int
+  + preventivi() : tuple
+  + per_lista() : list
+  + inserisci(codice, destinazione, totale_cent) : Preventivo
+  + aggiorna(codice, destinazione, totale_cent) : Preventivo
+  + elimina(codice) : None
+}
+
+class _NodoBTree {
+  + voci : list
+  + figli : list
+}
+
+class IndiceBTreeU19 {
+  - _radice : _NodoBTree | None
+  - _dimensione : int
+  + __len__() : int
+  + altezza() : int
+  + contiene(codice) : bool
+  + cerca(codice) : Preventivo
+  + ricerca_con_conteggi(codice) : dict
+  + inserisci(codice, record) : None
+  + voci_ordinate() : list
+  + fotografia_ordinata() : list
+  + intervallo(minimo, massimo) : list
+  + controlla_invarianti() : None
+}
+
+class "costruisci_indice" as costruzione {
+  + costruisci_indice(sorgente) : IndiceBTreeU19
+}
+
+class "valida_chiave\n(codice)" as validazione {
+  + valida_chiave(codice) : None
+}
+
+class "valida_dominio_record\n(registro_dominio)" as modello {
+  + valida_dominio_record(record) : str
+}
+
+class "confronto_cli_u19" as avvio {
+  + costruisci_tutti(preventivi) : dict
+  + cerca_ovunque(indici, codice) : list
+  + intervallo_ovunque(indici, minimo, massimo) : list
+  + esegui_confronta(indici) : tuple
+  + main() : None
+}
+
+class "indice_bst_u17\nindice_hash_u18" as precedenti {
+  + costruisci_indice(sorgente) : indice
+  + cerca(codice) : Preventivo
+}
+
+' Composizione: l'indice possiede i propri nodi del B-tree.
+IndiceBTreeU19 "1" *-- "0..*" _NodoBTree : contiene
+
+' Ogni voce conserva un valore immutabile del modello U14.
+_NodoBTree o-- Preventivo : associa il record
+
+' La costruzione legge la proiezione pubblica del registro e usa la validazione.
+costruzione ..> RegistroPreventivi : legge preventivi()
+costruzione ..> IndiceBTreeU19 : costruisce
+validazione ..> modello : riusa la validazione del campo codice
+IndiceBTreeU19 ..> validazione : convalida le chiavi
+
+' Il punto di avvio costruisce ogni indice dopo il caricamento e confronta.
+avvio ..> costruzione : costruisce dopo il caricamento
+avvio ..> IndiceBTreeU19 : esegue e conta
+avvio ..> precedenti : confronta esiti
+
+legend right
+  <b>Legenda</b>
+  Linea continua con rombo pieno: composizione.
+  Linea continua con rombo vuoto: aggregazione del record.
+  Linea tratteggiata: dipendenza - lettura, chiamata o strumento.
+  Chiavi stringa con zeri significativi; record immutabili del
+  modello U14; ciclo di vita: ogni modifica del registro richiede
+  una nuova costruzione degli indici.
+endlegend
+@enduml

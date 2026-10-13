@@ -1,0 +1,10 @@
+{
+  "versione_schema": 1,
+  "preventivi": [
+    {
+      "codice": "007",
+      "destinazione": "estero",
+      "totale_cent": 450
+    }
+  ]
+}

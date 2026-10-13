@@ -1,0 +1,87 @@
+@startuml criteri-consultazione-u15
+' Diagramma delle classi — criteri di consultazione intercambiabili (U15)
+' Organizzazione adottata: componenti autonomi con duck typing e composizione.
+' Il client dipende dal contratto `ammette`, non dalle classi concrete;
+' la scelta dell'implementazione vive nel punto di avvio (freccia tratteggiata).
+
+skinparam classAttributeIconSize 0
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontSize 13
+
+class Preventivo {
+  + codice : str
+  + destinazione : str
+  + totale_cent : int
+  + __post_init__() -> None
+}
+
+class RegistroPreventivi {
+  - _preventivi : list
+  + {property} numero : int
+  + {property} totale_complessivo_cent : int
+  + inserisci(codice, destinazione, totale_cent) -> Preventivo
+  + aggiorna(codice, destinazione, totale_cent) -> Preventivo
+  + elimina(codice) -> None
+  + per_codice(codice) -> Preventivo | None
+  + per_destinazione(destinazione) -> tuple
+  + preventivi() -> tuple
+  + per_lista() -> list
+  + sostituisci_da_lista(registro) -> None
+}
+
+class PoliticaDestinazione {
+  - _destinazione : str
+  + descrizione() -> str
+  + ammette(preventivo) -> bool
+}
+
+class PoliticaSoglia {
+  - _minimo_cent : int
+  + descrizione() -> str
+  + ammette(preventivo) -> bool
+}
+
+class PoliticaSogliaEsclusiva {
+  - _minimo_cent : int
+  + descrizione() -> str
+  + ammette(preventivo) -> bool
+}
+
+class "seleziona_codici\n(registro, criterio)" as client {
+  + seleziona_codici(registro, criterio) -> list
+}
+
+class "consultazione_cli_u15" as avvio {
+  + costruisci_criterio(argomenti) -> criterio | None
+  + main() -> None
+}
+
+' Composizione: la raccolta possiede i propri valori; senza di essa non esistono.
+RegistroPreventivi "1" *-- "0..*" Preventivo : contiene
+
+' Uso: il client legge i valori della raccolta e chiama il contratto del criterio.
+client --> RegistroPreventivi : usa le proiezioni
+client ..> Preventivo : riceve i valori
+client ..> "contratto\nammette(preventivo) -> bool" as contratto : chiama
+
+' Le tre implementazioni offrono lo stesso contratto: compatibilità strutturale.
+contratto <|.. PoliticaDestinazione : realizza (duck typing)
+contratto <|.. PoliticaSoglia : realizza (duck typing)
+contratto <|.. PoliticaSogliaEsclusiva : realizza (variante breve)
+
+' Il punto di avvio sceglie e inietta l'implementazione concreta (PU15-08).
+avvio ..> PoliticaDestinazione : sceglie e inietta
+avvio ..> PoliticaSoglia : sceglie e inietta
+avvio ..> PoliticaSogliaEsclusiva : sceglie e inietta
+avvio ..> client : invoca
+
+legend right
+  <b>Legenda</b>
+  Linea continua con rombo pieno: composizione.
+  Linea continua con freccia: uso del tipo.
+  Linea tratteggiata: dipendenza — chiamata, scelta o iniezione.
+  I criteri non derivano da una base comune: la compatibilità
+  è strutturale e dichiarata dal contratto scritto.
+endlegend
+@enduml
