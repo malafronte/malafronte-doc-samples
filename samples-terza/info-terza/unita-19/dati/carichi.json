@@ -1,0 +1,20 @@
+{
+  "carico_q1": {
+    "nome": "Q1 — query esatte ripetute e modifiche occasionali",
+    "operazioni": ["cerca", "assegna", "rimuovi"],
+    "frequenza": "query esatte frequenti, aggiornamenti rari",
+    "organizzazione": "codici sparsi senza ordine richiesto"
+  },
+  "carico_q2": {
+    "nome": "Q2 — intervalli e presentazioni ordinate frequenti",
+    "operazioni": ["voci_ordinate", "intervallo", "cerca"],
+    "frequenza": "viste ordinate frequenti, aggiornamenti moderati",
+    "organizzazione": "codici con ordine di presentazione"
+  },
+  "carico_q3": {
+    "nome": "Q3 — raccolta in crescita con query ordinate nel modello a blocchi",
+    "operazioni": ["inserisci", "voci_ordinate", "cerca"],
+    "frequenza": "inserimenti continui, consultazioni ordinate",
+    "organizzazione": "nodi acquisiti per blocchi con radice residente"
+  }
+}
