@@ -1,0 +1,107 @@
+@startuml
+' Sorgente modificabile del diagramma delle classi PY-42 — Unità 20 (L7).
+' Il diagramma propone il modello suggerito dal §9.1 del piano: la consegna
+' autonoma (L8) può adottare un'architettura equivalente motivata. La figura
+' SVG nel capitolo (`01-responsabilita-collaborazioni.svg`) ne è la resa
+' didattica con gli stessi nomi e le stesse relazioni.
+' Gerarchia unica ammessa se conserva contratti e semantica espliciti.
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+package "Valori" {
+  class VistaComplessa {
+    + centro_reale : float
+    + centro_immaginaria : float
+    + ampiezza_orizzontale : float
+  }
+  class ParametriImmagine {
+    + larghezza : int
+    + altezza : int
+    + palette : str
+  }
+  class ParametriMandelbrot {
+    + limite_iterazioni : int
+  }
+  class ParametriJulia {
+    + limite_iterazioni : int
+    + c : complex
+  }
+  class ParametriKoch {
+    + livello : int
+    + variante : str
+    + lato_iniziale : float
+  }
+  class ParametriSierpinski {
+    + livello : int
+    + stile : str
+    + lato_iniziale : float
+  }
+}
+
+package "Contratti" {
+  interface ClassificatoreQuadratico {
+    + classifica(punto) : int | None
+  }
+  interface ProduttoreGeometrico {
+    + produci() : tuple
+    + conta_elementi() : int
+  }
+  interface Colorazione {
+    + colora(indice, limite) : ColoreRGB
+  }
+}
+
+ClassificatoreMandelbrot .up.|> ClassificatoreQuadratico
+ClassificatoreJulia .up.|> ClassificatoreQuadratico
+ProduttoreKoch .up.|> ProduttoreGeometrico
+ProduttoreSierpinski .up.|> ProduttoreGeometrico
+ColorazioneBinaria .up.|> Colorazione
+ColorazioneBande .up.|> Colorazione
+ColorazioneGradiente .up.|> Colorazione
+
+class ConfigurazioneFrattale {
+  + tipo_frattale : str
+  + a_dizionario() : dict
+  + da_dizionario(dati) : ConfigurazioneFrattale
+  + riepilogo() : str
+}
+
+ConfigurazioneFrattale *-- VistaComplessa : comprende >
+ConfigurazioneFrattale *-- ParametriImmagine : comprende >
+ConfigurazioneFrattale *-- ParametriMandelbrot : una famiglia >
+ConfigurazioneFrattale *-- ParametriJulia : una famiglia >
+ConfigurazioneFrattale *-- ParametriKoch : una famiglia >
+ConfigurazioneFrattale *-- ParametriSierpinski : una famiglia >
+
+class LavoroRendering {
+  + stato : str
+  + righe_completate : int
+}
+LavoroRendering --> ClassificatoreQuadratico : usa >
+LavoroRendering --> Colorazione : usa >
+
+class ArchivioConfigurazioni {
+  + salva(percorso, configurazione) : Path
+  + carica(percorso) : ConfigurazioneFrattale
+}
+ArchivioConfigurazioni --> ConfigurazioneFrattale : persiste >
+
+class ApplicazioneFrattali {
+  + genera() : None
+  + annulla() : None
+}
+ApplicazioneFrattali --> ConfigurazioneFrattale : configura >
+ApplicazioneFrattali --> LavoroRendering : coordina >
+ApplicazioneFrattali --> ArchivioConfigurazioni : archivia >
+
+note bottom of ConfigurazioneFrattale
+  Il JSON conserva i parametri,
+  non i milioni di pixel.
+end note
+
+note bottom of LavoroRendering
+  Il modello non importa Tkinter:
+  la UI decide quando avanzare.
+end note
+@enduml
