@@ -183,7 +183,7 @@ def test_lab19_13_risultati_equivalenti():
     esito = esegui_confronto()
     assert esito["coerente"] is True
     interrogazioni = query_laboratorio()
-    assert len(esito["righe"]) == 2 * (
+    assert len(esito["righe"]) == 3 * (
         len(interrogazioni["riuscite"]) + len(interrogazioni["fallite"])
     )
 

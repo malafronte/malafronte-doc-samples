@@ -4,8 +4,8 @@ Responsabilità del modulo: comporre il programma — caricare l'archivio,
 costruire la raccolta, **costruire ogni indice dopo il caricamento** sulla
 stessa fotografia e rispondere a più interrogazioni con risultati
 verificati. Le strutture dell'indice vivono nei moduli delle tappe:
-`indice_bst_u17.py`, `indice_hash_u18.py` e `indice_btree_u19.py`; qui non
-c'è logica di ricerca, soltanto adattatori, verifica e presentazione.
+`indice_bst_u17.py`, `indice_hash_u18.py` e `indice_btree_u19.py`; questo
+modulo raccoglie adattatori, strumentazione del confronto e presentazione.
 
 Uso, dalla root del progetto:
 
@@ -28,6 +28,7 @@ termina senza costruire gli indici.
 import bisect
 import csv
 import sys
+import time
 from pathlib import Path
 
 from indice_bst_u17 import costruisci_indice as costruisci_bst
@@ -39,6 +40,10 @@ from registro_persistenza import carica_archivio
 
 PERCORSO_PREDEFINITO = Path("dati") / "unita-12" / "archivio.json"
 PERCORSO_CSV = Path("risultati") / "unita-19" / "confronto.csv"
+COLONNE_CSV = (
+    "fase", "struttura", "query", "esito", "atteso", "coerente", "tempo_s",
+    "confronti", "nodi", "blocchi", "modello", "cache",
+)
 ARGOMENTI_PER_INTERROGAZIONE = {
     "fotografia": 0,
     "statistiche": 0,
@@ -83,20 +88,46 @@ def formatta_record(record):
     return f"{record.codice}/{record.destinazione}/{record.totale_cent}"
 
 
-def costruisci_tutti(preventivi):
+def _riga_rapporto(fase, struttura, query, esito, atteso, **metriche):
+    """Crea una riga con unità esplicite; campo vuoto significa non misurato."""
+    riga = dict.fromkeys(COLONNE_CSV, "")
+    riga.update(
+        fase=fase, struttura=struttura, query=query, esito=esito,
+        atteso=atteso, coerente=esito == atteso,
+    )
+    riga.update(metriche)
+    return riga
+
+
+def costruisci_tutti(preventivi, preparazione=None):
     """Costruisce i cinque indici sulla stessa fotografia dei preventivi.
 
     La costruzione di ciascun indice resta separata dalle interrogazioni:
     il rapporto registra la preparazione prima delle query.
     """
+    preventivi = tuple(preventivi)
     coppie = [(record.codice, record) for record in preventivi]
-    return {
-        "scansione": list(coppie),
-        "lista-ordinata": sorted(coppie, key=lambda voce: voce[0]),
-        "bst": costruisci_bst(preventivi),
-        "hash": costruisci_hash(preventivi),
-        "b-tree": costruisci_btree(preventivi),
+    costruttori = {
+        "scansione": lambda: list(coppie),
+        "lista-ordinata": lambda: sorted(coppie, key=lambda voce: voce[0]),
+        "bst": lambda: costruisci_bst(preventivi),
+        "hash": lambda: costruisci_hash(preventivi),
+        "b-tree": lambda: costruisci_btree(preventivi),
     }
+    indici = {}
+    for nome, costruttore in costruttori.items():
+        inizio = time.perf_counter()
+        indice = costruttore()
+        durata = time.perf_counter() - inizio
+        indici[nome] = indice
+        if preparazione is not None:
+            preparazione.append(_riga_rapporto(
+                "preparazione", nome, "costruzione", len(indice), len(preventivi),
+                tempo_s=durata,
+                modello="durata Python in secondi: costruzione, copie e controlli del costruttore",
+                cache="non applicabile",
+            ))
+    return indici
 
 
 def cerca_ovunque(indici, codice):
@@ -154,52 +185,110 @@ def intervallo_ovunque(indici, minimo, massimo):
     return righe
 
 
-def esegui_confronta(indici):
+def _metriche_ricerca(indici, nome, codice, radice_residente):
+    """Conta il lavoro delle query, senza dedurre contatori da durate o posizioni.
+
+    La dicotomica strumentata usa gli stessi confini semiaperti di bisect.
+    BST e hash usano gli strumenti pubblici U17/U18. I blocchi sono simulati
+    soltanto per gli alberi, con cache reinizializzata prima di ogni query.
+    """
+    metriche = {"cache": "non applicabile"}
+    if nome == "scansione":
+        confronti = 0
+        for candidata, _record in indici[nome]:
+            confronti += 1
+            if candidata == codice:
+                break
+        metriche.update(confronti=confronti, modello="confronti == della scansione")
+    elif nome == "lista-ordinata":
+        coppie = indici[nome]
+        sinistra, destra, confronti = 0, len(coppie), 0
+        while sinistra < destra:
+            centro = (sinistra + destra) // 2
+            confronti += 1
+            if coppie[centro][0] < codice:
+                sinistra = centro + 1
+            else:
+                destra = centro
+        if sinistra < len(coppie):
+            confronti += 1
+            _uguale = coppie[sinistra][0] == codice
+        metriche.update(confronti=confronti, modello="confronti < e == della dicotomica")
+    elif nome == "hash":
+        metriche.update(
+            confronti=indici[nome].confronti_per(codice),
+            modello="confronti == nella catena; calcolo dell'hash escluso",
+        )
+    else:
+        if nome == "bst":
+            nodi, _record = indici[nome].misura_ricerca(codice)
+            metriche["modello"] = (
+                "nodi BST esaminati; confronti non strumentati; un nodo per blocco"
+            )
+        else:
+            strumento = indici[nome].ricerca_con_conteggi(codice)
+            nodi = strumento["nodi"]
+            metriche.update(
+                confronti=strumento["confronti"],
+                modello="confronti < e == e nodi B-tree; un nodo per blocco",
+            )
+        metriche.update(
+            nodi=nodi,
+            blocchi=max(0, nodi - int(radice_residente)),
+            cache=("sola radice residente" if radice_residente else "inizialmente vuota")
+            + "; reinizializzata per query",
+        )
+    return metriche
+
+
+def esegui_confronta(indici, preparazione=None, *, radice_residente=False):
     """Esegue il confronto verificato e salva il CSV con colonne fissate.
 
     Le query esatte sono `007`, `012` e `999`; l'intervallo è `003..012`.
     Gli esiti sono verificati contro `dict` e `sorted` con filtro prima di
     ogni misura; la funzione restituisce le righe e l'esito della verifica.
     """
-    oracolo = dict(indici["lista-ordinata"])
-    righe = []
-    coerente = True
+    oracolo = dict(indici["scansione"])
+    if preparazione is None:
+        preparazione = [
+            _riga_rapporto(
+                "preparazione", nome, "costruzione", len(indice), len(oracolo),
+                modello="durata non misurata: indice già costruito",
+                cache="non applicabile",
+            )
+            for nome, indice in indici.items()
+        ]
+    righe = list(preparazione)
+    coerente = all(riga["coerente"] for riga in righe)
     for codice in ("007", "012", "999"):
         atteso = formatta_record(oracolo[codice]) if codice in oracolo else "assente"
         for nome, esito in cerca_ovunque(indici, codice):
             if esito != atteso:
                 coerente = False
-            righe.append(
-                {
-                    "struttura": nome,
-                    "query": f"cerca {codice}",
-                    "esito": esito,
-                    "atteso": atteso,
-                }
-            )
+            righe.append(_riga_rapporto(
+                "query", nome, f"cerca {codice}", esito, atteso,
+                **_metriche_ricerca(indici, nome, codice, radice_residente),
+            ))
     attesi = ",".join(codice for codice in sorted(oracolo) if "003" <= codice <= "012")
     for nome, esito in intervallo_ovunque(indici, "003", "012"):
         if esito != (attesi if attesi else "vuoto"):
             coerente = False
-        righe.append(
-            {
-                "struttura": nome,
-                "query": "intervallo 003 012",
-                "esito": esito,
-                "atteso": attesi if attesi else "vuoto",
-            }
-        )
+        righe.append(_riga_rapporto(
+            "query", nome, "intervallo 003 012", esito, attesi if attesi else "vuoto",
+            modello="esito dell'intervallo verificato; costi dell'intervallo non strumentati",
+            cache="non applicabile",
+        ))
     PERCORSO_CSV.parent.mkdir(parents=True, exist_ok=True)
     with open(PERCORSO_CSV, "w", newline="", encoding="utf-8") as archivio:
         scrittore = csv.DictWriter(
-            archivio, fieldnames=["struttura", "query", "esito", "atteso"]
+            archivio, fieldnames=COLONNE_CSV
         )
         scrittore.writeheader()
         scrittore.writerows(righe)
     return righe, coerente
 
 
-def esegui_interrogazione(indici, comando, valori):
+def esegui_interrogazione(indici, comando, valori, preparazione=None):
     """Esegue un'interrogazione sugli indici e restituisce le righe di esito."""
     if comando == "fotografia":
         voci = ", ".join(
@@ -218,7 +307,7 @@ def esegui_interrogazione(indici, comando, valori):
         return [
             f"{nome} -> {esito}" for nome, esito in intervallo_ovunque(indici, *valori)
         ]
-    righe, coerente = esegui_confronta(indici)
+    righe, coerente = esegui_confronta(indici, preparazione)
     return [
         f"confronta -> {len(righe)} righe, equivalenti: {coerente}, csv: {PERCORSO_CSV}"
     ]
@@ -241,13 +330,14 @@ def main() -> None:
 
     # La costruzione avviene dopo il caricamento: ogni indice è la fotografia
     # dei preventivi e risponde a ogni interrogazione senza essere ricostruito.
-    indici = costruisci_tutti(registro.preventivi())
+    preparazione = []
+    indici = costruisci_tutti(registro.preventivi(), preparazione)
     print(
         f"fotografia caricata: {registro.numero} preventivi, "
         f"indici costruiti: {len(indici)} strutture"
     )
     for comando, valori in interrogazioni:
-        for riga in esegui_interrogazione(indici, comando, valori):
+        for riga in esegui_interrogazione(indici, comando, valori, preparazione):
             print(riga)
     print(f"interrogazioni eseguite: {len(interrogazioni)}")
 

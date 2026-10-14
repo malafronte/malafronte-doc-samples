@@ -20,6 +20,14 @@ La suite iniziale di `laboratorio/test_pubblici.py` fallisce nei punti di
 consultazione (`NotImplementedError` in `cerca`, `contiene` e
 `dossier_scelta`): i fallimenti attesi fanno parte del percorso del
 laboratorio LAB-PY-U19 e scompaiono con il completamento delle fasi L2 e L6.
+Lo stato iniziale atteso è **6 casi superati e 8 falliti**. Il confronto
+verifica il metodo `cerca` dello studente e i record completi; la
+strumentazione dei conteggi viene controllata separatamente.
+
+La suite di riferimento comprende **47 test**. Le regressioni verificano
+record alterati o assenze errate nel confronto, tre strutture nel CSV,
+riuso della cache con query ripetute e prestito interno dal fratello destro
+nel caso speculare di D5, inclusa una fixture con figlio mancante.
 
 ## Contenuti
 

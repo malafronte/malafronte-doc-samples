@@ -52,26 +52,41 @@ def esegui_confronto():
     righe = []
     coerente = True
     for domanda in domande:
-        atteso = indici["dict"][domanda] if domanda in indici["dict"] else None
+        presente_atteso = domanda in indici["dict"]
+        atteso = indici["dict"].get(domanda)
         try:
             esito_lista, confronti = cerca_lista(indici["lista"], domanda)
-            riga_lista = (f"trovato:{esito_lista[0]}", f"confronti={confronti}")
+            presente_lista = True
         except KeyError:
-            riga_lista = ("assente", f"confronti={len(indici['lista'])}")
+            presente_lista, esito_lista = False, None
+            confronti = len(indici["lista"])
+        try:
+            esito_btree = indici["b-tree"].cerca(domanda)
+            presente_btree = True
+        except KeyError:
+            presente_btree, esito_btree = False, None
+        # La strumentazione raccoglie metriche dopo la consultazione da verificare.
         strumento = indici["b-tree"].ricerca_con_conteggi(domanda)
         confronti_btree = strumento["ordine"] + strumento["uguaglianza"]
         metrica_btree = f"nodi={strumento['nodi']} confronti={confronti_btree}"
-        riga_btree = (
-            (f"trovato:{strumento['dato'][0]}", metrica_btree)
-            if strumento["trovato"]
-            else ("assente", metrica_btree)
-        )
-        atteso_testo = f"trovato:{atteso[0]}" if atteso is not None else "assente"
-        for nome, riga in (("lista", riga_lista), ("b-tree", riga_btree)):
-            if riga[0] != atteso_testo:
+        if strumento["trovato"] != presente_btree or (
+            presente_btree and strumento["dato"] != esito_btree
+        ):
+            coerente = False
+        for nome, presente, dato, metrica in (
+            ("lista", presente_lista, esito_lista, f"confronti={confronti}"),
+            ("b-tree", presente_btree, esito_btree, metrica_btree),
+            ("dict", presente_atteso, atteso, "oracolo"),
+        ):
+            if presente != presente_atteso or (presente and dato != atteso):
                 coerente = False
             righe.append(
-                {"struttura": nome, "query": domanda, "esito": riga[0], "metrica": riga[1]}
+                {
+                    "struttura": nome,
+                    "query": domanda,
+                    "esito": f"trovato:{dato!r}" if presente else "assente",
+                    "metrica": metrica,
+                }
             )
     return {"righe": righe, "coerente": coerente}
 

@@ -14,7 +14,7 @@ all'importazione.
 import math
 
 from btree_costruzione_u19 import costruisci_btree_riferimento
-from btree_modello_u19 import BTreeDidattico
+from btree_modello_u19 import BTreeDidattico, NodoBTree
 from confronto_strutture_u19 import (
     AdattatoreBTree,
     AdattatoreDict,
@@ -23,7 +23,6 @@ from confronto_strutture_u19 import (
 )
 from dati_btree_u19 import RECORD_D6, costruisci_d2_finale, costruisci_d5_iniziale
 from indice_record_u19 import costruisci_indice_record, intervallo_chiuso
-from simulazioni_btree_u19 import verifica_d5
 
 
 def sequenza_aumento_altezza():
@@ -111,34 +110,102 @@ def verifica_indici_equivalenti():
     return False
 
 
-def conta_accessi_blocchi(chiavi_query, radice_residente=False):
+def conta_accessi_blocchi(chiavi_query, radice_residente=False, conserva_cache=True):
     """Conta trasferimenti e visite per le query sul B-tree D2 concluso.
 
     La funzione costruisce il B-tree D2 con gli inserimenti `1..10`, poi
     conta per ciascuna query i nodi del B-tree visitati e, nel modello
-    ideale un nodo-un blocco, i trasferimenti simulati. Con radice residente
-    del B-tree la visita della radice richiede zero trasferimenti; con cache
-    fra query dichiarata la politica è documentata nel dossier. Restituisce
-    il dizionario `{query: (nodi, trasferimenti)}`.
+    ideale un nodo-un blocco, i trasferimenti simulati. La cache conserva
+    tutti i nodi acquisiti senza espulsioni; `conserva_cache=False` la riporta
+    allo stato iniziale prima di ogni query. Con radice residente la radice
+    è già nella cache iniziale e richiede zero trasferimenti.
+
+    Il B-tree resta invariato: la tupla delle chiavi identifica ciascun nodo
+    del percorso. Il risultato è una lista di dizionari con `query`, `nodi`
+    e `trasferimenti`, così le query ripetute restano righe distinte.
     """
     albero = costruisci_d2_finale()
-    risultato = {}
+    iniziale = {tuple(albero.radice.chiavi())} if radice_residente else set()
+    cache = set(iniziale)
+    risultato = []
     for query in chiavi_query:
+        if not conserva_cache:
+            cache = set(iniziale)
         esito = albero.ricerca_con_conteggi(query)
-        trasferimenti = esito.nodi - (1 if radice_residente and esito.nodi >= 1 else 0)
-        risultato[query] = (esito.nodi, trasferimenti)
+        trasferimenti = 0
+        for chiavi_nodo in esito.percorso:
+            blocco = tuple(chiavi_nodo)
+            if blocco not in cache:
+                trasferimenti += 1
+                cache.add(blocco)
+        risultato.append({"query": query, "nodi": esito.nodi, "trasferimenti": trasferimenti})
     return risultato
 
 
 def traccia_speculare_d5():
     """Costruisce la traccia speculare di D5 con prestito dal destro.
 
-    La funzione applica D5 e verifica il trasferimento del figlio `[35]`;
-    restituisce il dizionario con `coerente` e `foglia_trasferita`. Una
-    fixture con collegamento errato viene diagnosticata da
-    `controlla_invarianti` del B-tree.
+    La radice iniziale è `[40]`: il sinistro `[20]` ha foglie `[10]`, `[30]`,
+    il destro `[50, 60]` ha foglie `[45]`, `[55]`, `[70]`. Eliminare `10`
+    rende carente il sinistro dopo una fusione; il destro presta `50` al
+    padre e trasferisce il figlio `[45]` al sinistro. Una copia con quel
+    figlio omesso deve fallire il controllo degli invarianti.
     """
-    return verifica_d5()
+
+    def _iniziale():
+        def _foglia(chiave):
+            return NodoBTree([(chiave, f"dato-{chiave}")])
+
+        albero = BTreeDidattico(grado_minimo=2)
+        sinistro = NodoBTree([(20, "dato-20")], [_foglia(10), _foglia(30)])
+        destro = NodoBTree(
+            [(50, "dato-50"), (60, "dato-60")],
+            [_foglia(45), _foglia(55), _foglia(70)],
+        )
+        albero.radice = NodoBTree([(40, "dato-40")], [sinistro, destro])
+        albero.dimensione = 9
+        albero.controlla_invarianti()
+        return albero
+
+    albero = _iniziale()
+    attese = [voce for voce in albero.voci_ordinate() if voce[0] != 10]
+    albero.rimuovi(10)
+    albero.controlla_invarianti()
+    sinistro, destro = albero.radice.figli
+    foglia_trasferita = [nodo.chiavi() for nodo in sinistro.figli] == [[20, 30], [45]]
+
+    corrotto = _iniziale()
+    corrotto.rimuovi(10)
+    corrotto.radice.figli[0].figli.pop()
+    diagnosi = ""
+    try:
+        corrotto.controlla_invarianti()
+    except AssertionError as errore:
+        diagnosi = str(errore)
+
+    coerente = (
+        albero.radice.chiavi() == [50]
+        and sinistro.chiavi() == [40]
+        and destro.chiavi() == [60]
+        and [nodo.chiavi() for nodo in destro.figli] == [[55], [70]]
+        and foglia_trasferita
+        and albero.voci_ordinate() == attese
+        and len(albero) == 8
+        and albero.altezza() == 2
+        and "figli" in diagnosi
+    )
+    return {
+        "albero": albero,
+        "foglia_trasferita": foglia_trasferita,
+        "coerente": coerente,
+        "diagnosi": diagnosi,
+        "traccia": [
+            "eliminare 10; fusione [] + 20 + [30] nella foglia [20, 30]",
+            "nodo sinistro carente: zero voci, un figlio [20, 30]",
+            "40 dal padre al sinistro; 50 dal fratello destro al padre",
+            "figlio [45] dal destro al sinistro; nuova radice [50]",
+        ],
+    }
 
 
 def capienza_nodo_blocco(dimensione_blocco=4096, intestazione=16, voce=16, riferimento=8):

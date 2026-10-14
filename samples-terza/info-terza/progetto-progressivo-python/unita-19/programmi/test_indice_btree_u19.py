@@ -13,6 +13,8 @@ Si esegue dalla root del progetto con:
 """
 
 import pytest
+
+import confronto_cli_u19
 from coda_richieste_u16 import (
     CodaDequeU16,
     RichiestaConsultazione,
@@ -140,16 +142,25 @@ def test_pu19_08_fotografia_e_ricostruzione():
     assert [c for c, _r in nuova.fotografia_ordinata()] == ["003", "007", "012", "021"]
 
 
-def test_pu19_09_costi_distinti():
+def test_pu19_09_costi_distinti(tmp_path, monkeypatch):
     registro = raccolta_canonica()
-    indici = costruisci_tutti(registro.preventivi())
-    righe, coerente = esegui_confronta(indici)
+    preparazione = []
+    indici = costruisci_tutti(registro.preventivi(), preparazione)
+    monkeypatch.setattr(confronto_cli_u19, "PERCORSO_CSV", tmp_path / "confronto.csv")
+    righe, coerente = esegui_confronta(indici, preparazione)
     assert coerente is True
-    assert len(righe) == 5 * 4
-    btree = indici["b-tree"]
-    strumento = btree.ricerca_con_conteggi("007")
-    assert strumento["nodi"] >= 1
-    assert strumento["confronti"] >= 1
+    assert len(righe) == 5 + 5 * 4
+    assert sum(riga["fase"] == "preparazione" for riga in righe) == 5
+    assert all(riga["tempo_s"] >= 0 for riga in preparazione)
+    for riga in righe:
+        assert set(riga) == set(confronto_cli_u19.COLONNE_CSV)
+        assert riga["modello"] and riga["cache"]
+        if riga["fase"] == "query" and riga["query"].startswith("cerca"):
+            if riga["struttura"] == "b-tree":
+                assert riga["nodi"] >= 1 and riga["confronti"] >= 1
+                assert riga["blocchi"] == riga["nodi"]
+            if riga["struttura"] == "bst":
+                assert riga["confronti"] == "" and riga["blocchi"] == riga["nodi"]
 
 
 def test_pu19_10_persistenza_e_regressione(tmp_path):

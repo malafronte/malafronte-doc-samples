@@ -50,9 +50,12 @@ def test_soluzioni_problemi():
 def test_blocchi_e_capienza():
     """Blocchi distinti dalle visite e capienza `t = 85` nel modello."""
     accessi = conta_accessi_blocchi([10, 4], radice_residente=False)
-    assert accessi == {10: (3, 3), 4: (1, 1)}
+    assert accessi == [
+        {"query": 10, "nodi": 3, "trasferimenti": 3},
+        {"query": 4, "nodi": 1, "trasferimenti": 0},
+    ]
     residenti = conta_accessi_blocchi([10], radice_residente=True)
-    assert residenti == {10: (3, 2)}
+    assert residenti == [{"query": 10, "nodi": 3, "trasferimenti": 2}]
     capienza = capienza_nodo_blocco()
     assert capienza["t_massimo"] == 85
     assert capienza["occupazione"] <= 4096

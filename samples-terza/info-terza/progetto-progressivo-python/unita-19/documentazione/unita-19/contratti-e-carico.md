@@ -58,3 +58,21 @@ ciascun indice è registrata separatamente dalle interrogazioni; gli esiti
 sono verificati contro `dict` e `sorted` con filtro prima di ogni misura.
 I conteggi del B-tree distinguono nodi visitati e confronti fra chiavi; i
 trasferimenti di blocchi appartengono al modello dichiarato del dossier.
+
+## Colonne e perimetro del rapporto
+
+Il CSV contiene `fase,struttura,query,esito,atteso,coerente,tempo_s,confronti,
+nodi,blocchi,modello,cache`: cinque righe di preparazione e venti di query.
+La durata `tempo_s` misura il costruttore di ciascun indice, incluse copie e
+validazioni; la proiezione dei dati e la scrittura del CSV restano esterne.
+Con indici già costruiti e senza misure fornite, la durata resta vuota e il
+modello dichiara che la preparazione non è stata cronometrata.
+
+La scansione conta uguaglianze; la dicotomica strumentata conta confronti
+`<` e `==`; l'hash conta uguaglianze nella catena, escludendo il calcolo
+dell'hash; il BST conta nodi con la propria API pubblica, senza inventare
+confronti; il B-tree conta nodi e confronti. Per gli alberi il modello usa
+un nodo per blocco e cache reinizializzata a ogni query: inizialmente vuota
+oppure con la sola radice residente. Gli intervalli conservano gli esiti
+verificati ma dichiarano i propri costi non strumentati. Ogni campo metrico
+vuoto significa non misurato; uno zero indica un conteggio realmente nullo.

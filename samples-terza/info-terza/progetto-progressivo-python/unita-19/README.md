@@ -33,8 +33,9 @@ soli comandi di questo README. Fotografia precedente:
   strutture, che costruisce scansione, lista ordinata, BST, hash e B-tree
   sulla stessa fotografia, verifica l'equivalenza e salva il CSV;
 - **costi separati**: `ricerca_con_conteggi` conta nodi e confronti con la
-  regola dichiarata, e la suite PU19-09 confronta preparazione e
-  interrogazioni;
+  regola dichiarata; il CSV distingue cinque righe di preparazione con
+  durata Python in secondi dalle venti righe di interrogazione, con
+  confronti, nodi e blocchi simulati dove disponibili, modello e cache;
 - **prove** dei casi PU19-01-PU19-10 più tre casi propri motivati, con
   regressione U5-U18 verificata dalla suite cumulativa.
 
@@ -47,6 +48,7 @@ unita-19/
 │   ├── indice_btree_u19.py       # B-tree e indice per codice
 │   ├── confronto_cli_u19.py      # punto di avvio: confronta dopo il caricamento
 │   ├── test_indice_btree_u19.py  # suite della tappa (13 test)
+│   ├── test_rapporto_costi_u19.py # regressioni del rapporto (4 test)
 ├── dati/unita-12/ (fixture invariate, dataset 007/012/003)
 ├── risultati/unita-19/ (CSV del confronto verificato)
 ├── risultati/ (unita-09, unita-11 invariati)
@@ -78,13 +80,15 @@ Suite cumulativa:
 
 ```text
 > uv run pytest -q
-230 passed in 0.53s
+234 passed in 0.66s
 ```
 
-**230 test**: 217 delle tappe U5–U18 più 13 della tappa U19 — i casi
+**234 test**: 217 delle tappe U5–U18 più 17 della tappa U19 — i casi
 PU19-01–PU19-10, i tre casi propri motivati e i controlli sugli invarianti
-dell'indice. La sola suite della tappa riporta 13 test superati. Le
-interrogazioni reali con il dataset pubblicato, sulla stessa fotografia:
+dell'indice, con quattro regressioni del CSV, della preparazione, delle
+metriche e del modello di cache. Le sole suite della tappa riportano
+17 test superati. Le interrogazioni reali con il dataset pubblicato, sulla
+stessa fotografia:
 
 ```text
 > uv run python programmi/confronto_cli_u19.py fotografia cerca 007 cerca 999 statistiche
@@ -103,6 +107,17 @@ b-tree -> assente
 statistiche -> codici 3, altezza 0
 interrogazioni eseguite: 4
 ```
+
+Il comando `confronta` produce **25 righe**: cinque con `fase=preparazione`
+e venti con `fase=query`. Le colonne sono `fase,struttura,query,esito,atteso,
+coerente,tempo_s,confronti,nodi,blocchi,modello,cache`. `tempo_s` misura solo
+la preparazione e include il lavoro del costruttore; dati e stampa restano
+fuori da questa misura. Le query registrano conteggi, senza durate inventate.
+I campi vuoti indicano metriche non misurate, non costi nulli: il BST conta
+nodi ma non confronti, gli intervalli verificano gli esiti senza contatori.
+Per gli alberi il modello assume un nodo per blocco, cache inizialmente
+vuota e reinizializzata prima di ogni query; `radice_residente=True` nella
+funzione `esegui_confronta` sottrae il trasferimento della sola radice.
 
 ## Differenze rispetto alla fotografia U18
 

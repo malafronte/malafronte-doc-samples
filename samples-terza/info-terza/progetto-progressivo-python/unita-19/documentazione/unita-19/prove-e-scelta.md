@@ -12,7 +12,7 @@
 | PU19-06 | Vista e intervalli | Stesso ordine e stesso intervallo; vuoto valido e invertito distinti |
 | PU19-07 | Otto codici sintetici | Split avvenuto, voce interna consultabile, invarianti verificati |
 | PU19-08 | Inserimento di `021` dopo la costruzione | Vecchia fotografia senza `021`, nuova con `021` |
-| PU19-09 | Stesse query su cinque strutture | Esiti equivalenti con 20 righe verificate |
+| PU19-09 | Stesse query su cinque strutture | Cinque righe di preparazione e venti query verificate, colonne con unità, modello e cache |
 | PU19-10 | Salvataggio, tariffe, coda, BST e hash | Caricamento e contratti precedenti verificati con la novità |
 
 ## Tre casi propri
