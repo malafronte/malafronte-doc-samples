@@ -1,0 +1,30 @@
+[project]
+name = "preparazione-geometria-orbite-u20"
+version = "0.1.0"
+description = "Esempi preparatori, dati canonici e test su frattali geometrici, numeri complessi, orbite e algoritmi di fuga (Unità 20, cap. PY-37, PY-38, PY-39 e LAB-PY-U20-A)."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
+
+[dependency-groups]
+dev = ["pytest>=9.1.1", "ruff>=0.16"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.isort]
+known-first-party = [
+    "dati_canonici",
+    "geometria_esempi",
+    "complessi_esempi",
+    "orbite_esempi",
+    "fuga_esempi",
+]

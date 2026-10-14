@@ -1,0 +1,33 @@
+[project]
+name = "preparazione-immagini-interfaccia-u20"
+version = "0.1.0"
+description = "Esempi preparatori, contratti raster/JSON e test su campionamento, palette, Pillow, Tkinter a blocchi e persistenza (Unità 20, cap. PY-40, PY-41, PY-42 e LAB-PY-U20-B)."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "pillow>=11",
+]
+
+[dependency-groups]
+dev = ["pytest>=9.1.1", "ruff>=0.16"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.isort]
+known-first-party = [
+    "contratti_raster_json",
+    "coordinate_esempi",
+    "palette_esempi",
+    "griglia_pillow",
+    "finestra_griglia",
+    "configurazione_esempio",
+]
