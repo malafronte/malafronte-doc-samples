@@ -1,0 +1,18 @@
+{
+  "versione_schema": 1,
+  "tipo_frattale": "sierpinski",
+  "immagine": {
+    "larghezza": 160,
+    "altezza": 120,
+    "palette": "binaria"
+  },
+  "vista": {
+    "centro": {"reale": 2.0, "immaginaria": 1.7320508075688772},
+    "ampiezza_orizzontale": 4.8
+  },
+  "parametri": {
+    "livello": 2,
+    "stile": "pieno",
+    "lato_iniziale": 4.0
+  }
+}

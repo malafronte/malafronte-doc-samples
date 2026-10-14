@@ -1,0 +1,16 @@
+{
+  "versione_schema": 1,
+  "tipo_frattale": "mandelbrot",
+  "immagine": {
+    "larghezza": 80,
+    "altezza": 60,
+    "palette": "bande"
+  },
+  "vista": {
+    "centro": {"reale": -0.5, "immaginaria": 0.0},
+    "ampiezza_orizzontale": 3.5
+  },
+  "parametri": {
+    "limite_iterazioni": 25
+  }
+}

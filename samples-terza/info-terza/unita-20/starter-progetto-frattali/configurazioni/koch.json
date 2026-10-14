@@ -1,0 +1,18 @@
+{
+  "versione_schema": 1,
+  "tipo_frattale": "koch",
+  "immagine": {
+    "larghezza": 160,
+    "altezza": 120,
+    "palette": "binaria"
+  },
+  "vista": {
+    "centro": {"reale": 1.5, "immaginaria": 0.8660254037844386},
+    "ampiezza_orizzontale": 4.0
+  },
+  "parametri": {
+    "livello": 2,
+    "variante": "fiocco",
+    "lato_iniziale": 3.0
+  }
+}
