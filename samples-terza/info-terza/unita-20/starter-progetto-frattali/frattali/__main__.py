@@ -60,15 +60,28 @@ def comando_stato() -> int:
     return 0
 
 
+def immagine_da_configurazione(percorso: str) -> object:
+    """Restituisce l'immagine completa descritta dal JSON (da completare, FR-M5/FR-M7).
+
+    Il completamento richiede caricamento validato, scelta del generatore e
+    produzione dell'immagine della famiglia richiesta. Per le famiglie numeriche,
+    `costruisci_matrice_esiti(configurazione, classifica_punto)` riceve un
+    classificatore effettivo; `matrice_a_immagine(matrice, configurazione)`
+    riceve due argomenti. Le famiglie geometriche richiedono il proprio disegno.
+    Questa funzione non salva file: l'I/O PNG resta nel comando fornito.
+    """
+    raise NotImplementedError(
+        "FR-M5/FR-M7: completare immagine_da_configurazione con caricamento, "
+        "generatore della famiglia e immagine completa."
+    )
+
+
 def comando_genera(configurazione: str, destinazione_png: str) -> int:
-    """Riproduce un'immagine dai parametri (da completare, FR-M5/FR-M7)."""
-    from frattali import persistenza
+    """Collega la generazione da completare all'I/O PNG (fornito, FR-M1)."""
     from frattali.rendering import immagini
 
     try:
-        config = persistenza.carica_configurazione(configurazione)
-        matrice = immagini.costruisci_matrice_esiti(config, None)
-        immagine = immagini.matrice_a_immagine(matrice, config, None)
+        immagine = immagine_da_configurazione(configurazione)
         immagini.salva_png(immagine, destinazione_png)
     except NotImplementedError as causa:
         print(f"Generazione non ancora disponibile: {causa}")

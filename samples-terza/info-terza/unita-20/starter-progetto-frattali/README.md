@@ -42,11 +42,20 @@ termina con un errore motivato invece di un prodotto parziale:
 uv run python -m frattali genera --config configurazioni/mandelbrot.json --png mandelbrot.png
 ```
 
+La funzione `immagine_da_configurazione` in `frattali/__main__.py` è da
+completare nelle tappe FR-M5/FR-M7: carica e valida il JSON, sceglie il
+generatore e restituisce l'immagine completa. Lo smistamento `main`, il
+comando di stato e il collegamento fra immagine e salvataggio sono forniti.
+I tre test di `tests/test_comandi_forniti.py` verificano questa infrastruttura
+con sostituti, senza fornire gli algoritmi assegnati. L'esito iniziale
+dell'intera suite è **6 casi superati e 14 falliti** con `NotImplementedError`.
+
 ## Struttura e lavoro previsto
 
 | Percorso | Stato | Lavoro dello studente |
 |---|---|---|
-| `frattali/__init__.py`, `frattali/__main__.py` | Forniti | Usare i comandi, non riscriverli |
+| `frattali/__init__.py` | Fornito | Conservare l'inizializzazione senza effetti grafici |
+| `frattali/__main__.py` | In parte fornito | Completare `immagine_da_configurazione` in FR-M5/FR-M7; usare lo smistamento e l'I/O PNG forniti |
 | `frattali/dominio.py` (eccezioni, vista, immagine) | Fornito | Completare parametri delle famiglie e configurazione |
 | `frattali/algoritmi/` | Da completare | Kernel geometrici e numerici con la convenzione unica |
 | `frattali/rendering/coordinate.py`, `colori.py` | Da completare | Campionamento, zoom, palette e legenda |
@@ -56,6 +65,7 @@ uv run python -m frattali genera --config configurazioni/mandelbrot.json --png m
 | `frattali/interfaccia.py` (finestra minima) | Fornita | Completare generazione, annullamento, zoom ed esportazione |
 | `configurazioni/` | Fornite e valide | Usarle per le prove, aggiungerne di motivate |
 | `tests/test_pubblici.py` (FR-A01–FR-A15) | Forniti | Farli passare, aggiungere almeno tre casi propri motivati |
+| `tests/test_comandi_forniti.py` | Forniti | Conservare le regressioni dell'infrastruttura CLI |
 | `documentazione/protocollo-requisiti.md` | Fornito | Compilarlo durante il lavoro con stati ed evidenze |
 
 Il contributo dello starter (finestra minima, I/O PNG, valori di base,

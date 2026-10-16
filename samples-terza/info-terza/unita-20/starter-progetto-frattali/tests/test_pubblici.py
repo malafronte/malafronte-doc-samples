@@ -85,7 +85,7 @@ def test_fr_a07_vista_canonica_4x2() -> None:
 def test_fr_a08_stessa_vista_due_rapporti() -> None:
     from frattali.rendering.coordinate import punto_da_pixel
 
-    for larghezza, altezza in ((4, 2), (8, 4)):
+    for larghezza, altezza in ((4, 2), (8, 4), (2, 4)):
         passo_x = (
             punto_da_pixel(1, 0, larghezza, altezza, 0.0, 0.0, 4.0)
             - punto_da_pixel(0, 0, larghezza, altezza, 0.0, 0.0, 4.0)
@@ -93,7 +93,7 @@ def test_fr_a08_stessa_vista_due_rapporti() -> None:
         passo_y = (
             punto_da_pixel(0, 0, larghezza, altezza, 0.0, 0.0, 4.0)
             - punto_da_pixel(0, 1, larghezza, altezza, 0.0, 0.0, 4.0)
-        ).real
+        ).imag
         assert passo_x == passo_y
     assert punto_da_pixel(0, 0, 4, 2, 0.0, 0.0, 4.0) == complex(-1.5, 0.5)
 
