@@ -5,12 +5,18 @@ from pathlib import Path
 from frattali import __main__ as comandi
 
 
-def test_stato_fornito_termina_senza_generare(capsys) -> None:
+def test_stato_fornito_termina_senza_generare(monkeypatch, capsys) -> None:
+    monkeypatch.setattr(comandi, "operazioni_stato", lambda: {"esempio": False})
     assert comandi.main(["stato"]) == 0
-    assert "Operazioni da completare:" in capsys.readouterr().out
+    assert "Operazioni da completare: 1 su 1." in capsys.readouterr().out
 
 
-def test_genera_incompleto_non_scrive_png(tmp_path, capsys) -> None:
+def test_genera_incompleto_non_scrive_png(monkeypatch, tmp_path, capsys) -> None:
+    # Il sostituto mantiene valida la prova anche dopo il completamento del progetto.
+    def incompleta(percorso):
+        raise NotImplementedError("immagine_da_configurazione da completare")
+
+    monkeypatch.setattr(comandi, "immagine_da_configurazione", incompleta)
     destinazione = tmp_path / "assente.png"
     assert comandi.main(["genera", "--config", "assente.json", "--png", str(destinazione)]) == 2
     assert not destinazione.exists()
