@@ -60,7 +60,7 @@ I programmi delle tappe precedenti si eseguono come documentato nei README di
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11 con CPython 3.15.0 e uv 0.12.15. Caso P04
+Esecuzione verificata su Windows 11 con CPython 3.15.0 e uv 0.13.1. Caso P04
 (vittoria sull'ultima richiesta):
 
 ```text

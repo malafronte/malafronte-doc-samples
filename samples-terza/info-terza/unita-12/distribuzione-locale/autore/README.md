@@ -46,5 +46,5 @@ uv build                           # produce dist/ con wheel e sdist
 wheel prodotta da `uv build` è invece un artefatto **separato dai sorgenti**, e
 sarà installata dal progetto consumatore descritto in `../consumatore/`.
 
-Versioni verificate: CPython 3.15.0, uv 0.12.15, hatchling come backend di
+Versioni verificate: CPython 3.15.0, uv 0.13.1, hatchling come backend di
 build, pytest 9.1.1 (dipendenza di sviluppo dichiarata in `pyproject.toml`).

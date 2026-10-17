@@ -54,7 +54,7 @@ uv run python programmi/grafico_ordinamenti_u11.py
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11, CPython 3.15.0, uv 0.12.15, pytest 9.1.1,
+Esecuzione verificata su Windows 11, CPython 3.15.0, uv 0.13.1, pytest 9.1.1,
 matplotlib 3.11. Suite cumulativa:
 
 ```text

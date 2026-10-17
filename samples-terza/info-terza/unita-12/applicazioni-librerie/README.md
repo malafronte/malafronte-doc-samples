@@ -24,7 +24,7 @@ uv run python tkinter_u12.py
 uv run python -m tkinter
 ```
 
-Versioni della verifica: CPython 3.15.0, `uv` 0.12.15, matplotlib 3.11.2, pillow 12.3.0, Tk 9.0. `uv run python -m tkinter` apre la finestra di prova di Tcl/Tk: importare i moduli non apre nulla. I due script senza finestra producono i file in `output/`, cartella creata dallo script stesso e non versionata; i percorsi di output sono dichiarati nel codice.
+Versioni della verifica: CPython 3.15.0, `uv` 0.13.1, matplotlib 3.11.2, pillow 12.3.0, Tk 9.0. `uv run python -m tkinter` apre la finestra di prova di Tcl/Tk: importare i moduli non apre nulla. I due script senza finestra producono i file in `output/`, cartella creata dallo script stesso e non versionata; i percorsi di output sono dichiarati nel codice.
 
 La suite `test_applicazioni_u12.py` usa `unittest` della libreria standard: dalla stessa cartella si esegue `uv run python -m unittest -v`. Verifica 15 test senza finestre: alias di percorso e originale invariato, dominio 1-6 dei pixel sintetici, ordinamento discriminante nel pareggio, PNG e scale intere, registro dei movimenti della penna e calcolo dell'interfaccia. I test non sostituiscono la verifica delle finestre reali.
 

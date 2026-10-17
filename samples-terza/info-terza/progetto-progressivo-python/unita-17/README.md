@@ -75,7 +75,7 @@ uv run python programmi/indice_cli_u17.py ordine cerca 007 cerca 999 intervallo 
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11, CPython 3.15.0, uv 0.12.15, pytest 9.1.1.
+Esecuzione verificata su Windows 11, CPython 3.15.0, uv 0.13.1, pytest 9.1.1.
 Suite cumulativa:
 
 ```text

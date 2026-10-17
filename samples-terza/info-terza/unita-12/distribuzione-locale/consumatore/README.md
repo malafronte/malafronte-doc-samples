@@ -54,7 +54,7 @@ bloccato. Il comando di aggiornamento è esplicito - si ripete la risoluzione
 della sola dipendenza - e poi l'ambiente si riallinea:
 
 ```powershell
-uv lock --refresh-package utilita-magazzino-u12
+uv lock --upgrade-package utilita-magazzino-u12
 uv sync
 ```
 
@@ -70,4 +70,4 @@ pubblicazione su un indice di package. La pubblicazione su TestPyPI/PyPI è un
 approfondimento separato, descritto nella guida `dev-tools/librerie-personali`
 del sito e non eseguita in questo materiale.
 
-Versioni verificate: CPython 3.15.0, uv 0.12.15, Windows 11.
+Versioni verificate: CPython 3.15.0, uv 0.13.1, Windows 11.

@@ -57,7 +57,7 @@ uv run pytest -q programmi/test_spedizione_u5.py   # suite della tappa
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11 con CPython 3.15.0, uv 0.12.15 e pytest
+Esecuzione verificata su Windows 11 con CPython 3.15.0, uv 0.13.1 e pytest
 9.1.1. La suite dichiara **30 test**, tutti scoperti e superati:
 
 ```text

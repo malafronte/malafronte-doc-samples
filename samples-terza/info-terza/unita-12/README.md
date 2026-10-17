@@ -254,7 +254,7 @@ repository.
 ## Versioni verificate
 
 - CPython **3.15.0**, serie 3.15 usata dal corso;
-- uv **0.12.15**, con backend di build hatchling per il progetto autore;
+- uv **0.13.1**, con backend di build hatchling per il progetto autore;
 - pytest 9.1.1, invocato con `uv run --with pytest` (suite di `esempi/`, dello
   starter e del riferimento) e come dipendenza di sviluppo del progetto autore;
 - matplotlib **3.11.2** e pillow **12.3.0** nel progetto `applicazioni-librerie`

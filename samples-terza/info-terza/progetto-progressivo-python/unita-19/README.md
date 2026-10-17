@@ -75,7 +75,7 @@ uv run python programmi/confronto_cli_u19.py fotografia cerca 007 cerca 999 conf
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11, CPython 3.15.0, uv 0.12.15, pytest 9.1.1.
+Esecuzione verificata su Windows 11, CPython 3.15.0, uv 0.13.1, pytest 9.1.1.
 Suite cumulativa:
 
 ```text

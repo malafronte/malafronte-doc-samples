@@ -64,7 +64,7 @@ uno per riga.
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11 con CPython 3.15.0 e uv 0.12.15. Caso P1:
+Esecuzione verificata su Windows 11 con CPython 3.15.0 e uv 0.13.1. Caso P1:
 
 ```text
 > uv run python programmi/trasferimento_dati.py

@@ -8,7 +8,7 @@ altra postazione a partire dai soli materiali pubblici.
 | Elemento | Valore verificato |
 |---|---|
 | Interprete | CPython 3.15.0, dichiarato da `.python-version` e da `requires-python = ">=3.15"` |
-| Strumento | uv 0.12.15 |
+| Strumento | uv 0.13.1 |
 | Dipendenze | `matplotlib` (grafici U9 e U11) e `pytest` (suite), fissate in `uv.lock` |
 | Sistema | Windows 11, esecuzione normale fuori dal debugger |
 

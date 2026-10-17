@@ -64,7 +64,7 @@ requisito di qualunque implementazione corretta.
 
 ## Campioni misurati
 
-Postazione: Windows 11, CPython 3.15.0 (uv 0.12.15), AMD Ryzen 7 8845HS,
+Postazione: Windows 11, CPython 3.15.0 (uv 0.13.1), AMD Ryzen 7 8845HS,
 esecuzione normale fuori dal debugger. Durate in millisecondi per chiamata.
 
 | Operazione | n | Operazioni contate | Min | Mediana | Max |

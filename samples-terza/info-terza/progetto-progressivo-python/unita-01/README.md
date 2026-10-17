@@ -53,7 +53,7 @@ uv run python programmi/03_messaggio_multiriga.py
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11 con CPython 3.15.0 e uv 0.12.15. Gli
+Esecuzione verificata su Windows 11 con CPython 3.15.0 e uv 0.13.1. Gli
 output sono riprodotti integralmente, compresi i caratteri di fine riga: ogni
 istruzione `print` produce una riga e va a capo.
 

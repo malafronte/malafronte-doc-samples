@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.15"
 
 [[package]]
@@ -18,5 +18,5 @@ name = "utilita-magazzino-u12"
 version = "0.1.0"
 source = { path = "../autore/dist/utilita_magazzino_u12-0.1.0-py3-none-any.whl" }
 wheels = [
-    { filename = "utilita_magazzino_u12-0.1.0-py3-none-any.whl", hash = "sha256:350488bac0fc10753334058cf8ae6ac234f2148a562d2f2d17418683b8b7ac8a" },
+    { filename = "utilita_magazzino_u12-0.1.0-py3-none-any.whl", hash = "sha256:e2ad8d5ab2b51e58393cdf3341fc3c23ca947a10337dac379426d63b87cb6324" },
 ]

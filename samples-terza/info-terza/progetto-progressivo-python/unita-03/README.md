@@ -56,7 +56,7 @@ con gli stessi output.
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11 con CPython 3.15.0 e uv 0.12.15. Caso P11
+Esecuzione verificata su Windows 11 con CPython 3.15.0 e uv 0.13.1. Caso P11
 (con entrambi i supplementi):
 
 ```text
