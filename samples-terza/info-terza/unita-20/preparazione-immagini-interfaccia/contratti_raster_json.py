@@ -12,7 +12,7 @@ dal laboratorio LAB-PY-U20-B, dalle raccolte di esercizi e dai test del progetto
    `"mandelbrot"`, `"julia"`), limiti matematici e operativi e gestione dei valori
    booleani e non finiti (`NaN`, `Infinity`).
 
-Ambiente: CPython 3.14 sul computer. Il modulo non apre finestre grafiche né esegue
+Ambiente: CPython 3.15 sul computer. Il modulo non apre finestre grafiche né esegue
 operazioni di I/O all'importazione.
 """
 

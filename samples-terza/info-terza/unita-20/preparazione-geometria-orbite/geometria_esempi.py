@@ -20,7 +20,7 @@ liste dei sottoalberi (`risultato = ricorsione(...) + ricorsione(...)`)
 copierebbe gli elementi già prodotti a ogni livello e introdurrebbe un fattore
 aggiuntivo legato alla profondità; per questo il corso adotta l'accumulatore.
 
-Ambiente: CPython 3.14 sul computer. Il modulo non esegue operazioni di I/O
+Ambiente: CPython 3.15 sul computer. Il modulo non esegue operazioni di I/O
 né apre finestre grafiche all'importazione.
 """
 

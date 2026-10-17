@@ -2,7 +2,7 @@
 name = "consumatore-utilita-u12"
 version = "0.1.0"
 description = "Progetto consumatore della libreria personale utilita-magazzino-u12."
-requires-python = ">=3.14"
+requires-python = ">=3.15"
 dependencies = [
     "utilita-magazzino-u12",
 ]

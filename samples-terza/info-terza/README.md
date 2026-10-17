@@ -92,6 +92,6 @@ Sorgenti Python di riferimento per il sito [info-terza](https://github.com/malaf
 
 ## Convenzioni
 
-- I file sono sorgenti verificati con CPython 3.14; i test con `pytest` eseguiti dalla root della raccolta dello studente.
+- I file sono sorgenti verificati con CPython 3.15; i test con `pytest` eseguiti dalla root della raccolta dello studente.
 - Gli starter non contengono soluzioni: i TODO e i commenti indicano le parti da completare.
 - Ogni modifica qui si riflette nel sito alla prossima build: prima di modificare un file, verificare le pagine che lo mostrano.

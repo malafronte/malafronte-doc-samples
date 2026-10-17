@@ -18,13 +18,13 @@ Il testo dei docstring, le firme e i contratti coincidono con quelli dello start
 Esecuzione dalla root di questa cartella, con l'interprete del corso:
 
 ```powershell
-uv run --python 3.14 python --version
-uv run --python 3.14 --with pytest python -m pytest test_archivio_u12.py -q
-uv run --python 3.14 python dominio_archivio_u12.py
-uv run --python 3.14 python persistenza_archivio_u12.py ..\starter-laboratorio\dati-ingresso\archivio_materiali.csv
+uv run --python 3.15 python --version
+uv run --python 3.15 --with pytest python -m pytest test_archivio_u12.py -q
+uv run --python 3.15 python dominio_archivio_u12.py
+uv run --python 3.15 python persistenza_archivio_u12.py ..\starter-laboratorio\dati-ingresso\archivio_materiali.csv
 ```
 
-Versioni della verifica: CPython 3.14.7, `uv` 0.12.15, pytest 9.1.1. Esito della suite: **53 superati**, compresi 18 casi di EOF nei campi e nelle conferme, con e senza modifiche pendenti. La dimostrazione di `persistenza_archivio_u12.py` riscrive l'archivio in una copia `.copia.csv`, confronta i byte con l'originale e la rimuove: la fixture d'ingresso non viene modificata. Le fixture di `dati-ingresso/` sono quelle dello starter - una sola fonte, come per la suite - e si leggono dalla cartella di origine senza copiarle nel riferimento.
+Versioni della verifica: CPython 3.15.0, `uv` 0.12.15, pytest 9.1.1. Esito della suite: **53 superati**, compresi 18 casi di EOF nei campi e nelle conferme, con e senza modifiche pendenti. La dimostrazione di `persistenza_archivio_u12.py` riscrive l'archivio in una copia `.copia.csv`, confronta i byte con l'originale e la rimuove: la fixture d'ingresso non viene modificata. Le fixture di `dati-ingresso/` sono quelle dello starter - una sola fonte, come per la suite - e si leggono dalla cartella di origine senza copiarle nel riferimento.
 
 ## Cosa il riferimento mostra rispetto allo starter
 

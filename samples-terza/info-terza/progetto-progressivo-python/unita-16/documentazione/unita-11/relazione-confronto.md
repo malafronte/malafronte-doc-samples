@@ -45,26 +45,26 @@ dell'implementazione in C.
 
 ## Risultati — tempo di ordinamento
 
-Mediane in millisecondi per chiamata. Postazione: Windows 11, CPython 3.14.7,
+Mediane in millisecondi per chiamata. Postazione: Windows 11, CPython 3.15.0,
 AMD Ryzen 7 8845HS, esecuzione normale.
 
 | Famiglia | n | Inserimento | Fusione | `sorted` |
 |---|---:|---:|---:|---:|
-| ordinato | 200 | 0,049 | 0,270 | 0,011 |
-| ordinato | 1.000 | 0,166 | 1,706 | 0,053 |
-| ordinato | 5.000 | 0,793 | 9,955 | 0,338 |
-| inverso | 200 | 2,790 | 0,286 | 0,011 |
-| inverso | 1.000 | 73,743 | 1,688 | 0,054 |
-| inverso | 5.000 | 2.762,640 | 14,924 | 0,383 |
-| quasi_ordinato | 200 | 0,055 | 0,447 | 0,025 |
-| quasi_ordinato | 1.000 | 0,238 | 2,597 | 0,084 |
-| quasi_ordinato | 5.000 | 1,425 | 16,376 | 0,685 |
-| molti_duplicati | 200 | 1,307 | 0,465 | 0,020 |
-| molti_duplicati | 1.000 | 36,500 | 2,950 | 0,101 |
-| molti_duplicati | 5.000 | 952,514 | 17,990 | 0,542 |
-| pseudo_casuale | 200 | 2,008 | 0,572 | 0,023 |
-| pseudo_casuale | 1.000 | 58,234 | 3,227 | 0,125 |
-| pseudo_casuale | 5.000 | 1.474,705 | 19,978 | 1,024 |
+| ordinato | 200 | 0,020 | 0,179 | 0,009 |
+| ordinato | 1.000 | 0,124 | 1,130 | 0,042 |
+| ordinato | 5.000 | 0,568 | 7,737 | 0,321 |
+| inverso | 200 | 1,948 | 0,199 | 0,009 |
+| inverso | 1.000 | 49,825 | 1,231 | 0,042 |
+| inverso | 5.000 | 2.230,869 | 14,061 | 0,374 |
+| quasi_ordinato | 200 | 0,028 | 0,354 | 0,020 |
+| quasi_ordinato | 1.000 | 0,242 | 2,168 | 0,111 |
+| quasi_ordinato | 5.000 | 1,020 | 14,133 | 0,559 |
+| molti_duplicati | 200 | 0,876 | 0,307 | 0,019 |
+| molti_duplicati | 1.000 | 28,140 | 2,016 | 0,172 |
+| molti_duplicati | 5.000 | 841,573 | 17,633 | 0,608 |
+| pseudo_casuale | 200 | 1,521 | 0,336 | 0,035 |
+| pseudo_casuale | 1.000 | 44,266 | 3,089 | 0,138 |
+| pseudo_casuale | 5.000 | 1.346,787 | 20,477 | 1,370 |
 
 Il grafico equivalente — famiglia `pseudo_casuale` sulle tre dimensioni — è in
 [`risultati/unita-11/confronto_u11.png`](../../../risultati/unita-11/confronto_u11.png).
@@ -76,11 +76,11 @@ sequenza di `q = 10` consultazioni sul **primo indice**, in millisecondi.
 
 | Famiglia | n | Preparazione | 10 query |
 |---|---:|---:|---:|
-| ordinato | 5.000 | 0,815 | 0,015 |
-| inverso | 5.000 | 2.645,781 | 0,029 |
-| quasi_ordinato | 5.000 | 1,848 | 0,029 |
-| molti_duplicati | 5.000 | 917,738 | 0,018 |
-| pseudo_casuale | 5.000 | 1.608,645 | 0,021 |
+| ordinato | 5.000 | 0,916 | 0,016 |
+| inverso | 5.000 | 2.269,762 | 0,017 |
+| quasi_ordinato | 5.000 | 0,836 | 0,015 |
+| molti_duplicati | 5.000 | 875,431 | 0,025 |
+| pseudo_casuale | 5.000 | 1.324,908 | 0,016 |
 
 La preparazione domina le consultazioni di due o cinque ordini di grandezza:
 per `q = 10` la somma delle query è trascurabile rispetto al costruire l'ordine
@@ -94,10 +94,10 @@ La scelta dipende da input e uso, non da una graduatoria:
 
 - **pochi record o liste quasi ordinate** — inserimento: nessuna allocazione
   aggiuntiva, stack costante, `n-1` confronti nel caso favorevole. Su
-  `quasi_ordinato` con `n = 5000` è sette volte più rapido della fusione;
+  `quasi_ordinato` con `n = 5000` è circa quattordici volte più rapido della fusione;
 - **ordine iniziale ignoto o avverso** — MergeSort: il comportamento resta
-  stabile su ogni famiglia — fra 0,27 e 20 ms su `n = 5000` — mentre
-  l'inserimento passa da 0,8 ms a 2,7 secondi;
+  stabile su ogni famiglia — fra 7,7 e 20,5 ms su `n = 5000` — mentre
+  l'inserimento passa da 0,57 ms a 2,23 secondi;
 - **molti record da consultare ripetutamente** — la preparazione si ammortizza
   su `q` grandi: il confronto fra procedimenti va fatto sulla somma
   preparazione + query, non sul solo ordinamento;

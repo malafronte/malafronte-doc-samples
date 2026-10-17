@@ -64,20 +64,20 @@ requisito di qualunque implementazione corretta.
 
 ## Campioni misurati
 
-Postazione: Windows 11, CPython 3.14.7 (uv 0.12.15), AMD Ryzen 7 8845HS,
+Postazione: Windows 11, CPython 3.15.0 (uv 0.12.15), AMD Ryzen 7 8845HS,
 esecuzione normale fuori dal debugger. Durate in millisecondi per chiamata.
 
 | Operazione | n | Operazioni contate | Min | Mediana | Max |
 |---|---:|---|---:|---:|---:|
-| riepilogo per destinazione | 100 | 100 visite | 0,0131 | 0,0132 | 0,0138 |
-| ricerca, ultima posizione | 100 | 100 confronti | 0,0038 | 0,0038 | 0,0039 |
-| ricerca, codice assente | 100 | 100 confronti | 0,0037 | 0,0037 | 0,0040 |
-| riepilogo per destinazione | 1.000 | 1.000 visite | 0,1242 | 0,1248 | 0,1445 |
-| ricerca, ultima posizione | 1.000 | 1.000 confronti | 0,0343 | 0,0344 | 0,0364 |
-| ricerca, codice assente | 1.000 | 1.000 confronti | 0,0334 | 0,0454 | 0,0555 |
-| riepilogo per destinazione | 10.000 | 10.000 visite | 1,2901 | 1,3345 | 1,3879 |
-| ricerca, ultima posizione | 10.000 | 10.000 confronti | 0,3368 | 0,3450 | 0,4239 |
-| ricerca, codice assente | 10.000 | 10.000 confronti | 0,3151 | 0,3321 | 0,4240 |
+| riepilogo per destinazione | 100 | 100 visite | 0,0097 | 0,0097 | 0,0134 |
+| ricerca, ultima posizione | 100 | 100 confronti | 0,0026 | 0,0026 | 0,0027 |
+| ricerca, codice assente | 100 | 100 confronti | 0,0023 | 0,0023 | 0,0024 |
+| riepilogo per destinazione | 1.000 | 1.000 visite | 0,0936 | 0,0952 | 0,1058 |
+| ricerca, ultima posizione | 1.000 | 1.000 confronti | 0,0244 | 0,0245 | 0,0248 |
+| ricerca, codice assente | 1.000 | 1.000 confronti | 0,0221 | 0,0221 | 0,0223 |
+| riepilogo per destinazione | 10.000 | 10.000 visite | 0,9985 | 1,0293 | 1,0586 |
+| ricerca, ultima posizione | 10.000 | 10.000 confronti | 0,2483 | 0,2570 | 0,2688 |
+| ricerca, codice assente | 10.000 | 10.000 confronti | 0,2331 | 0,2380 | 0,2560 |
 
 La tabella è l'equivalente del grafico
 [`risultati/unita-09/costi_u9.png`](../../../risultati/unita-09/costi_u9.png),
@@ -99,8 +99,8 @@ volta (`n` visite, `2n` aggiornamenti); la scansione con arresto confronta da
 1 a `n` codici secondo la posizione e `n` per un assente; nessuna delle due
 procedure modifica il registro; il riepilogo usa spazio costante.
 
-**Osservato sulle misure**: le mediane crescono da 0,013 ms a 1,33 ms per il
-riepilogo e da 0,004 ms a 0,33 ms per la ricerca quando `n` passa da 100 a
+**Osservato sulle misure**: le mediane crescono da 0,010 ms a 1,03 ms per il
+riepilogo e da 0,003 ms a 0,26 ms per la ricerca quando `n` passa da 100 a
 10.000; il riepilogo costa circa quattro volte la ricerca sulla stessa
 dimensione, differenza dovuta alle costanti — due scritture per record contro
 un solo confronto.

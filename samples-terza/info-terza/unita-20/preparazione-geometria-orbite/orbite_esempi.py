@@ -15,7 +15,7 @@ La classificazione dei punti (fuga rilevata oppure non rilevata entro il
 budget `N`) appartiene al kernel di fuga del lotto L4: questo modulo costruisce
 e mostra le orbite, senza classificarle.
 
-Ambiente: CPython 3.14 sul computer. Il modulo non esegue operazioni di I/O
+Ambiente: CPython 3.15 sul computer. Il modulo non esegue operazioni di I/O
 né apre finestre grafiche all'importazione.
 """
 

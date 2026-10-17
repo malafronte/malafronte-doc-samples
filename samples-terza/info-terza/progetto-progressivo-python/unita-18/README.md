@@ -73,7 +73,7 @@ uv run python programmi/indice_cli_u18.py fotografia cerca 007 cerca 999 statist
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11, CPython 3.14.7, uv 0.12.15, pytest 9.1.1.
+Esecuzione verificata su Windows 11, CPython 3.15.0, uv 0.12.15, pytest 9.1.1.
 Suite cumulativa:
 
 ```text

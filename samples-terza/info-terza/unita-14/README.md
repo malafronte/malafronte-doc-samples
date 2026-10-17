@@ -117,7 +117,7 @@ atteso. Per questo non fanno parte di `testpaths`.
 
 ## Ambiente e comandi
 
-CPython 3.14 sul computer, da questa directory.
+CPython 3.15 sul computer, da questa directory.
 
 ```powershell
 uv sync --group dev

@@ -46,7 +46,7 @@ Dalla root di questa cartella:
 
 ```powershell
 uv sync --frozen          # ricostruisce .venv/ dal lock
-uv run python --version   # Python 3.14.7
+uv run python --version   # Python 3.15.0
 uv run python programmi/preventivo_spedizione.py
 ```
 
@@ -56,7 +56,7 @@ con gli stessi output.
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11 con CPython 3.14.7 e uv 0.12.15. Caso P11
+Esecuzione verificata su Windows 11 con CPython 3.15.0 e uv 0.12.15. Caso P11
 (con entrambi i supplementi):
 
 ```text

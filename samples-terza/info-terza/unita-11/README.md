@@ -103,7 +103,7 @@ mentre i restanti 60 falliscono sui `NotImplementedError` delle fasi L2, L3, L5,
 L7 e sul caso L12 da progettare.
 
 Per eseguire con l'interprete della stessa serie usata dal corso aggiungere
-`--python 3.14` ai comandi precedenti.
+`--python 3.15` ai comandi precedenti.
 
 ## Versioni verificate
 

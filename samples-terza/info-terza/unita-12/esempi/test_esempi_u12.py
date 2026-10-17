@@ -22,7 +22,7 @@ due filtri RGB dell'esempio del cap. PY-21.
 
 Esecuzione dalla cartella `unita-12/`:
 
-    uv run --python 3.14 --with pytest python -m pytest esempi/test_esempi_u12.py -q
+    uv run --python 3.15 --with pytest python -m pytest esempi/test_esempi_u12.py -q
 
 La suite è deterministica: usa dati espliciti e riferimenti di data fissi,
 mai `date.today()` né durate reali. I test che scrivono file usano la cartella

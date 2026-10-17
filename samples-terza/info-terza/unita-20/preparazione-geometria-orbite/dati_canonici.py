@@ -14,7 +14,7 @@ test pubblici del progetto autonomo:
    `M-01`–`M-07` e `J-01`–`J-05` e un oracolo indipendente calcolato esclusivamente
    tramite coppie di numeri reali `(x, y)`.
 
-Ambiente: CPython 3.14 sul computer. Il modulo non esegue operazioni di I/O né apre
+Ambiente: CPython 3.15 sul computer. Il modulo non esegue operazioni di I/O né apre
 finestre grafiche all'importazione.
 """
 

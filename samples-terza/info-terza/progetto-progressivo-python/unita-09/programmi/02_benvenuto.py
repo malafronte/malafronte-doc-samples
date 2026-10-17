@@ -5,4 +5,4 @@ Si esegue dalla root del progetto con: uv run python programmi/02_benvenuto.py
 """
 print("Benvenuto nella raccolta di programmi.")
 print("Corso di informatica - classe terza, indirizzo informatico.")
-print("Strumenti del progetto: CPython 3.14, uv e Git.")
+print("Strumenti del progetto: CPython 3.15, uv e Git.")

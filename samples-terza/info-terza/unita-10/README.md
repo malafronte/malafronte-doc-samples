@@ -96,7 +96,7 @@ famiglie di input, copie, sintesi, metadati e riga di tabella - per un totale di
 6 test.
 
 Per eseguire con l'interprete della stessa serie usata dal corso aggiungere
-`--python 3.14` ai comandi precedenti.
+`--python 3.15` ai comandi precedenti.
 
 ## Versioni verificate
 

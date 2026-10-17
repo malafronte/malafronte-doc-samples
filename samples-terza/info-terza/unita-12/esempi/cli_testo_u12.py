@@ -8,7 +8,7 @@ presentazione e recupero.
 
 Uso da un terminale, dalla cartella `unita-12/` del repository:
 
-    uv run --python 3.14 python esempi/cli_testo_u12.py dati/testi/analisi_canonica.txt
+    uv run --python 3.15 python esempi/cli_testo_u12.py dati/testi/analisi_canonica.txt
 
 Codici di uscita: `0` analisi completata, `1` percorso o contenuto non
 ammesso, `2` argomenti di riga di comando non validi.

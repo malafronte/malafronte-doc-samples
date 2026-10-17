@@ -19,7 +19,7 @@ non importa i kernel dei frattali, così la stessa matrice funziona per
 Mandelbrot, per Julia e per i classificatori dei test. Questa separazione fra
 calcolo iniettato e rendering anticipa i componenti sostituibili di PY-42.
 
-Ambiente: CPython 3.14 sul computer con la dipendenza `pillow` (bloccata nel
+Ambiente: CPython 3.15 sul computer con la dipendenza `pillow` (bloccata nel
 file `uv.lock`). Il modulo non apre finestre grafiche all'importazione.
 """
 

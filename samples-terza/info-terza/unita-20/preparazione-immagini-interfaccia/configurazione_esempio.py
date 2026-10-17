@@ -33,7 +33,7 @@ progetto autonomo (L8): i generatori coprono un dominio circoscritto
 classificatori con il contratto unico di fuga) e la finestra completa con
 i quattro generatori integrati resta compito della consegna.
 
-Ambiente: CPython 3.14 sul computer. I tempi misurati con
+Ambiente: CPython 3.15 sul computer. I tempi misurati con
 `time.perf_counter` documentano ordini di grandezza sull'hardware usato;
 i test di correttezza restano indipendenti dalla velocità dell'hardware.
 """

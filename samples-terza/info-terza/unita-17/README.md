@@ -8,7 +8,7 @@ intervallo, invarianti e costi in funzione dell'altezza.
 ## Ambiente
 
 - **Sistema operativo:** indifferente; comandi verificati su Windows con PowerShell.
-- **Python:** 3.14 (dichiarata in `pyproject.toml` e `.python-version`).
+- **Python:** 3.15 (dichiarata in `pyproject.toml` e `.python-version`).
 - **Gestione degli ambienti:** `uv`, con ambiente virtuale locale nella cartella corrente.
 - **Dipendenze:** nessuna dipendenza di esecuzione; `pytest` e `ruff` nel gruppo di sviluppo.
 

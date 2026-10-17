@@ -63,7 +63,7 @@ uv run python programmi/consultazione_cli_u15.py soglia 500
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11, CPython 3.14.7, uv 0.12.15, pytest 9.1.1.
+Esecuzione verificata su Windows 11, CPython 3.15.0, uv 0.12.15, pytest 9.1.1.
 Suite cumulativa:
 
 ```text

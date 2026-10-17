@@ -194,36 +194,36 @@ esterne: `random`, `datetime`, `subprocess`, `os`, `csv`, `json`, `tempfile` e
 
 ```powershell
 # dimostrazioni dei moduli d'esempio (nessuna dipendenza esterna)
-uv run --python 3.14 python esempi/utilita_u12.py
-uv run --python 3.14 python esempi/codifiche_u12.py
-uv run --python 3.14 python esempi/eccezioni_date_u12.py
-uv run --python 3.14 python esempi/analisi_testo_u12.py
-uv run --python 3.14 python esempi/percorsi_testo_u12.py
-uv run --python 3.14 python esempi/dominio_magazzino_u12.py
-uv run --python 3.14 python esempi/json_u12.py
-uv run --python 3.14 python esempi/record_binari_u12.py
-uv run --python 3.14 python esempi/immagini_bmp_u12.py
+uv run --python 3.15 python esempi/utilita_u12.py
+uv run --python 3.15 python esempi/codifiche_u12.py
+uv run --python 3.15 python esempi/eccezioni_date_u12.py
+uv run --python 3.15 python esempi/analisi_testo_u12.py
+uv run --python 3.15 python esempi/percorsi_testo_u12.py
+uv run --python 3.15 python esempi/dominio_magazzino_u12.py
+uv run --python 3.15 python esempi/json_u12.py
+uv run --python 3.15 python esempi/record_binari_u12.py
+uv run --python 3.15 python esempi/immagini_bmp_u12.py
 
 # la CLI dimostrativa chiede la scelta dal menu (0 termina)
-uv run --python 3.14 python esempi/demo_import_u12.py
+uv run --python 3.15 python esempi/demo_import_u12.py
 
 # la CLI dell'analisi riceve il percorso del file (0 ok, 1 errore, 2 uso)
-uv run --python 3.14 python esempi/cli_testo_u12.py dati/testi/analisi_canonica.txt
+uv run --python 3.15 python esempi/cli_testo_u12.py dati/testi/analisi_canonica.txt
 
 # la CLI del magazzino riceve il percorso dell'archivio CSV
 # (0 uscita ordinaria, 1 interruzione o archivio non valido, 2 uso)
-uv run --python 3.14 python esempi/cli_magazzino_u12.py dati/csv/magazzino_canonico.csv
+uv run --python 3.15 python esempi/cli_magazzino_u12.py dati/csv/magazzino_canonico.csv
 
 # suite di verifica dei primi quattro blocchi
-uv run --python 3.14 --with pytest python -m pytest esempi/test_esempi_u12.py -q
+uv run --python 3.15 --with pytest python -m pytest esempi/test_esempi_u12.py -q
 
 # suite del LAB-PY-U12: una cartella alla volta, moduli omonimi
 cd riferimento-laboratorio
-uv run --python 3.14 --with pytest python -m pytest test_archivio_u12.py -q   # 53 passed
-uv run --python 3.14 python dominio_archivio_u12.py
-uv run --python 3.14 python persistenza_archivio_u12.py ..\starter-laboratorio\dati-ingresso\archivio_materiali.csv
+uv run --python 3.15 --with pytest python -m pytest test_archivio_u12.py -q   # 53 passed
+uv run --python 3.15 python dominio_archivio_u12.py
+uv run --python 3.15 python persistenza_archivio_u12.py ..\starter-laboratorio\dati-ingresso\archivio_materiali.csv
 cd ../starter-laboratorio
-uv run --python 3.14 --with pytest python -m pytest test_archivio_u12.py -q   # 51 fallimenti attesi (NotImplementedError)
+uv run --python 3.15 --with pytest python -m pytest test_archivio_u12.py -q   # 51 fallimenti attesi (NotImplementedError)
 cd ..
 
 # applicazioni delle librerie: progetto dedicato con le proprie dipendenze
@@ -253,7 +253,7 @@ repository.
 
 ## Versioni verificate
 
-- CPython **3.14.7**, serie 3.14 usata dal corso;
+- CPython **3.15.0**, serie 3.15 usata dal corso;
 - uv **0.12.15**, con backend di build hatchling per il progetto autore;
 - pytest 9.1.1, invocato con `uv run --with pytest` (suite di `esempi/`, dello
   starter e del riferimento) e come dipendenza di sviluppo del progetto autore;

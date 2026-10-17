@@ -50,14 +50,14 @@ Dalla root di questa cartella:
 
 ```powershell
 uv sync --frozen                       # ricostruisce .venv/ dal lock (pytest incluso)
-uv run python --version                # Python 3.14.7
+uv run python --version                # Python 3.15.0
 uv run python programmi/spedizione_u5.py           # CLI del preventivo
 uv run pytest -q programmi/test_spedizione_u5.py   # suite della tappa
 ```
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11 con CPython 3.14.7, uv 0.12.15 e pytest
+Esecuzione verificata su Windows 11 con CPython 3.15.0, uv 0.12.15 e pytest
 9.1.1. La suite dichiara **30 test**, tutti scoperti e superati:
 
 ```text

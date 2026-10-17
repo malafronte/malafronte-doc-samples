@@ -50,7 +50,7 @@ Dalla root di questa cartella:
 
 ```powershell
 uv sync --frozen          # ricostruisce .venv/ dal lock
-uv run python --version   # Python 3.14.7
+uv run python --version   # Python 3.15.0
 uv run python programmi/indovina_numero.py
 ```
 
@@ -60,7 +60,7 @@ I programmi delle tappe precedenti si eseguono come documentato nei README di
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11 con CPython 3.14.7 e uv 0.12.15. Caso P04
+Esecuzione verificata su Windows 11 con CPython 3.15.0 e uv 0.12.15. Caso P04
 (vittoria sull'ultima richiesta):
 
 ```text

@@ -87,8 +87,8 @@ uv run --with pytest --with matplotlib python -m pytest starter-laboratorio/test
 L'ultima suite è quella dello starter: alla prima esecuzione riporta **fallimenti attesi** per i corpi ancora da completare, e non deve produrre errori di import né di raccolta. Gli altri due gruppi sono verdi per intero: `esempi/` ha 105 test deterministici, `riferimento-laboratorio/` ne ha 21.
 
 Per eseguire con l'interprete della stessa serie usata dal corso aggiungere
-`--python 3.14` ai comandi precedenti, per esempio
-`uv run --python 3.14 --with pytest --with matplotlib python -m pytest esempi/test_esempi_u9.py -q`.
+`--python 3.15` ai comandi precedenti, per esempio
+`uv run --python 3.15 --with pytest --with matplotlib python -m pytest esempi/test_esempi_u9.py -q`.
 
 I grafici vengono scritti in `figure_u9/` con i nomi
 `06-crescite-conteggi.png`, `visite-scansioni.png` e
@@ -99,7 +99,7 @@ sopra.
 
 ## Versioni verificate
 
-- CPython 3.14.7 e CPython 3.12.13;
+- CPython 3.15.0 e CPython 3.12.13;
 - pytest 9.1.1;
 - matplotlib 3.11.2;
 - Windows 11, esecuzione normale fuori dal debugger.

@@ -13,7 +13,7 @@ Il modulo implementa gli esempi preparatori dei nuclei A–E del capitolo PY-38
   entrambe le componenti del risultato si calcolano dai valori iniziali,
   conservati prima di qualsiasi assegnazione (errore PY-U20-E02).
 
-Ambiente: CPython 3.14 sul computer. Il modulo non esegue operazioni di I/O
+Ambiente: CPython 3.15 sul computer. Il modulo non esegue operazioni di I/O
 né apre finestre grafiche all'importazione.
 """
 

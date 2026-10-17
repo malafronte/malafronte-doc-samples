@@ -13,7 +13,7 @@ soli comandi di questo README, senza dipendere dalle altre cartelle
 
 ## Traguardi della tappa
 
-- progetto inizializzato con `uv`, interprete CPython 3.14 e ambiente
+- progetto inizializzato con `uv`, interprete CPython 3.15 e ambiente
   ricostruibile con `uv sync`;
 - tre programmi eseguibili con `uv run python programmi/<file>`, ciascuno con
   un output intenzionale e documentato;
@@ -45,7 +45,7 @@ Dalla root di questa cartella:
 
 ```powershell
 uv sync --frozen          # ricostruisce .venv/ dal lock
-uv run python --version   # Python 3.14.7
+uv run python --version   # Python 3.15.0
 uv run python programmi/01_hello.py
 uv run python programmi/02_benvenuto.py
 uv run python programmi/03_messaggio_multiriga.py
@@ -53,7 +53,7 @@ uv run python programmi/03_messaggio_multiriga.py
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11 con CPython 3.14.7 e uv 0.12.15. Gli
+Esecuzione verificata su Windows 11 con CPython 3.15.0 e uv 0.12.15. Gli
 output sono riprodotti integralmente, compresi i caratteri di fine riga: ogni
 istruzione `print` produce una riga e va a capo.
 
@@ -66,7 +66,7 @@ Ciao dal progetto raccolta-programmi.
 > uv run python programmi/02_benvenuto.py
 Benvenuto nella raccolta di programmi.
 Corso di informatica - classe terza, indirizzo informatico.
-Strumenti del progetto: CPython 3.14, uv e Git.
+Strumenti del progetto: CPython 3.15, uv e Git.
 ```
 
 ```text
@@ -104,7 +104,7 @@ Nessuna: questa è la prima fotografia della raccolta. La fotografia U2 è in
 |---|---|---|
 | Esecuzione dei tre programmi | `uv run python programmi/<file>` dalla root | Output uguale a quello delle sessioni reali |
 | Andamento a capo | Confronto fra righe stampate e istruzioni `print` | Una riga di output per istruzione, ciascuna terminata dal proprio a capo |
-| Ambiente ricostruito | `uv sync --frozen` su una copia pulita della cartella | `uv run python --version` risponde 3.14.7 |
+| Ambiente ricostruito | `uv sync --frozen` su una copia pulita della cartella | `uv run python --version` risponde 3.15.0 |
 | File superflui | `git status` nella raccolta dello studente | `.venv/` e `__pycache__/` non risultano da versionare |
 
 ## Collegamenti

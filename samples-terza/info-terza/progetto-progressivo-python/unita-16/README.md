@@ -67,7 +67,7 @@ uv run python programmi/coda_cli_u16.py concatenata destinazione locale soglia 5
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11, CPython 3.14.7, uv 0.12.15, pytest 9.1.1.
+Esecuzione verificata su Windows 11, CPython 3.15.0, uv 0.12.15, pytest 9.1.1.
 Suite cumulativa:
 
 ```text

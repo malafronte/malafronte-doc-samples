@@ -18,7 +18,7 @@ Le validazioni seguono le stesse regole dell'oracolo L1
 rifiuto di `NaN`/`Infinity`. I limiti operativi della vista (centro in
 `[-100, 100]`, ampiezza in `[1e-6, 20]`) sono quelli di `LIMITI_APPLICATIVI`.
 
-Ambiente: CPython 3.14 sul computer. Il modulo non esegue operazioni di I/O
+Ambiente: CPython 3.15 sul computer. Il modulo non esegue operazioni di I/O
 né apre finestre grafiche all'importazione.
 """
 

@@ -74,7 +74,7 @@ progettazione, integrazione e spiegazione personale.
 
 ## Ambiente
 
-CPython `>=3.14` con `pillow`, `pytest` e `ruff` nel gruppo di sviluppo.
+CPython `>=3.15` con `pillow`, `pytest` e `ruff` nel gruppo di sviluppo.
 La suite non apre finestre grafiche; la finestra si prova con
 l'interprete effettivo del progetto e con il collaudo manuale descritto
 nella consegna.

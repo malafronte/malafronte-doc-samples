@@ -3,7 +3,7 @@ name = "utilita-magazzino-u12"
 version = "0.1.0"
 description = "Calcoli di magazzino riusabili: valore dell'inventario, formattazione monetaria e normalizzazione dei codici."
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.15"
 
 [build-system]
 requires = ["hatchling"]

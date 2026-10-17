@@ -1,6 +1,6 @@
 # Unità 16 - Array dinamici, liste concatenate, pile e code
 
-Riferimenti didattici CPython 3.14 per PY-30 e PY-31: modello a raddoppio
+Riferimenti didattici CPython 3.15 per PY-30 e PY-31: modello a raddoppio
 dell'array dinamico, nodi e collegamenti, lista semplicemente concatenata,
 ADT pila e coda con quattro rappresentazioni, annullamenti ed elaborazione
 delle richieste.

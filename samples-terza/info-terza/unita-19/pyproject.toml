@@ -3,7 +3,7 @@ name = "esempi-unita-19"
 version = "0.1.0"
 description = "B-tree didattici con grado minimo, simulazioni verificate e confronto fra strutture di ricerca dell'Unità 19."
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.15"
 dependencies = []
 
 [dependency-groups]
@@ -15,7 +15,7 @@ pythonpath = ["esempi", "soluzioni", "laboratorio"]
 
 [tool.ruff]
 line-length = 100
-target-version = "py314"
+target-version = "py315"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]

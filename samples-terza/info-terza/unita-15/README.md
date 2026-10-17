@@ -1,6 +1,6 @@
 # Unità 15 — Componenti intercambiabili
 
-Riferimenti didattici CPython 3.14 per PY-27, PY-28, PY-29.
+Riferimenti didattici CPython 3.15 per PY-27, PY-28, PY-29.
 Sono distinti dal progetto autonomo dei preventivi: nessuna soluzione di M55–M57.
 
 ## Ambiente ed esecuzione

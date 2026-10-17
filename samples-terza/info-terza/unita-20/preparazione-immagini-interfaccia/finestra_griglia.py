@@ -22,7 +22,7 @@ esito deterministico (`esito_artificiale`) colorato con le palette L5. Il
 progetto autonomo trasferirà la tecnica ai frattali e integrerà tutti i casi
 d'uso (L8).
 
-Ambiente: CPython 3.14 sul computer con la dipendenza `pillow`. I test
+Ambiente: CPython 3.15 sul computer con la dipendenza `pillow`. I test
 `pytest` verificano il coordinatore senza aprire finestre grafiche; il
 collaudo grafico è affidato allo script manuale `collaudo_gui_l6.py`.
 """

@@ -3,7 +3,7 @@ name = "esempi-unita-13"
 version = "0.1.0"
 description = "Sorgenti d'esempio dell'Unità 13: dalla soluzione procedurale agli oggetti."
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.15"
 dependencies = []
 
 [dependency-groups]
@@ -19,7 +19,7 @@ python_functions = ["test_*"]
 
 [tool.ruff]
 line-length = 100
-target-version = "py314"
+target-version = "py315"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]

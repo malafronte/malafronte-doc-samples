@@ -5,7 +5,7 @@ insegnano i meccanismi; il completamento del laboratorio resta lavoro dello stud
 
 ## Preparazione ed esecuzione
 
-Usare il checkout degli esempi U15 e lavorare dalla radice `unita-15`, con Python 3.14
+Usare il checkout degli esempi U15 e lavorare dalla radice `unita-15`, con Python 3.15
 gestito da uv. Modello, validatori e servizio già studiati sono in `esempi/`.
 I dati di `dataset()` sono sintetici in °C: `007/18`, `Lab, A/20`,
 `Sonda "B"/-2`, `007/18`, in quell'ordine.

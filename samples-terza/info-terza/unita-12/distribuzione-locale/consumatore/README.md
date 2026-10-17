@@ -12,7 +12,7 @@ nell'ambiente di questo progetto.
 ```text
 consumatore/
 ├── pyproject.toml     # dipendenza dalla wheel locale (path + lock)
-├── .python-version    # 3.14, interprete del corso
+├── .python-version    # 3.15, interprete del corso
 ├── uv.lock            # risoluzione bloccata
 ├── README.md
 ├── usa_utilita.py     # usa la libreria e stampa l'origine del package
@@ -70,4 +70,4 @@ pubblicazione su un indice di package. La pubblicazione su TestPyPI/PyPI è un
 approfondimento separato, descritto nella guida `dev-tools/librerie-personali`
 del sito e non eseguita in questo materiale.
 
-Versioni verificate: CPython 3.14.7, uv 0.12.15, Windows 11.
+Versioni verificate: CPython 3.15.0, uv 0.12.15, Windows 11.

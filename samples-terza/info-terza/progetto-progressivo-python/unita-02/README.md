@@ -50,7 +50,7 @@ Dalla root di questa cartella:
 
 ```powershell
 uv sync --frozen          # ricostruisce .venv/ dal lock
-uv run python --version   # Python 3.14.7
+uv run python --version   # Python 3.15.0
 uv run python programmi/01_hello.py
 uv run python programmi/02_benvenuto.py
 uv run python programmi/03_messaggio_multiriga.py
@@ -64,7 +64,7 @@ uno per riga.
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11 con CPython 3.14.7 e uv 0.12.15. Caso P1:
+Esecuzione verificata su Windows 11 con CPython 3.15.0 e uv 0.12.15. Caso P1:
 
 ```text
 > uv run python programmi/trasferimento_dati.py

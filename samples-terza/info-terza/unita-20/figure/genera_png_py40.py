@@ -20,7 +20,7 @@ preparatori fratelli)::
     uv run --directory preparazione-immagini-interfaccia `
         python ../figure/genera_png_py40.py --dest <cartella>
 
-Ambiente: CPython 3.14 con `pillow` dell'ambiente `preparazione-immagini-interfaccia`.
+Ambiente: CPython 3.15 con `pillow` dell'ambiente `preparazione-immagini-interfaccia`.
 """
 
 from __future__ import annotations

@@ -19,7 +19,7 @@ Il modulo implementa gli esempi preparatori dei nuclei E–G del capitolo PY-39
 - il raggio sicuro `raggio_fuga_julia`, che preserva il punto fisso
   `z_0 = 3` per `c = -6` (caso J-05).
 
-Ambiente: CPython 3.14 sul computer. Il modulo non esegue operazioni di I/O
+Ambiente: CPython 3.15 sul computer. Il modulo non esegue operazioni di I/O
 né apre finestre grafiche all'importazione.
 """
 

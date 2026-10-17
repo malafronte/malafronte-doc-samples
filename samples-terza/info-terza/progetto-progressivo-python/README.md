@@ -64,7 +64,7 @@ pagine del sito.
 
 ## Convenzioni
 
-- CPython 3.14, `uv` come gestore dell'ambiente, `pytest` per le suite da U5 e
+- CPython 3.15, `uv` come gestore dell'ambiente, `pytest` per le suite da U5 e
   `matplotlib` per i grafici da U9.
 - Codice con costrutti già trattati a quella tappa del corso: U1-U4 non
   introducono funzioni, eccezioni o test automatici; la suddivisione in moduli

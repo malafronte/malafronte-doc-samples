@@ -18,7 +18,7 @@ La colorazione non ricalcola le orbite: riceve la matrice degli esiti già
 calcolata dal kernel. Una variazione di palette modifica l'immagine ma
 conserva gli esiti matematici quando i parametri restano gli stessi.
 
-Ambiente: CPython 3.14 sul computer. Il modulo non esegue operazioni di I/O
+Ambiente: CPython 3.15 sul computer. Il modulo non esegue operazioni di I/O
 né apre finestre grafiche all'importazione.
 """
 

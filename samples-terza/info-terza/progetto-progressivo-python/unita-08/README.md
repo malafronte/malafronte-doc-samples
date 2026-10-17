@@ -48,7 +48,7 @@ uv run pytest -q        # suite cumulativa U5-U8
 
 ## Sessioni reali
 
-Esecuzione verificata su Windows 11 con CPython 3.14.7 e pytest 9.1.1:
+Esecuzione verificata su Windows 11 con CPython 3.15.0 e pytest 9.1.1:
 
 ```text
 > uv run --frozen pytest -q

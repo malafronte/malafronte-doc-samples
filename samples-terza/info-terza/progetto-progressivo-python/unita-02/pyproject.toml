@@ -3,5 +3,5 @@ name = "raccolta-programmi"
 version = "0.1.0"
 description = "Raccolta progressiva di programmi Python del progetto del corso (fotografia U2)."
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.15"
 dependencies = []
