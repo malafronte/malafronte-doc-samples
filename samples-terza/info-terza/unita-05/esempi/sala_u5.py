@@ -27,12 +27,19 @@ def costo_sala(durata_min: int) -> int:
 
 
 def main() -> None:
-    """Legge, valida, calcola e presenta il costo. Nessun risultato utile."""
-    durata_testo = input("Durata in minuti interi (da 1 a 240): ")
-    durata_min = int(durata_testo)
-    if not durata_ammessa(durata_min):
-        print("Durata non ammessa: indicare un intero da 1 a 240.")
-        return
+    """Acquisisce una durata valida, poi calcola e presenta il costo."""
+    durata_valida = False
+    while not durata_valida:
+        durata_testo = input("Durata in minuti interi (da 1 a 240): ")
+        try:
+            durata_min = int(durata_testo)
+        except ValueError:
+            print("Testo non convertibile in intero.")
+        else:
+            if durata_ammessa(durata_min):
+                durata_valida = True
+            else:
+                print("Durata non ammessa: indicare un intero da 1 a 240.")
     costo_euro = costo_sala(durata_min)
     print(f"Costo complessivo: {costo_euro:.2f} euro")
 
